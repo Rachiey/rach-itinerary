@@ -263,7 +263,7 @@
     const city = DATA.cities[day.city];
     const theme = CITY_THEME[day.city] || { g: "var(--line-strong)", emoji: "📍" };
     const dt = fmtDate(day.date);
-    const photo = state.photos[day.id];
+    const photo = state.photos[day.id] || day.photo;
     const bg = photo
       ? "background-image:url('" + esc(photo) + "');"
       : "background-image:" + theme.g + ";";

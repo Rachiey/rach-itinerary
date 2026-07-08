@@ -18,6 +18,11 @@ const CITIES = {
   osaka:    { name: "Osaka",    code: "OSA", country: "Japan", flag: "🇯🇵" },
   tokyo:    { name: "Tokyo",    code: "TYO", country: "Japan", flag: "🇯🇵" },
   beijing:  { name: "Beijing",  code: "PEK", country: "China", flag: "🇨🇳" },
+  kyoto:    { name: "Kyoto",    code: "KYO", country: "Japan", flag: "🇯🇵"},
+  yokohama: { name: "Yokohama",  code: "YOK", country: "Japan", flag: "🇯🇵" },
+  suzhou:   { name: "Suzhou",    code: "SZH", country: "China", flag: "🇨🇳" },
+  nara:     { name: "Nara",      code: "NRA", country: "Japan", flag: "🇯🇵" },
+  kamakura: { name: "Kamakura",  code: "KAM", country: "Japan", flag: "🇯🇵" },
 };
 
 /* Small helper so seed places get stable, readable ids. */
@@ -47,7 +52,7 @@ const DAYS = [
   {
     id: "day-01", date: "2026-09-28", city: "shanghai",
     focus: "Travel day · LHR → Shanghai",
-    photo: "airplane wing clouds sunset travel",
+    photo: "../assets/photos/shanghai.png",
     morning: [
       place("d1-m1", "Fly London Heathrow (LHR) → Shanghai (PVG)", { open: "12:05", note: "Departs LHR 12:05pm. Arrives PVG 07:55 next morning." }),
       place("d1-m2", "Grab a local SIM / eSIM + Alipay setup", { note: "Set up Alipay/WeChat Pay before you fly — you'll want it the moment you land." }),
@@ -68,7 +73,7 @@ const DAYS = [
   {
     id: "day-02", date: "2026-09-29", city: "shanghai",
     focus: "Jing'an Temple & The Bund",
-    photo: "jing an temple shanghai golden",
+    photo:  "../assets/photos/shanghai.png",
     morning: [
       place("d2-m1", "Land at Pudong Intl (PVG) 07:55 & transfer in", { note: "Maglev + metro, or a Didi to the hotel." }),
       place("d2-m2", "Jing'an Temple", { open: "07:30", close: "17:00", note: "Golden temple in the heart of the city." }),
@@ -91,10 +96,10 @@ const DAYS = [
   },
   {
     id: "day-03", date: "2026-09-30", city: "shanghai",
-    focus: "Yuyuan & Old City",
-    photo: "yuyuan garden shanghai pavilion",
+    focus: "Wukang Road & Anfu Road",
+    photo:  "../assets/photos/wukang.png",
     morning: [
-      place("d3-m1", "Yuyuan Garden", { open: "08:30", close: "17:00", note: "Go early to beat crowds." }),
+      place("d3-m1", "Wukang Road stroll & French Concession architecture", { note: "Tree-lined streets, historic villas, and boutique shops." }),
     ],
     afternoon: [
       place("d3-a1", "Yuyuan Bazaar & Nine-Turn Bridge"),
@@ -113,31 +118,31 @@ const DAYS = [
   },
   {
     id: "day-04", date: "2026-10-01", city: "shanghai",
-    focus: "French Concession",
-    photo: "shanghai french concession plane trees street",
+    focus: "Suzhou Day Trip",
+    photo: "../assets/photos/suzhou.png",
     morning: [
-      place("d4-m1", "Wukang Road & Wukang Mansion"),
-      place("d4-m2", "Anfu Road boutiques"),
+      place("d4-m1", "Travel to Suzhou via Hongqiao station (~30m)", { note: "Take the high-speed train to Suzhou — check the schedule in advance." }),
+      place("d4-m2", "Suzhou Classical Gardens (Humble Administrator's Garden)", { open: "07:30", close: "17:30" }),
+      place("d4-m3", "Pingjiang Road stroll" , { note: "Historic canal-side street with shops & tea houses." })
     ],
     afternoon: [
-      place("d4-a1", "Ferguson Lane"),
-      place("d4-a2", "Tianzifang lanes", { note: "Touristy but fun for trinkets." }),
+      place("d4-a1", "Shantang Street & canals"),
     ],
     evening: [
-      place("d4-e1", "Dinner + speakeasy near Wujiang Rd"),
+      place("d4-e1", "Train back to Shanghai (~30m)"),
     ],
     restaurants: [
-      place("d4-r1", "Fu 1088 (Shanghainese)", { open: "11:30", close: "22:00" }),
-      place("d4-r2", "Din Tai Fung (Reel Mall)", { open: "11:00", close: "22:00" }),
+      place("d4-r1", "Song He Lou (Suzhou)", { open: "11:00", close: "21:00" }),
+      place("d4-r2", "Li Bai Xie", { open: "11:00", close: "20:00" }),
     ],
     cafes: [
-      place("d4-c1", "Metal Hands Coffee", { open: "08:30", close: "18:00" }),
+      place("d4-c1", "Be Fine Cha", { open: "09:00", close: "18:00" }),
     ],
   },
   {
     id: "day-05", date: "2026-10-02", city: "shanghai",
-    focus: "Pudong & Lujiazui",
-    photo: "shanghai pudong lujiazui skyline",
+    focus: "Nanjing Pedestrian Street",
+    photo: "../assets/photos/shanghai.png",
     morning: [
       place("d5-m1", "Shanghai Tower observation deck", { open: "09:00", close: "22:00" }),
     ],
@@ -157,8 +162,8 @@ const DAYS = [
   },
   {
     id: "day-06", date: "2026-10-03", city: "shanghai",
-    focus: "Xintiandi & West Bund",
-    photo: "west bund shanghai museum riverside",
+    focus: "Xintiandi & French Concession",
+    photo: "../assets/photos/shanghai.png",
     morning: [
       place("d6-m1", "West Bund art museums", { note: "Long Museum / West Bund Museum." }),
     ],
@@ -178,8 +183,8 @@ const DAYS = [
   },
   {
     id: "day-07", date: "2026-10-04", city: "shanghai",
-    focus: "Zhujiajiao Water Town",
-    photo: "zhujiajiao water town canal bridge",
+    focus: "Yu Garden & Shanghai Old Street",
+    photo: "../assets/photos/yugarden.png",
     morning: [
       place("d7-m1", "Metro/taxi out to Zhujiajiao", { note: "~1h from centre." }),
     ],
@@ -198,11 +203,11 @@ const DAYS = [
     ],
   },
   {
-    id: "day-08", date: "2026-10-05", city: "shanghai",
-    focus: "Free day · Pack for Osaka",
-    photo: "shanghai street morning cafe",
+    id: "day-08", date: "2026-10-05", city: "osaka",
+    focus: "Travel day to Osaka",
+    photo: "../assets/photos/osaka.png",
     morning: [
-      place("d8-m1", "Last-minute Shanghai favourites"),
+      place("d8-m1", "Depart 1.15pm Shanghai Pudong (PVG) → Osaka Kansai (KIX)", { note: "Flight time ~2h30. Arrive 4.35pm local time." }),
     ],
     afternoon: [
       place("d8-a1", "Repack + confirm flight to Osaka (KIX)"),
@@ -221,14 +226,13 @@ const DAYS = [
   /* ───────────────────────── OSAKA ───────────────────────── */
   {
     id: "day-09", date: "2026-10-06", city: "osaka",
-    focus: "Travel day · Dotonbori (keep it casual)",
-    photo: "dotonbori osaka neon glico",
+    focus: "Nipponbashi & Namba",
+    photo: "../assets/photos/osaka.png",
     morning: [
-      place("d9-m1", "Fly Shanghai → Osaka (KIX)", { note: "PVG Terminal 1 13:15 → 16:35 KIX Terminal 1." }),
+      place("d9-m1", "Visit Osaka Castle", { open: "09:00", close: "17:00" }),
     ],
     afternoon: [
-      place("d9-a1", "Train in, check in & drop bags", { note: "Grab an ICOCA / Suica card at the station." }),
-      place("d9-a2", "Ease in — nothing scheduled"),
+      place("d9-a1", "Chill around Namba/Nipponbashi — shops & arcades"),
     ],
     evening: [
       place("d9-e1", "Dotonbori & Glico sign at night"),
@@ -243,19 +247,19 @@ const DAYS = [
     ],
   },
   {
-    id: "day-10", date: "2026-10-07", city: "osaka",
-    focus: "Nipponbashi & Namba",
-    photo: "namba osaka shopping street den den town",
+    id: "day-10", date: "2026-10-07", city: "nara",
+    focus: "Nara + Kyoto",
+    photo: "../assets/photos/nara.png",
     morning: [
-      place("d10-m1", "Slow morning near the hotel"),
-      place("d10-m2", "Nipponbashi / Den Den Town", { note: "Electronics, anime & hobby shops." }),
+      place("d10-m1", "Take early train to Nara (~45m)", { note: "Visit Todai-ji & Nara Park." }),
+      place("d10-m2", "Feed the deer & explore Nara Park"),
+      place("d10-m3", "From Nara, train to Kyoto (~45m)"),
     ],
     afternoon: [
-      place("d10-a1", "Namba & Shinsaibashi arcades"),
-      place("d10-a2", "Kuromon Ichiba Market snacks", { open: "09:00", close: "18:00" }),
+      place("d10-a1", "Walk streets of Kyoto — Nishiki Market & Gion"),
     ],
     evening: [
-      place("d10-e1", "Namba dinner & bar hopping"),
+      place("d10-e1", "Have dinner in Kyoto or back in Osaka (Namba)"),
     ],
     restaurants: [
       place("d10-r1", "Kushikatsu Daruma, Namba", { open: "11:00", close: "22:30", note: "No double-dipping the sauce!" }),
@@ -266,18 +270,18 @@ const DAYS = [
   },
   {
     id: "day-11", date: "2026-10-08", city: "osaka",
-    focus: "Nara sunrise → Kyoto Gion",
-    photo: "nara deer park todaiji kyoto gion street",
+    focus: "Katsuoji Temple and Nipponbashi / Namba",
+    photo: "../assets/photos/katsuojitemple.png",
     morning: [
-      place("d11-m1", "Early train to Nara", { note: "Go at dawn to beat the crowds." }),
-      place("d11-m2", "Nara Park deer & Tōdai-ji", { open: "07:30", close: "17:30", note: "Deer crackers = instant friends." }),
+      place("d11-m1", "Travel to Katsuoji Temple", { open: "08:00", close: "17:00",note: "Take the train to Katsuoji Station, then a short walk." }),
+      place("d11-m2", "Walk down to Minoh Waterfall")
     ],
     afternoon: [
-      place("d11-a1", "Train to Kyoto — Gion & Higashiyama"),
-      place("d11-a2", "Uji (optional) — Byōdō-in & matcha", { note: "Add if time allows; Uji is Japan's green-tea capital." }),
+      place("d11-a1", "Hover around Namba/Nipponbashi"),
+      place("d11-a2", "Ship suitcases to Tokyo"),
     ],
     evening: [
-      place("d11-e1", "Pontocho / Gion dinner"),
+      place("d11-e1", "Dinner in Dotonburi / Namba"),
     ],
     restaurants: [
       place("d11-r1", "Kyoto kaiseki or Gion ramen"),
@@ -287,15 +291,15 @@ const DAYS = [
     ],
   },
   {
-    id: "day-12", date: "2026-10-09", city: "osaka",
-    focus: "Katsuō-ji & Minoh Falls",
-    photo: "katsuoji temple daruma minoo waterfall autumn",
+    id: "day-12", date: "2026-10-09", city: "kyoto",
+    focus: "Kyoto - Arashiyama - Uji",
+    photo: "../assets/photos/kyoto.png",
     morning: [
-      place("d12-m1", "Early trip to Katsuō-ji (daruma temple)", { open: "08:00", close: "17:00", note: "The temple of the daruma dolls — go early & peaceful." }),
+      place("d13-m1", "Arashiyama bamboo grove", { note: "Go early for the quiet groves." }),
+      place("d13-m2", "Tenryū-ji & Togetsukyō bridge", { open: "08:30", close: "17:00" }),
     ],
     afternoon: [
-      place("d12-a1", "Minoh (Minoo) Falls forest walk", { note: "Leafy trail to the waterfall; try momiji (maple-leaf) tempura." }),
-      place("d12-a2", "Back to Osaka to unwind"),
+      place("d13-a1", "Uji stop (optional) — matcha & Byōdō-in", { note: "Squeeze in if you skipped it earlier." }),
     ],
     evening: [
       place("d12-e1", "Local Osaka dinner"),
@@ -309,15 +313,13 @@ const DAYS = [
   },
   {
     id: "day-13", date: "2026-10-10", city: "osaka",
-    focus: "Arashiyama → Shinkansen to Tokyo",
-    photo: "arashiyama bamboo grove kyoto",
+    focus: "Shinkansen to Tokyo",
+    photo: "../assets/photos/osaka.png",
     morning: [
-      place("d13-m1", "Arashiyama bamboo grove", { note: "Go early for the quiet groves." }),
-      place("d13-m2", "Tenryū-ji & Togetsukyō bridge", { open: "08:30", close: "17:00" }),
+      place("d13-m1", "Stay around Namba / Nipponbashi for a slow morning"),
     ],
     afternoon: [
-      place("d13-a1", "Uji stop (optional) — matcha & Byōdō-in", { note: "Squeeze in if you skipped it earlier." }),
-      place("d13-a2", "Collect bags, Shinkansen → Tokyo", { note: "~2h50 on the Nozomi; check in around Ikebukuro." }),
+      place("d13-a2", "Shinkansen → Tokyo", { note: "~2h50 on the Nozomi; check in around Ikebukuro." }),
     ],
     evening: [
       place("d13-e1", "Settle into Ikebukuro — Sunshine St & dinner"),
@@ -334,7 +336,7 @@ const DAYS = [
   {
     id: "day-14", date: "2026-10-11", city: "tokyo",
     focus: "Shibuya & Harajuku",
-    photo: "shibuya crossing tokyo harajuku takeshita",
+    photo: "../assets/photos/shibuya.png",
     morning: [
       place("d14-m1", "Meiji Jingū shrine", { open: "05:00", close: "17:30" }),
     ],
@@ -355,7 +357,7 @@ const DAYS = [
   {
     id: "day-15", date: "2026-10-12", city: "tokyo",
     focus: "Ikebukuro & Sunshine City",
-    photo: "ikebukuro sunshine city tokyo",
+    photo: "../assets/photos/tokyo.png",
     morning: [
       place("d15-m1", "Explore Ikebukuro — local morning"),
     ],
@@ -376,7 +378,7 @@ const DAYS = [
   {
     id: "day-16", date: "2026-10-13", city: "tokyo",
     focus: "Gotoku-ji · Shimokitazawa · Shinjuku",
-    photo: "gotokuji temple lucky cats tokyo",
+    photo: "../assets/photos/gotokujitemple.png",
     morning: [
       place("d16-m1", "Gotoku-ji (lucky cat temple)", { open: "06:00", close: "17:00", note: "The maneki-neko temple — rows of little waving cats." }),
     ],
@@ -396,7 +398,7 @@ const DAYS = [
   {
     id: "day-17", date: "2026-10-14", city: "tokyo",
     focus: "Kichijōji & Ghibli Museum",
-    photo: "ghibli museum mitaka inokashira park",
+    photo: "../assets/photos/kichijoji.png",
     morning: [
       place("d17-m1", "Kichijōji & Inokashira Park stroll"),
     ],
@@ -414,9 +416,9 @@ const DAYS = [
     ],
   },
   {
-    id: "day-18", date: "2026-10-15", city: "tokyo",
+    id: "day-18", date: "2026-10-15", city: "kamakura",
     focus: "Day trip · Kamakura → Yokohama",
-    photo: "kamakura great buddha daibutsu",
+    photo: "../assets/photos/kamakura.png",
     morning: [
       place("d18-m1", "Train to Kamakura (~1h)", { note: "Ride the retro Enoden line along the coast." }),
       place("d18-m2", "Great Buddha (Kōtoku-in)", { open: "08:00", close: "17:00" }),
@@ -436,9 +438,9 @@ const DAYS = [
     ],
   },
   {
-    id: "day-19", date: "2026-10-16", city: "tokyo",
+    id: "day-19", date: "2026-10-16", city: "yokohama",
     focus: "Yokohama & Chinatown",
-    photo: "yokohama chinatown minato mirai night",
+    photo: "../assets/photos/yokohama.png",
     morning: [
       place("d19-m1", "Minato Mirai waterfront & Cup Noodles Museum", { open: "10:00", close: "18:00" }),
     ],
@@ -461,7 +463,7 @@ const DAYS = [
   {
     id: "day-20", date: "2026-10-17", city: "beijing",
     focus: "Arrive Beijing · Shopping & food",
-    photo: "beijing wangfujing street food night",
+    photo: "../assets/photos/beijing.png",
     morning: [
       place("d20-m1", "Fly Tokyo → Beijing (PEK)", { note: "Haneda (HND) Terminal 3 08:50 → 12:00 Beijing Capital (PEK) Terminal 3." }),
     ],
@@ -482,7 +484,7 @@ const DAYS = [
   {
     id: "day-21", date: "2026-10-18", city: "beijing",
     focus: "Forbidden City & Tiananmen",
-    photo: "forbidden city beijing gate tiananmen",
+    photo: "../assets/photos/beijing.png",
     morning: [
       place("d21-m1", "Tiananmen Square", { open: "05:00", close: "22:00", note: "Free, but reserve a timed slot on the official WeChat mini-program; passport needed for the security check." }),
     ],
@@ -503,7 +505,7 @@ const DAYS = [
   {
     id: "day-22", date: "2026-10-19", city: "beijing",
     focus: "Great Wall → train to Shanghai",
-    photo: "great wall of china mutianyu autumn",
+    photo: "../assets/photos/greatwall.png",
     morning: [
       place("d22-m1", "Dawn drive to Mutianyu Great Wall", { open: "07:30", close: "17:30", note: "Leave early to beat crowds — cable car up, toboggan down." }),
     ],
@@ -525,7 +527,7 @@ const DAYS = [
   {
     id: "day-23", date: "2026-10-20", city: "shanghai",
     focus: "Shanghai Wild Animal Park",
-    photo: "shanghai wild animal park pandas safari",
+    photo: "../assets/photos/wildanimalpark.png",
     morning: [
       place("d23-m1", "Pre-booked car / Didi to Nanhui", { note: "The park is far out — arrange the transfer in advance." }),
       place("d23-m2", "Shanghai Wild Animal Park opens", { open: "08:00", close: "17:00", note: "Book tickets ahead; passport needed for entry." }),
@@ -546,7 +548,7 @@ const DAYS = [
   {
     id: "day-24", date: "2026-10-21", city: "shanghai",
     focus: "Shanghai Disneyland",
-    photo: "shanghai disneyland enchanted castle",
+    photo: "../assets/photos/disneyland.png",
     morning: [
       place("d24-m1", "Early Park Entry / rope drop", { open: "08:30", close: "20:30", note: "Buy tickets ahead & link them in the Shanghai Disney app; consider Premier Access." }),
     ],
@@ -566,7 +568,7 @@ const DAYS = [
   {
     id: "day-25", date: "2026-10-22", city: "shanghai",
     focus: "Departure · Fly home",
-    photo: "airport departure window plane",
+    photo: "../assets/photos/shanghai.png",
     morning: [
       place("d25-m1", "Checkout & luggage"),
       place("d25-m2", "Transfer to Pudong (PVG)", { note: "Maglev is fun & fast." }),
@@ -593,12 +595,12 @@ const DAYS = [
  * hotel bar on any day) and they save per stay.
  */
 const HOTELS = [
-  { id: "h-sha1", city: "shanghai", from: "2026-09-28", to: "2026-10-05",
+  { id: "h-sha1", city: "shanghai", from: "2026-09-28", to: "2026-10-04",
     name: "Home Stay (Shanghai Jing'an Temple Subway Station)",
     area: "Jing'an District",
     address: "Lane 877, Yan'an Middle Road, Jing'an District, Shanghai",
     checkIn: "15:00", checkOut: "12:00" },
-  { id: "h-osa",  city: "osaka",    from: "2026-10-06", to: "2026-10-09",
+  { id: "h-osa",  city: "osaka",    from: "2026-10-05", to: "2026-10-09",
     name: "JY Suites Namba",
     area: "Namba · Naniwa Ward",
     address: "2-chome-3-11 Nipponbashihigashi, Naniwa Ward, Osaka",
@@ -608,7 +610,7 @@ const HOTELS = [
     area: "Ikebukuro · Toshima City",
     address: "1-chome-14-6 Ikebukuro, Toshima City, Tokyo 170-0014",
     checkIn: "15:00", checkOut: "11:00" },
-  { id: "h-pek",  city: "beijing",  from: "2026-10-17", to: "2026-10-18",
+  { id: "h-pek",  city: "beijing",  from: "2026-10-17", to: "2026-10-19",
     name: "Chaoyang stay",
     area: "Chaoyang District",
     address: "Building 3, No. 16 Courtyard, Guanghe Nanli 2nd Alley, Chaoyang District, Beijing",
