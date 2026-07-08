@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1"
+    />
+    <meta name="theme-color" content="#f4ede1" />
+    <meta
+      name="description"
+      content="China & Japan trip itinerary — Autumn 2026"
+    />
+    <title>China · Japan — Itinerary</title>
+
+    <!-- Fonts: Fraunces (display), Inter (body), IBM Plex Mono (technical) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- Masthead -->
+      <header class="masthead">
+        <span class="kicker">Boarding Pass · 2026</span>
+        <h1 id="tripTitle">China · Japan</h1>
+        <div class="subtitle" id="tripSub">Autumn 2026</div>
+        <div class="daterange" id="tripRange"></div>
+        <div class="progress">
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-label" id="progressLabel"></div>
+        </div>
+      </header>
+
+      <!-- Panels -->
+      <main>
+        <section id="panel-days" class="panel active"></section>
+        <section id="panel-book" class="panel"></section>
+        <section id="panel-buy" class="panel"></section>
+        <section id="panel-flights" class="panel"></section>
+        <section id="panel-hotels" class="panel"></section>
+        <section id="panel-tips" class="panel"></section>
+      </main>
+    </div>
+
+    <!-- Bottom navigation -->
+    <nav class="tabbar">
+      <div class="inner">
+        <button class="tab active" data-target="days">
+          <span class="ic"></span><span>Days</span>
+        </button>
+        <button class="tab" data-target="book">
+          <span class="ic"></span><span>To Book</span>
+        </button>
+        <button class="tab" data-target="buy">
+          <span class="ic"></span><span>To Buy</span>
+        </button>
+        <button class="tab" data-target="flights">
+          <span class="ic"></span><span>Flights</span>
+        </button>
+        <button class="tab" data-target="hotels">
+          <span class="ic"></span><span>Hotels</span>
+        </button>
+        <button class="tab" data-target="tips">
+          <span class="ic"></span><span>Tips</span>
+        </button>
+      </div>
+    </nav>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
