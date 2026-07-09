@@ -321,6 +321,7 @@
             '<span class="city-tag">' + dt.big + ' · ' + esc(city.name) + '</span>' +
           '</div>' +
           '<div class="back-body">' +
+            '<div class="flip-hint">Tap anywhere blank to flip back to the plan ↩</div>' +
             renderBackList(day, "restaurants", "Restaurants") +
             renderBackList(day, "cafes", "Cafés") +
             '<button class="flip-btn" data-act="flip">' + ICON.flip + ' Back to plan</button>' +
@@ -637,14 +638,31 @@
       return;
     }
     const actEl = e.target.closest("[data-act]");
-    if (!actEl) return;
+    if (!actEl) {
+      // Tap anywhere on the Eat & Drink (back) side — except text inputs and
+      // other form controls — flips the card back to the plan.
+      const backEl = e.target.closest(".day-back");
+      if (backEl && !e.target.closest("input, textarea, select, label")) {
+        const day = backEl.closest(".day");
+        if (day && day.classList.contains("flipped")) {
+          day.classList.remove("flipped");
+        }
+      }
+      return;
+    }
     const act = actEl.getAttribute("data-act");
 
     if (act === "daytoggle") {
       const day = actEl.closest(".day");
       if (day) {
+        // Keep the header (and chevron) visually anchored: expanding inserts
+        // the photo above it, so compensate the scroll by the shift amount.
+        const before = actEl.getBoundingClientRect().top;
         day.classList.toggle("collapsed");
         if (day.classList.contains("collapsed")) day.classList.remove("flipped");
+        const after = actEl.getBoundingClientRect().top;
+        const delta = after - before;
+        if (delta) window.scrollBy(0, delta);
       }
       return;
     }
