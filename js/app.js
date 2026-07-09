@@ -264,9 +264,7 @@
     const theme = CITY_THEME[day.city] || { g: "var(--line-strong)", emoji: "📍" };
     const dt = fmtDate(day.date);
     const photo = state.photos[day.id] || day.photo;
-    const bg = photo
-      ? "background-image:url('" + esc(photo) + "');"
-      : "background-image:" + theme.g + ";";
+    const bg = `background-image:url("${photo}")`;
 
     // Running counter across the day so travel chips read "from hotel" for the
     // first stop and "away" (from the previous stop) for the rest.
