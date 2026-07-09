@@ -723,6 +723,7 @@
     "2026-10-10": true, // Shinkansen Osaka → Tokyo
     "2026-10-17": true, // Tokyo → Beijing
     "2026-10-19": true, // Beijing → Shanghai (train)
+    "2026-10-22": true, // Shanghai → LHR (fly home)
   };
 
   // Returns the trip days with any user reordering applied. Each day keeps its
