@@ -135,18 +135,19 @@ select {
 .app {
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 calc(16px + env(safe-area-inset-right, 0px)) 0
+    calc(16px + env(safe-area-inset-left, 0px));
 }
 
 /* ---------- Header / masthead ---------- */
 .masthead {
-  padding: 26px 4px 14px;
+  padding: calc(26px + env(safe-area-inset-top, 0px)) 4px 14px;
   text-align: center;
   position: relative;
 }
 .theme-toggle {
   position: absolute;
-  top: 22px;
+  top: calc(22px + env(safe-area-inset-top, 0px));
   right: 2px;
   width: 40px;
   height: 40px;
@@ -221,12 +222,16 @@ select {
   color: var(--ink-soft);
   letter-spacing: 0.02em;
 }
-.masthead .fx[hidden] { display: none; }
+.masthead .fx[hidden] {
+  display: none;
+}
 .masthead .fx .fx-lead {
   font-weight: 600;
   color: var(--ink);
 }
-.masthead .fx .fx-item { white-space: nowrap; }
+.masthead .fx .fx-item {
+  white-space: nowrap;
+}
 
 .masthead .progress {
   margin: 16px auto 0;
@@ -599,9 +604,17 @@ select {
   -webkit-backdrop-filter: blur(4px);
   line-height: 1.4;
 }
-.wx:empty { display: none; }
-.wx .wx-ic { font-size: 13px; line-height: 1; }
-.wx .wx-t { font-weight: 600; letter-spacing: 0; }
+.wx:empty {
+  display: none;
+}
+.wx .wx-ic {
+  font-size: 13px;
+  line-height: 1;
+}
+.wx .wx-t {
+  font-weight: 600;
+  letter-spacing: 0;
+}
 
 /* Same chip inside the expanded day-head — different background */
 .day-head .wx {
@@ -613,7 +626,9 @@ select {
   padding: 1px 7px;
   font-size: 10.5px;
 }
-.day-head .wx .wx-ic { font-size: 12px; }
+.day-head .wx .wx-ic {
+  font-size: 12px;
+}
 
 /* Subtle italic hint that historical avg is being shown */
 .wx[data-wx-kind="avg"] .wx-t::after {
@@ -839,7 +854,9 @@ body.is-dragging-day {
   color: var(--ink-soft);
   letter-spacing: 0.03em;
 }
-.sun-times[hidden] { display: none; }
+.sun-times[hidden] {
+  display: none;
+}
 .sun-times .sun-item {
   display: inline-flex;
   align-items: center;
@@ -865,7 +882,10 @@ body.is-dragging-day {
   cursor: pointer;
   transition: 0.15s;
 }
-.today-banner.is-live:hover { filter: brightness(1.02); transform: translateY(-1px); }
+.today-banner.is-live:hover {
+  filter: brightness(1.02);
+  transform: translateY(-1px);
+}
 .today-tag {
   flex-shrink: 0;
   font-family: var(--f-mono);
@@ -911,7 +931,10 @@ body.is-dragging-day {
   flex-shrink: 0;
   color: var(--jade);
 }
-.today-go svg { width: 20px; height: 20px; }
+.today-go svg {
+  width: 20px;
+  height: 20px;
+}
 /* The weather chip sits on a light background in the banner */
 .today-line .wx {
   background: var(--paper);
@@ -1264,8 +1287,14 @@ body.is-dragging-day {
   border-radius: 999px;
   background: var(--paper);
 }
-.link-maps svg { width: 13px; height: 13px; }
-.link-maps:hover { border-color: var(--jade); background: var(--paper-2); }
+.link-maps svg {
+  width: 13px;
+  height: 13px;
+}
+.link-maps:hover {
+  border-color: var(--jade);
+  background: var(--paper-2);
+}
 
 /* Add place button */
 .add-place {
