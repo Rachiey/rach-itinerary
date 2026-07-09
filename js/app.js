@@ -283,17 +283,23 @@
         '</div>' +
         '<div class="perf"></div>' +
         '<div class="day-body">' +
-          '<div class="day-focus">' +
-            '<h3>' + esc(day.focus) + '</h3>' +
+          '<button class="day-focus" data-act="daytoggle">' +
+            '<span class="day-meta">' +
+              '<span class="day-date-mini">' + dt.dow + ' · ' + dt.big + '</span>' +
+              '<h3>' + esc(day.focus) + '</h3>' +
+            '</span>' +
             '<span class="city-tag">' + theme.emoji + ' ' + esc(city.code) + '</span>' +
+            '<span class="day-chevron">' + ICON.chevron + '</span>' +
+          '</button>' +
+          '<div class="day-collapse">' +
+            '<div class="flip-hint">Tap the photo to flip for food &amp; cafés →</div>' +
+            renderHotelBar(day) +
+            renderSlot(day, "morning", "Morning", "morning", seq) +
+            renderSlot(day, "afternoon", "Afternoon", "afternoon", seq) +
+            renderSlot(day, "evening", "Evening", "evening", seq) +
+            '<button class="flip-btn" data-act="flip">' + ICON.flip + ' Eat &amp; drink</button> ' +
+            '<button class="flip-btn" data-act="photo">' + ICON.camera + ' Photo</button>' +
           '</div>' +
-          '<div class="flip-hint">Tap the photo to flip for food &amp; cafés →</div>' +
-          renderHotelBar(day) +
-          renderSlot(day, "morning", "Morning", "morning", seq) +
-          renderSlot(day, "afternoon", "Afternoon", "afternoon", seq) +
-          renderSlot(day, "evening", "Evening", "evening", seq) +
-          '<button class="flip-btn" data-act="flip">' + ICON.flip + ' Eat &amp; drink</button> ' +
-          '<button class="flip-btn" data-act="photo">' + ICON.camera + ' Photo</button>' +
         '</div>' +
       '</div>';
 
@@ -313,7 +319,7 @@
       '</div>';
 
     return (
-      '<div class="day" data-day="' + day.id + '">' +
+      '<div class="day collapsed" data-day="' + day.id + '">' +
         '<div class="day-inner">' + front + back + '</div>' +
       '</div>'
     );
@@ -512,9 +518,21 @@
     if (!actEl) return;
     const act = actEl.getAttribute("data-act");
 
+    if (act === "daytoggle") {
+      const day = actEl.closest(".day");
+      if (day) {
+        day.classList.toggle("collapsed");
+        if (day.classList.contains("collapsed")) day.classList.remove("flipped");
+      }
+      return;
+    }
     if (act === "flip") {
       const day = actEl.closest(".day");
-      if (day) day.classList.toggle("flipped");
+      if (day) {
+        // A collapsed card expands on tap instead of flipping.
+        if (day.classList.contains("collapsed")) day.classList.remove("collapsed");
+        else day.classList.toggle("flipped");
+      }
       return;
     }
     if (act === "toggle") {

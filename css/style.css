@@ -339,6 +339,24 @@ select {
   justify-content: space-between;
   gap: 10px;
   margin-bottom: 4px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+}
+.day-meta {
+  min-width: 0;
+}
+.day-date-mini {
+  display: none;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--jade);
 }
 .day-focus h3 {
   font-family: var(--f-display);
@@ -351,6 +369,51 @@ select {
   color: var(--jade);
   letter-spacing: 0.1em;
   white-space: nowrap;
+}
+.day-chevron {
+  flex: none;
+  align-self: center;
+  color: var(--ink-faint);
+  transition: transform 0.25s ease;
+}
+.day-chevron svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+.day:not(.collapsed) .day-chevron {
+  transform: rotate(180deg);
+  color: var(--jade);
+}
+/* Collapsed cards hide everything below the title for easy scanning */
+.day-collapse {
+  overflow: hidden;
+}
+.day.collapsed .day-collapse {
+  display: none;
+}
+/* Collapsed: drop the photo + perforation and show a thin date+title row */
+.day.collapsed .day-photo,
+.day.collapsed .perf {
+  display: none;
+}
+.day.collapsed .day-body {
+  padding: 12px 14px;
+}
+.day.collapsed .day-focus {
+  margin-bottom: 0;
+  align-items: center;
+}
+.day.collapsed .day-date-mini {
+  display: block;
+  margin-bottom: 2px;
+}
+.day.collapsed .day-focus h3 {
+  font-size: 17px;
+  line-height: 1.2;
+}
+.day.collapsed .day-focus .city-tag {
+  display: none;
 }
 .flip-hint {
   font-family: var(--f-mono);
