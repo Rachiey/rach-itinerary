@@ -726,6 +726,7 @@ const BOOKINGS = [
 
 /* ───────────────────────── TIPS / SUGGESTIONS ───────────────────────── */
 const TIPS = [
+  { icon: "🛂", title: "Visit Japan Web QR", body: "Before you land in Japan, register on Visit Japan Web and complete immigration & customs. It generates QR codes — screenshot them or save offline. You scan the QR at the airport kiosks for immigration and customs, which skips the paper forms. Do this a few days before flying, not in the queue.", link: { url: "https://www.vjw.digital.go.jp/", label: "Open Visit Japan Web" } },
   { icon: "📶", title: "Connectivity", body: "China blocks Google/Instagram/WhatsApp — set up a reputable eSIM or VPN before you fly. Japan is open; grab a pocket Wi-Fi or eSIM at the airport." },
   { icon: "💳", title: "Payments", body: "China is cashless: link a card to Alipay & WeChat Pay before arrival. Japan still loves cash — carry some yen, and get a Suica/ICOCA/PASMO card for transit & konbini." },
   { icon: "🚄", title: "Getting around", body: "Osaka→Tokyo is fastest by Shinkansen (~3h). In China use Didi (in Alipay) for taxis and the metro apps. Keep your passport on you for Chinese attraction entry." },

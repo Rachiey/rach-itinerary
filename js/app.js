@@ -564,10 +564,13 @@
   function renderTips() {
     let html = '<h2 class="section-title">Good to know</h2>';
     DATA.tips.forEach(function (t) {
+      const link = t.link
+        ? '<a class="tip-link" href="' + esc(t.link.url) + '" target="_blank" rel="noopener noreferrer">' + esc(t.link.label || t.link.url) + '</a>'
+        : "";
       html +=
         '<div class="tip">' +
           '<div class="tip-icon">' + t.icon + '</div>' +
-          '<div><h3>' + esc(t.title) + '</h3><p>' + esc(t.body) + '</p></div>' +
+          '<div><h3>' + esc(t.title) + '</h3><p>' + esc(t.body) + '</p>' + link + '</div>' +
         '</div>';
     });
     html +=
