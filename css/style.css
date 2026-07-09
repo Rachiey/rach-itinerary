@@ -41,6 +41,41 @@
   --f-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
+/* ---------- Dark theme ---------- */
+[data-theme="dark"] {
+  --paper: #17140f; /* deep warm charcoal */
+  --paper-2: #201b14; /* raised paper */
+  --card: #241e16; /* card surface */
+  --ink: #f1e9db; /* warm off-white ink */
+  --ink-soft: #c7bda9;
+  --ink-faint: #8f8672;
+
+  --seal: #e46a62; /* brightened red for contrast */
+  --seal-dark: #c14a44;
+  --jade: #6cc1a7; /* brightened jade */
+  --jade-soft: #1e3a33;
+  --gold: #dcb066; /* brightened gold */
+  --gold-soft: #3a3020;
+
+  --line: #372f24;
+  --line-strong: #4d4334;
+
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+  --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+/* Dark-mode component overrides (hardcoded light values) */
+[data-theme="dark"] .tabbar {
+  background: rgba(23, 20, 15, 0.92);
+}
+[data-theme="dark"] .booking.urg-now .booking-when {
+  background: #3a201d;
+  border-color: #5c322d;
+}
+[data-theme="dark"] .booking.urg-soon .booking-when {
+  background: #362c1a;
+  border-color: #544427;
+}
+
 /* ---------- Reset ---------- */
 *,
 *::before,
@@ -73,6 +108,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 12px);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 img {
@@ -105,6 +141,33 @@ select {
   padding: 26px 4px 14px;
   text-align: center;
   position: relative;
+}
+.theme-toggle {
+  position: absolute;
+  top: 22px;
+  right: 2px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  background: var(--paper-2);
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.15s ease, color 0.2s ease, background-color 0.2s ease;
+  z-index: 3;
+}
+.theme-toggle:hover {
+  color: var(--seal);
+  transform: rotate(-12deg);
+}
+.theme-toggle:active {
+  transform: scale(0.92);
+}
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
 }
 .masthead .kicker {
   font-family: var(--f-mono);
