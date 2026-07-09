@@ -2077,6 +2077,15 @@ body.is-dragging-day {
   width: 18px;
   height: 18px;
 }
+.pack-restore {
+  display: block;
+  margin: 4px auto 0;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--seal);
+  text-decoration: underline;
+}
 
 /* ---------- Budget ---------- */
 .budget-total {

@@ -1657,7 +1657,7 @@
         html += '<div class="pack-item' + (done ? " done" : "") + '" data-pack="' + esc(it.id) + '">' +
           '<button class="check" data-act="pack-toggle" aria-label="Toggle packed">' + ICON.check + '</button>' +
           '<span class="pack-label">' + esc(it.label) + '</span>' +
-          (it.custom ? '<button class="pack-del" data-act="pack-del" data-cat="' + esc(g.category) + '" aria-label="Remove">' + ICON.trash + '</button>' : "") +
+          '<button class="pack-del" data-act="pack-del" data-cat="' + esc(g.category) + '" aria-label="Remove">' + ICON.trash + '</button>' +
         '</div>';
       });
       html += '<form class="pack-add" data-act="pack-add" data-cat="' + esc(g.category) + '">' +
@@ -1666,6 +1666,11 @@
       '</form>';
       html += '</div>';
     });
+    const hiddenCount = Object.keys(state.packingHide).length;
+    if (hiddenCount) {
+      html += '<button class="pack-restore" data-act="pack-restore">Restore ' + hiddenCount +
+        ' removed default item' + (hiddenCount === 1 ? "" : "s") + '</button>';
+    }
     document.getElementById("panel-more").innerHTML = html;
   }
 
@@ -1958,6 +1963,12 @@
     if (act === "pack-del") {
       const row = actEl.closest(".pack-item");
       if (row) deletePackItem(row.getAttribute("data-pack"), actEl.getAttribute("data-cat"));
+      return;
+    }
+    if (act === "pack-restore") {
+      state.packingHide = {};
+      saveState();
+      renderPacking();
       return;
     }
     if (act === "exp-del") {
