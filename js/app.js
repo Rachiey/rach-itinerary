@@ -12,17 +12,22 @@
 
   /* ---------- City theming (used for default header gradients) ---------- */
   const CITY_THEME = {
-    shanghai: { g: "linear-gradient(135deg,#8f2c27,#b23a34 55%,#c69a4c)", emoji: "🏮" },
-    osaka:    { g: "linear-gradient(135deg,#14504a,#2f6f5e 55%,#6bbfa6)", emoji: "🐙" },
-    tokyo:    { g: "linear-gradient(135deg,#3b2a5a,#7d3c98 50%,#d84f8c)", emoji: "🗼" },
-    beijing:  { g: "linear-gradient(135deg,#6e1e1a,#b23a34 60%,#e0a24a)", emoji: "🏯" },
+    shanghai: { g: "linear-gradient(135deg,#8f2c27,#b23a34 55%,#c69a4c)", emoji: "🏮", c: "#b23a34" },
+    osaka:    { g: "linear-gradient(135deg,#14504a,#2f6f5e 55%,#6bbfa6)", emoji: "🐙", c: "#2f6f5e" },
+    tokyo:    { g: "linear-gradient(135deg,#3b2a5a,#7d3c98 50%,#d84f8c)", emoji: "🗼", c: "#7d3c98" },
+    beijing:  { g: "linear-gradient(135deg,#6e1e1a,#b23a34 60%,#e0a24a)", emoji: "🏯", c: "#c07a1e" },
+    kyoto:    { g: "linear-gradient(135deg,#1f6b57,#3f8f7a 55%,#9ad3c0)", emoji: "⛩️", c: "#3f8f7a" },
+    nara:     { g: "linear-gradient(135deg,#4a6b2e,#6f9a3e 55%,#b6d68a)", emoji: "🦌", c: "#6f9a3e" },
+    yokohama: { g: "linear-gradient(135deg,#274b7a,#4a6fb0 55%,#9cc0e6)", emoji: "🌉", c: "#4a6fb0" },
+    kamakura: { g: "linear-gradient(135deg,#5a3a7a,#9d6bbf 55%,#d0b0e6)", emoji: "🪷", c: "#9d6bbf" },
+    suzhou:   { g: "linear-gradient(135deg,#6e1e1a,#b23a34 60%,#e0a24a)", emoji: "🏞️", c: "#a13c6e" },
   };
 
   /* ---------- State ---------- */
   let state = loadState();
 
   function loadState() {
-    let s = { over: {}, added: {}, hidden: {}, flights: {}, photos: {}, hotels: {} };
+    let s = { over: {}, added: {}, hidden: {}, flights: {}, photos: {}, hotels: {}, view: "list" };
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) s = Object.assign(s, JSON.parse(raw));
@@ -49,6 +54,8 @@
     walk: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="1"/><path d="m9 20 2-5 2 2v3"/><path d="m6 12 3-3 2 2 2-1 3 3"/><path d="M11 9v3"/></svg>',
     clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>',
     edit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>',
+    list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>',
+    calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
   };
   const NAV_ICON = {
     days: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
@@ -329,17 +336,104 @@
      RENDER: panels
      ===================================================================== */
   function renderItinerary() {
-    let html = "";
+    const view = state.view === "calendar" ? "calendar" : "list";
+    let listHtml = "";
     let lastCity = null;
     DATA.days.forEach(function (day) {
       if (day.city !== lastCity) {
         const c = DATA.cities[day.city];
-        html += '<div class="leg-heading"><span>' + esc(c.flag + " " + c.name + " · " + c.code) + '</span></div>';
+        listHtml += '<div class="leg-heading"><span>' + esc(c.flag + " " + c.name + " · " + c.code) + '</span></div>';
         lastCity = day.city;
       }
-      html += renderDay(day);
+      listHtml += renderDay(day);
     });
+    const toolbar =
+      '<div class="days-toolbar">' +
+        '<button class="view-btn' + (view === "list" ? " active" : "") + '" data-view="list">' + ICON.list + ' List</button>' +
+        '<button class="view-btn' + (view === "calendar" ? " active" : "") + '" data-view="calendar">' + ICON.calendar + ' Calendar</button>' +
+      '</div>';
+    const html =
+      toolbar +
+      '<div class="days-list"' + (view === "calendar" ? " hidden" : "") + '>' + listHtml + '</div>' +
+      '<div class="days-calendar"' + (view === "list" ? " hidden" : "") + '>' + renderCalendar() + '</div>';
     document.getElementById("panel-days").innerHTML = html;
+  }
+
+  /* Local-time ISO (yyyy-mm-dd) so "today" matches the trip dates correctly. */
+  function localISO(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return y + "-" + m + "-" + day;
+  }
+
+  /* =====================================================================
+     RENDER: calendar / grid overview of the whole trip
+     ===================================================================== */
+  function renderCalendar() {
+    const byDate = {};
+    DATA.days.forEach(function (d) { byDate[d.date] = d; });
+    const dates = DATA.days.map(function (d) { return d.date; }).sort();
+    if (!dates.length) return "";
+
+    const first = new Date(dates[0] + "T00:00:00");
+    const last = new Date(dates[dates.length - 1] + "T00:00:00");
+    // Grid starts on the Monday of the first week, ends on the Sunday of the last.
+    const start = new Date(first);
+    start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
+    const end = new Date(last);
+    end.setDate(end.getDate() + (6 - ((end.getDay() + 6) % 7)));
+
+    const todayISO = localISO(new Date());
+
+    const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    let head = '<div class="cal-weekdays">' + weekdays.map(function (w) { return "<span>" + w + "</span>"; }).join("") + "</div>";
+
+    let cells = "";
+    const cur = new Date(start);
+    while (cur <= end) {
+      const iso = localISO(cur);
+      const d = byDate[iso];
+      const isToday = iso === todayISO;
+      const monthTag = cur.getDate() === 1
+        ? '<span class="cal-month">' + cur.toLocaleDateString("en-GB", { month: "short" }) + "</span>"
+        : "";
+      if (d) {
+        const theme = CITY_THEME[d.city] || {};
+        const city = DATA.cities[d.city] || { code: "" };
+        cells +=
+          '<button class="cal-cell trip' + (isToday ? " is-today" : "") + '" data-calday="' + esc(d.id) + '" style="--cc:' + (theme.c || "#8a8a8a") + '" title="' + esc(city.name + " · " + d.focus) + '">' +
+            monthTag +
+            '<span class="cal-num">' + cur.getDate() + "</span>" +
+            '<span class="cal-code">' + esc(city.code) + "</span>" +
+          "</button>";
+      } else {
+        cells +=
+          '<div class="cal-cell empty' + (isToday ? " is-today" : "") + '">' +
+            monthTag +
+            '<span class="cal-num">' + cur.getDate() + "</span>" +
+          "</div>";
+      }
+      cur.setDate(cur.getDate() + 1);
+    }
+
+    // Legend of the cities used, in first-appearance order.
+    const seen = [];
+    DATA.days.forEach(function (d) { if (seen.indexOf(d.city) === -1) seen.push(d.city); });
+    const legend =
+      '<div class="cal-legend">' +
+        seen.map(function (key) {
+          const t = CITY_THEME[key] || {};
+          const c = DATA.cities[key] || { code: key };
+          return '<span class="cal-key"><span class="dot" style="background:' + (t.c || "#8a8a8a") + '"></span>' + esc(c.code) + " · " + esc(c.name) + "</span>";
+        }).join("") +
+      "</div>";
+
+    const hint = todayISO >= dates[0] && todayISO <= dates[dates.length - 1]
+      ? '<p class="cal-hint">The glowing square is today. Tap any day to open it.</p>'
+      : '<p class="cal-hint">Tap any day to open it. Your current day will glow once the trip begins.</p>';
+
+    return '<div class="cal-wrap">' + head + '<div class="cal-grid">' + cells + "</div>" + legend + hint + "</div>";
   }
 
   function renderShopping() {
@@ -514,6 +608,31 @@
      EVENTS (delegated)
      ===================================================================== */
   document.addEventListener("click", function (e) {
+    const viewEl = e.target.closest("[data-view]");
+    if (viewEl) {
+      state.view = viewEl.getAttribute("data-view") === "calendar" ? "calendar" : "list";
+      saveState();
+      renderItinerary();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const calEl = e.target.closest("[data-calday]");
+    if (calEl) {
+      const id = calEl.getAttribute("data-calday");
+      state.view = "list";
+      saveState();
+      renderItinerary();
+      requestAnimationFrame(function () {
+        const el = document.querySelector('.day[data-day="' + id + '"]');
+        if (el) {
+          el.classList.remove("collapsed");
+          el.classList.add("just-opened");
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          setTimeout(function () { el.classList.remove("just-opened"); }, 1600);
+        }
+      });
+      return;
+    }
     const actEl = e.target.closest("[data-act]");
     if (!actEl) return;
     const act = actEl.getAttribute("data-act");
