@@ -27,12 +27,13 @@
   let state = loadState();
 
   function loadState() {
-    let s = { over: {}, added: {}, hidden: {}, flights: {}, photos: {}, hotels: {}, view: "list", theme: "light" };
+    let s = { over: {}, added: {}, hidden: {}, flights: {}, photos: {}, hotels: {}, view: "list", theme: "light", order: {} };
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) s = Object.assign(s, JSON.parse(raw));
     } catch (e) { /* ignore */ }
     if (!s.hotels) s.hotels = {};
+    if (!s.order || typeof s.order !== "object") s.order = {};
     if (s.theme !== "dark") s.theme = "light";
     return s;
   }
@@ -59,6 +60,9 @@
     calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
     sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.9" y1="4.9" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.1" y2="19.1"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.9" y1="19.1" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.1" y2="4.9"/></svg>',
     moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+    grip: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>',
+    up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg>',
+    down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
   };
   const NAV_ICON = {
     days: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
@@ -282,6 +286,17 @@
     // first stop and "away" (from the previous stop) for the rest.
     const seq = { n: 0 };
 
+    const canReorder = !day._single;
+    const reorderHandle = canReorder
+      ? '<span class="day-handle" data-act="draghandle" title="Drag to reorder within this leg">' + ICON.grip + '</span>'
+      : '';
+    const reorderMoves = canReorder
+      ? '<span class="day-move">' +
+          '<button class="move-btn" type="button" data-act="moveup"' + (day._first ? ' disabled' : '') + ' aria-label="Move to an earlier date">' + ICON.up + '</button>' +
+          '<button class="move-btn" type="button" data-act="movedown"' + (day._last ? ' disabled' : '') + ' aria-label="Move to a later date">' + ICON.down + '</button>' +
+        '</span>'
+      : '';
+
     const front =
       '<div class="day-face">' +
         '<div class="day-photo" style="' + bg + '" data-act="flip">' +
@@ -293,14 +308,18 @@
         '</div>' +
         '<div class="perf"></div>' +
         '<div class="day-body">' +
-          '<button class="day-focus" data-act="daytoggle">' +
-            '<span class="day-meta">' +
-              '<span class="day-date-mini">' + dt.dow + ' · ' + dt.big + '</span>' +
-              '<h3>' + esc(day.focus) + '</h3>' +
-            '</span>' +
-            '<span class="city-tag">' + theme.emoji + ' ' + esc(city.code) + '</span>' +
-            '<span class="day-chevron">' + ICON.chevron + '</span>' +
-          '</button>' +
+          '<div class="day-head">' +
+            reorderHandle +
+            '<button class="day-focus" data-act="daytoggle">' +
+              '<span class="day-meta">' +
+                '<span class="day-date-mini">' + dt.dow + ' · ' + dt.big + '</span>' +
+                '<h3>' + esc(day.focus) + '</h3>' +
+              '</span>' +
+              '<span class="city-tag">' + theme.emoji + ' ' + esc(city.code) + '</span>' +
+              '<span class="day-chevron">' + ICON.chevron + '</span>' +
+            '</button>' +
+            reorderMoves +
+          '</div>' +
           '<div class="day-collapse">' +
             '<div class="flip-hint">Tap the photo to flip for food &amp; cafés →</div>' +
             renderHotelBar(day) +
@@ -330,7 +349,7 @@
       '</div>';
 
     return (
-      '<div class="day collapsed" data-day="' + day.id + '">' +
+      '<div class="day collapsed" data-day="' + day.id + '" data-leg="' + esc(day._leg || "") + '">' +
         '<div class="day-inner">' + front + back + '</div>' +
       '</div>'
     );
@@ -339,11 +358,105 @@
   /* =====================================================================
      RENDER: panels
      ===================================================================== */
+  /* =====================================================================
+     Reorderable legs — shuffle day PLANS within a leg while the dates
+     (and therefore flights & hotels, which are pinned to dates) stay put.
+     A "leg" is one hotel stay: a block bounded by fixed flights / transfers,
+     so plans never jump across a flight or into the wrong hotel/city.
+     ===================================================================== */
+  function legKeyForDay(day) {
+    const h = hotelForDay(day);
+    if (h) return "h:" + h.id;
+    const c = DATA.cities[day.city];
+    return "c:" + (c ? c.country : day.city);
+  }
+
+  // Returns the trip days with any user reordering applied. Each day keeps its
+  // own id + plan, but its DATE is reassigned from the leg's fixed date slots
+  // in the chosen order. Also annotates _leg / _first / _last / _single.
+  function effectiveDays() {
+    const groups = {};
+    const keyOrder = [];
+    DATA.days.forEach(function (d) {
+      const k = legKeyForDay(d);
+      if (!groups[k]) { groups[k] = []; keyOrder.push(k); }
+      groups[k].push(d);
+    });
+    const out = [];
+    keyOrder.forEach(function (k) {
+      const members = groups[k];
+      const ids = members.map(function (d) { return d.id; });
+      const slots = members.map(function (d) { return d.date; }).sort();
+      let order = (state.order && state.order[k]) ? state.order[k].slice() : null;
+      const valid = order && order.length === ids.length &&
+        order.every(function (id) { return ids.indexOf(id) !== -1; });
+      if (!valid) order = ids.slice();
+      const byId = {};
+      members.forEach(function (d) { byId[d.id] = d; });
+      order.forEach(function (id, i) {
+        out.push(Object.assign({}, byId[id], {
+          date: slots[i],
+          _leg: k,
+          _first: i === 0,
+          _last: i === order.length - 1,
+          _single: order.length === 1,
+        }));
+      });
+    });
+    out.sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+    return out;
+  }
+
+  // Move a day one slot earlier (-1) or later (+1) within its leg.
+  function moveDay(dayId, dir) {
+    const eff = effectiveDays();
+    const day = eff.find(function (d) { return d.id === dayId; });
+    if (!day) return;
+    const members = eff.filter(function (d) { return d._leg === day._leg; });
+    const idx = members.findIndex(function (d) { return d.id === dayId; });
+    const target = idx + dir;
+    if (target < 0 || target >= members.length) return;
+    const order = members.map(function (d) { return d.id; });
+    const t = order[target]; order[target] = order[idx]; order[idx] = t;
+    state.order[day._leg] = order;
+    saveState();
+    renderItinerary();
+    flashDay(dayId);
+  }
+
+  // Drop the dragged day in front of the target day (same leg only).
+  function reorderDayTo(dragId, dropId) {
+    if (!dragId || !dropId || dragId === dropId) return;
+    const eff = effectiveDays();
+    const a = eff.find(function (d) { return d.id === dragId; });
+    const b = eff.find(function (d) { return d.id === dropId; });
+    if (!a || !b || a._leg !== b._leg) return;
+    let order = eff.filter(function (d) { return d._leg === a._leg; })
+      .map(function (d) { return d.id; })
+      .filter(function (id) { return id !== dragId; });
+    const to = order.indexOf(dropId);
+    order.splice(to, 0, dragId);
+    state.order[a._leg] = order;
+    saveState();
+    renderItinerary();
+    flashDay(dragId);
+  }
+
+  function flashDay(id) {
+    requestAnimationFrame(function () {
+      const el = document.querySelector('.day[data-day="' + id + '"]');
+      if (!el) return;
+      el.classList.add("just-moved");
+      el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      setTimeout(function () { el.classList.remove("just-moved"); }, 900);
+    });
+  }
+
   function renderItinerary() {
     const view = state.view === "calendar" ? "calendar" : "list";
     let listHtml = "";
     let lastCity = null;
-    DATA.days.forEach(function (day) {
+    effectiveDays().forEach(function (day) {
       if (day.city !== lastCity) {
         const c = DATA.cities[day.city];
         listHtml += '<div class="leg-heading"><span>' + esc(c.flag + " " + c.name + " · " + c.code) + '</span></div>';
@@ -358,7 +471,10 @@
       '</div>';
     const html =
       toolbar +
-      '<div class="days-list"' + (view === "calendar" ? " hidden" : "") + '>' + listHtml + '</div>' +
+      '<div class="days-list"' + (view === "calendar" ? " hidden" : "") + '>' +
+        '<p class="days-reorder-hint">Reshuffle days within a leg — drag the ⣿ handle (hold &amp; move) or tap ▲▼. Dates stay fixed; your plans move with you.</p>' +
+        listHtml +
+      '</div>' +
       '<div class="days-calendar"' + (view === "list" ? " hidden" : "") + '>' + renderCalendar() + '</div>';
     document.getElementById("panel-days").innerHTML = html;
   }
@@ -375,9 +491,10 @@
      RENDER: calendar / grid overview of the whole trip
      ===================================================================== */
   function renderCalendar() {
+    const days = effectiveDays();
     const byDate = {};
-    DATA.days.forEach(function (d) { byDate[d.date] = d; });
-    const dates = DATA.days.map(function (d) { return d.date; }).sort();
+    days.forEach(function (d) { byDate[d.date] = d; });
+    const dates = days.map(function (d) { return d.date; }).sort();
     if (!dates.length) return "";
 
     const first = new Date(dates[0] + "T00:00:00");
@@ -423,7 +540,7 @@
 
     // Legend of the cities used, in first-appearance order.
     const seen = [];
-    DATA.days.forEach(function (d) { if (seen.indexOf(d.city) === -1) seen.push(d.city); });
+    days.forEach(function (d) { if (seen.indexOf(d.city) === -1) seen.push(d.city); });
     const legend =
       '<div class="cal-legend">' +
         seen.map(function (key) {
@@ -655,6 +772,13 @@
     }
     const act = actEl.getAttribute("data-act");
 
+    if (act === "draghandle") { return; }
+    if (act === "moveup" || act === "movedown") {
+      const dayEl = actEl.closest(".day");
+      if (dayEl) moveDay(dayEl.getAttribute("data-day"), act === "moveup" ? -1 : 1);
+      return;
+    }
+
     if (act === "daytoggle") {
       const day = actEl.closest(".day");
       if (day) {
@@ -707,6 +831,105 @@
       if (hotel) hotel.classList.toggle("open");
       return;
     }
+  });
+
+  /* ---------- Drag-and-drop reordering (works on touch AND mouse) ----------
+     Native HTML5 drag-and-drop doesn't fire on touchscreens, so this app —
+     which is mobile-first — uses Pointer Events instead. One code path
+     handles finger drags on a phone and mouse drags on desktop. */
+  let dragDayId = null, dragLeg = null, dragHandleEl = null;
+  let dragStartX = 0, dragStartY = 0, dragActive = false;
+  let dragCurrentTarget = null, autoScrollTimer = null;
+  const DRAG_THRESHOLD = 6; // px before a press becomes a drag
+
+  function clearDropTargets() {
+    document.querySelectorAll(".day.drop-target").forEach(function (el) {
+      el.classList.remove("drop-target");
+    });
+  }
+
+  function endDrag(commit) {
+    if (autoScrollTimer) { cancelAnimationFrame(autoScrollTimer); autoScrollTimer = null; }
+    const targetId = dragCurrentTarget && dragCurrentTarget.getAttribute("data-day");
+    document.querySelectorAll(".day.dragging").forEach(function (el) { el.classList.remove("dragging"); });
+    clearDropTargets();
+    document.body.classList.remove("is-dragging-day");
+    if (dragHandleEl) {
+      try { dragHandleEl.releasePointerCapture && dragHandleEl.releasePointerCapture(dragPointerId); } catch (e) { /* ignore */ }
+    }
+    const did = dragDayId;
+    dragDayId = null; dragLeg = null; dragHandleEl = null;
+    dragActive = false; dragCurrentTarget = null;
+    if (commit && did && targetId && targetId !== did) {
+      reorderDayTo(did, targetId);
+    }
+  }
+
+  let dragPointerId = null;
+  document.addEventListener("pointerdown", function (e) {
+    const h = e.target.closest(".day-handle");
+    if (!h) return;
+    const card = h.closest(".day");
+    if (!card) return;
+    // Only primary button / single touch.
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    dragHandleEl = h;
+    dragPointerId = e.pointerId;
+    dragDayId = card.getAttribute("data-day");
+    dragLeg = card.getAttribute("data-leg");
+    dragStartX = e.clientX; dragStartY = e.clientY;
+    dragActive = false;
+    try { h.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+  });
+
+  document.addEventListener("pointermove", function (e) {
+    if (!dragDayId) return;
+    if (!dragActive) {
+      const moved = Math.abs(e.clientX - dragStartX) + Math.abs(e.clientY - dragStartY);
+      if (moved < DRAG_THRESHOLD) return;
+      // Promote to an active drag.
+      dragActive = true;
+      const card = document.querySelector('.day[data-day="' + dragDayId + '"]');
+      if (card) card.classList.add("dragging");
+      document.body.classList.add("is-dragging-day");
+    }
+    e.preventDefault();
+
+    // Which card is under the pointer?
+    const under = document.elementFromPoint(e.clientX, e.clientY);
+    const card = under && under.closest ? under.closest(".day") : null;
+    clearDropTargets();
+    dragCurrentTarget = null;
+    if (card && card.getAttribute("data-leg") === dragLeg &&
+        card.getAttribute("data-day") !== dragDayId) {
+      card.classList.add("drop-target");
+      dragCurrentTarget = card;
+    }
+
+    // Auto-scroll when dragging near the top/bottom edge (helps on mobile).
+    const edge = 70;
+    const vh = window.innerHeight;
+    let dy = 0;
+    if (e.clientY < edge) dy = -Math.ceil((edge - e.clientY) / 6);
+    else if (e.clientY > vh - edge) dy = Math.ceil((e.clientY - (vh - edge)) / 6);
+    if (dy && !autoScrollTimer) {
+      const step = function () {
+        window.scrollBy(0, dy);
+        autoScrollTimer = dy ? requestAnimationFrame(step) : null;
+      };
+      autoScrollTimer = requestAnimationFrame(step);
+    } else if (!dy && autoScrollTimer) {
+      cancelAnimationFrame(autoScrollTimer); autoScrollTimer = null;
+    }
+  }, { passive: false });
+
+  document.addEventListener("pointerup", function () {
+    if (!dragDayId) return;
+    endDrag(dragActive);
+  });
+  document.addEventListener("pointercancel", function () {
+    if (!dragDayId) return;
+    endDrag(false);
   });
 
   /* Editing detail fields (place) */
