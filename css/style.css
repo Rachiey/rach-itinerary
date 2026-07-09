@@ -531,6 +531,24 @@ select {
   -webkit-backface-visibility: hidden;
 }
 
+/* iOS Safari leaks the reversed front through the back (backface-visibility
+   is unreliable when a face contains its own stacking contexts — weather
+   chip, pills, etc.). Belt-and-braces: also fade whichever side is turned
+   away, switching opacity at the midpoint of the 0.6s flip. */
+.day-inner > .day-face,
+.day-back {
+  transition: opacity 0s linear 0.3s;
+}
+.day.flipped .day-inner > .day-face {
+  opacity: 0;
+}
+.day-back {
+  opacity: 0;
+}
+.day.flipped .day-back {
+  opacity: 1;
+}
+
 /* Photo header */
 .day-photo {
   position: relative;
