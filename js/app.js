@@ -27,13 +27,18 @@
   let state = loadState();
 
   function loadState() {
-    let s = { over: {}, added: {}, hidden: {}, flights: {}, photos: {}, hotels: {}, view: "list", theme: "light", order: {} };
+    let s = { over: {}, added: {}, hidden: {}, flights: {}, photos: {}, hotels: {}, view: "list", theme: "light", order: {}, packing: {}, packingAdd: {}, packingHide: {}, expenses: [], docs: [] };
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) s = Object.assign(s, JSON.parse(raw));
     } catch (e) { /* ignore */ }
     if (!s.hotels) s.hotels = {};
     if (!s.order || typeof s.order !== "object") s.order = {};
+    if (!s.packing || typeof s.packing !== "object") s.packing = {};
+    if (!s.packingAdd || typeof s.packingAdd !== "object") s.packingAdd = {};
+    if (!s.packingHide || typeof s.packingHide !== "object") s.packingHide = {};
+    if (!Array.isArray(s.expenses)) s.expenses = [];
+    if (!Array.isArray(s.docs)) s.docs = [];
     if (s.theme !== "dark") s.theme = "light";
     return s;
   }
@@ -378,6 +383,14 @@
     grip: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>',
     up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg>',
     down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
+    back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>',
+    suitcase: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M9 21v-14"/><path d="M15 21v-14"/></svg>',
+    wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>',
+    phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z"/></svg>',
+    chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-4-.9L3 21l1.9-5A8.4 8.4 0 0 1 4 11.5 8.4 8.4 0 0 1 12.5 3 8.4 8.4 0 0 1 21 11.5z"/></svg>',
+    file: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+    trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
+    ellipsis: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
   };
   const NAV_ICON = {
     days: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
@@ -386,6 +399,7 @@
     flights: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5a2.1 2.1 0 0 0-3-3L13 8 4.8 6.2a.5.5 0 0 0-.5.8L8 11l-3 3H2l2 3 3 2 1-3 3-3 3.5 3.7a.5.5 0 0 0 .8-.5z"/></svg>',
     hotels: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v16"/><path d="M16 8h3a2 2 0 0 1 2 2v11"/><path d="M1 21h22"/><path d="M7 7h.01M11 7h.01M7 11h.01M11 11h.01M7 15h.01M11 15h.01"/></svg>',
     tips: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg>',
+    more: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>',
   };
 
   /* ---------- Utilities ---------- */
@@ -1563,12 +1577,437 @@
     else renderItinerary();
   }
 
+  /* =====================================================================
+     MORE — hub of extra trip tools (packing, budget, emergency,
+     phrasebook, documents). One panel with a lightweight in-panel router.
+     ===================================================================== */
+  let moreView = null; // null = hub; else "packing"|"budget"|"emergency"|"phrasebook"|"docs"
+  let phraseLang = 0;  // index into DATA.phrasebook
+
+  const MORE_TOOLS = [
+    { key: "packing", icon: ICON.suitcase, title: "Packing list", sub: "Tick things off as you pack" },
+    { key: "budget", icon: ICON.wallet, title: "Budget tracker", sub: "Log spend in ¥ / £, auto-converted" },
+    { key: "emergency", icon: ICON.phone, title: "Emergency & essentials", sub: "Numbers, embassies, hotel addresses" },
+    { key: "phrasebook", icon: ICON.chat, title: "Phrasebook", sub: "Key phrases in Chinese & Japanese" },
+    { key: "docs", icon: ICON.file, title: "Documents", sub: "Tickets & bookings, saved offline" },
+  ];
+
+  function renderMore() {
+    if (moreView === "packing") return renderPacking();
+    if (moreView === "budget") return renderBudget();
+    if (moreView === "emergency") return renderEmergency();
+    if (moreView === "phrasebook") return renderPhrasebook();
+    if (moreView === "docs") return renderDocs();
+    // Hub
+    let html = '<h2 class="section-title">Trip tools</h2>' +
+      '<p class="empty" style="margin-bottom:14px">Handy extras for the trip — everything saves on this device and works offline.</p>' +
+      '<div class="tool-grid">';
+    MORE_TOOLS.forEach(function (t) {
+      html += '<button class="tool-card" data-act="more-open" data-tool="' + t.key + '">' +
+        '<span class="tool-ic">' + t.icon + '</span>' +
+        '<span class="tool-text"><span class="tool-title">' + esc(t.title) + '</span>' +
+        '<span class="tool-sub">' + esc(t.sub) + '</span></span>' +
+        '<span class="tool-go">' + ICON.chevronRight + '</span>' +
+      '</button>';
+    });
+    html += '</div>';
+    document.getElementById("panel-more").innerHTML = html;
+  }
+
+  function moreHeader(title) {
+    return '<div class="tool-head">' +
+      '<button class="tool-back" data-act="more-back" aria-label="Back to tools">' + ICON.back + '</button>' +
+      '<h2 class="section-title" style="margin:0">' + esc(title) + '</h2>' +
+    '</div>';
+  }
+
+  /* ---------- Packing checklist ---------- */
+  function packItems(category) {
+    // Seed items (minus hidden) + custom added, as {id,label,custom}.
+    const seed = (DATA.packing.find(function (g) { return g.category === category; }) || {}).items || [];
+    const out = [];
+    seed.forEach(function (label, i) {
+      const id = "pk:" + category + ":" + i;
+      if (!state.packingHide[id]) out.push({ id: id, label: label, custom: false });
+    });
+    (state.packingAdd[category] || []).forEach(function (it) {
+      out.push({ id: it.id, label: it.label, custom: true });
+    });
+    return out;
+  }
+  function packingStats() {
+    let total = 0, done = 0;
+    DATA.packing.forEach(function (g) {
+      packItems(g.category).forEach(function (it) {
+        total++; if (state.packing[it.id]) done++;
+      });
+    });
+    return { total: total, done: done };
+  }
+  function renderPacking() {
+    const st = packingStats();
+    const pct = st.total ? Math.round((st.done / st.total) * 100) : 0;
+    let html = moreHeader("Packing list");
+    html += '<div class="pack-progress"><div class="pack-track"><div class="pack-fill" style="width:' + pct + '%"></div></div>' +
+      '<div class="pack-count">' + st.done + " / " + st.total + " packed</div></div>";
+    DATA.packing.forEach(function (g) {
+      html += '<div class="pack-group"><h3>' + esc(g.category) + '</h3>';
+      packItems(g.category).forEach(function (it) {
+        const done = !!state.packing[it.id];
+        html += '<div class="pack-item' + (done ? " done" : "") + '" data-pack="' + esc(it.id) + '">' +
+          '<button class="check" data-act="pack-toggle" aria-label="Toggle packed">' + ICON.check + '</button>' +
+          '<span class="pack-label">' + esc(it.label) + '</span>' +
+          (it.custom ? '<button class="pack-del" data-act="pack-del" data-cat="' + esc(g.category) + '" aria-label="Remove">' + ICON.trash + '</button>' : "") +
+        '</div>';
+      });
+      html += '<form class="pack-add" data-act="pack-add" data-cat="' + esc(g.category) + '">' +
+        '<input type="text" placeholder="Add an item…" aria-label="Add packing item">' +
+        '<button type="submit" aria-label="Add">' + ICON.plus + '</button>' +
+      '</form>';
+      html += '</div>';
+    });
+    document.getElementById("panel-more").innerHTML = html;
+  }
+
+  /* ---------- Budget / expense tracker ---------- */
+  const CCY = { GBP: { sym: "£", flag: "🇬🇧" }, CNY: { sym: "¥", flag: "🇨🇳" }, JPY: { sym: "¥", flag: "🇯🇵" } };
+  function toGBP(amount, ccy) {
+    if (ccy === "GBP") return amount;
+    if (!FX || !FX.rates) return null;
+    const rate = FX.rates[ccy];
+    return rate ? amount / rate : null;
+  }
+  function fmtGBP(n) {
+    return "£" + n.toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function budgetSubtotals(byCcy) {
+    const parts = ["CNY", "JPY", "GBP"].filter(function (c) { return byCcy[c]; }).map(function (c) {
+      return CCY[c].flag + " " + CCY[c].sym + byCcy[c].toLocaleString("en-GB", { maximumFractionDigits: c === "JPY" ? 0 : 2 });
+    });
+    return parts.length ? parts.join(" · ") : "Nothing logged yet";
+  }
+  function renderBudget() {
+    let html = moreHeader("Budget tracker");
+    const exps = state.expenses.slice();
+    // Totals
+    let totalGBP = 0, anyUnconverted = false;
+    const byCcy = { GBP: 0, CNY: 0, JPY: 0 };
+    exps.forEach(function (e) {
+      byCcy[e.ccy] = (byCcy[e.ccy] || 0) + e.amount;
+      const g = toGBP(e.amount, e.ccy);
+      if (g == null) anyUnconverted = true; else totalGBP += g;
+    });
+    html += '<div class="budget-total">' +
+      '<div class="budget-total-lead">Total spent</div>' +
+      '<div class="budget-total-num">' + (anyUnconverted ? "≈ " : "") + fmtGBP(totalGBP) + '</div>' +
+      '<div class="budget-total-sub">' + budgetSubtotals(byCcy) + '</div>' +
+    '</div>';
+    if (!FX || !FX.rates) {
+      html += '<p class="empty">Live exchange rates unavailable offline — totals show once you\'ve been online. Native amounts are always saved.</p>';
+    }
+    // Add form
+    html += '<form class="exp-add" data-act="exp-add">' +
+      '<div class="exp-row">' +
+        '<input class="exp-amt" type="number" inputmode="decimal" step="0.01" min="0" placeholder="Amount" aria-label="Amount">' +
+        '<select class="exp-ccy" aria-label="Currency"><option value="CNY">🇨🇳 CNY</option><option value="JPY">🇯🇵 JPY</option><option value="GBP">🇬🇧 GBP</option></select>' +
+      '</div>' +
+      '<input class="exp-label" type="text" placeholder="What for? (optional)" aria-label="Description">' +
+      '<button type="submit" class="exp-submit">' + ICON.plus + ' Add expense</button>' +
+    '</form>';
+    // List
+    if (exps.length) {
+      html += '<div class="exp-list">';
+      exps.slice().reverse().forEach(function (e) {
+        const g = toGBP(e.amount, e.ccy);
+        html += '<div class="exp-item" data-exp="' + esc(e.id) + '">' +
+          '<div class="exp-main">' +
+            '<div class="exp-desc">' + esc(e.label || "Expense") + '</div>' +
+            '<div class="exp-meta">' + (e.date ? fmtDate(e.date).big : "") + '</div>' +
+          '</div>' +
+          '<div class="exp-amts">' +
+            '<div class="exp-native">' + CCY[e.ccy].flag + " " + CCY[e.ccy].sym + e.amount.toLocaleString("en-GB", { maximumFractionDigits: e.ccy === "JPY" ? 0 : 2 }) + '</div>' +
+            (e.ccy !== "GBP" && g != null ? '<div class="exp-gbp">' + fmtGBP(g) + '</div>' : "") +
+          '</div>' +
+          '<button class="exp-del" data-act="exp-del" aria-label="Delete">' + ICON.trash + '</button>' +
+        '</div>';
+      });
+      html += '</div>';
+    }
+    document.getElementById("panel-more").innerHTML = html;
+  }
+
+  /* ---------- Emergency & essentials ---------- */
+  function renderEmergency() {
+    let html = moreHeader("Emergency & essentials");
+    html += '<p class="empty" style="margin-bottom:12px">Tap a number to call. Show a hotel address to a taxi driver.</p>';
+    // Emergency numbers
+    DATA.emergency.numbers.forEach(function (block) {
+      html += '<div class="emg-card"><h3>' + esc(block.country) + '</h3><div class="emg-nums">';
+      block.items.forEach(function (it) {
+        html += '<a class="emg-num" href="tel:' + esc(it.num) + '"><span class="emg-num-big">' + esc(it.num) + '</span><span class="emg-num-lbl">' + esc(it.label) + '</span></a>';
+      });
+      html += '</div></div>';
+    });
+    // Embassies
+    html += '<h3 class="emg-sub">UK embassies & consulates</h3>';
+    DATA.emergency.embassies.forEach(function (em) {
+      html += '<div class="emg-row">' +
+        '<div class="emg-row-main"><div class="emg-name">' + esc(em.name) + '</div>' +
+        '<div class="emg-addr">' + esc(em.address) + '</div></div>' +
+        '<div class="emg-row-acts">' +
+          '<a class="emg-act" href="tel:' + esc(em.phone) + '" aria-label="Call">' + ICON.phone + '</a>' +
+          '<button class="emg-act" data-act="emg-map" data-q="' + esc(em.name + ", " + em.address) + '" aria-label="Directions">' + ICON.directions + '</button>' +
+        '</div>' +
+      '</div>';
+    });
+    // Hotels (pulled live from itinerary data)
+    html += '<h3 class="emg-sub">Where we\'re staying</h3>';
+    DATA.hotels.forEach(function (h) {
+      const nights = fmtDate(h.from).big + " – " + fmtDate(h.to).big;
+      html += '<div class="emg-row">' +
+        '<div class="emg-row-main"><div class="emg-name">' + esc(h.name) + '</div>' +
+        '<div class="emg-addr">' + esc(h.address) + '</div>' +
+        '<div class="emg-dates">' + nights + '</div></div>' +
+        '<div class="emg-row-acts">' +
+          '<button class="emg-act" data-act="emg-map" data-q="' + esc(h.name + ", " + h.address) + '" aria-label="Directions">' + ICON.directions + '</button>' +
+        '</div>' +
+      '</div>';
+    });
+    document.getElementById("panel-more").innerHTML = html;
+  }
+
+  /* ---------- Phrasebook ---------- */
+  function renderPhrasebook() {
+    let html = moreHeader("Phrasebook");
+    html += '<div class="phrase-tabs">';
+    DATA.phrasebook.forEach(function (g, i) {
+      html += '<button class="phrase-tab' + (i === phraseLang ? " active" : "") + '" data-act="phrase-lang" data-lang="' + i + '">' + esc(g.lang) + '</button>';
+    });
+    html += '</div>';
+    const group = DATA.phrasebook[phraseLang] || DATA.phrasebook[0];
+    html += '<div class="phrase-list">';
+    group.phrases.forEach(function (p) {
+      html += '<div class="phrase-item">' +
+        '<div class="phrase-en">' + esc(p.en) + '</div>' +
+        '<div class="phrase-local">' + esc(p.local) + '</div>' +
+        '<div class="phrase-pron">' + esc(p.pron) + '</div>' +
+      '</div>';
+    });
+    html += '</div>';
+    document.getElementById("panel-more").innerHTML = html;
+  }
+
+  /* ---------- Document vault (blobs in IndexedDB, meta in localStorage) ---------- */
+  const DOC_DB = "rach-docs", DOC_STORE = "files";
+  function docDB() {
+    return new Promise(function (res, rej) {
+      const r = indexedDB.open(DOC_DB, 1);
+      r.onupgradeneeded = function () { r.result.createObjectStore(DOC_STORE); };
+      r.onsuccess = function () { res(r.result); };
+      r.onerror = function () { rej(r.error); };
+    });
+  }
+  function docTx(mode, fn) {
+    return docDB().then(function (db) {
+      return new Promise(function (res, rej) {
+        const tx = db.transaction(DOC_STORE, mode);
+        const store = tx.objectStore(DOC_STORE);
+        const rq = fn(store);
+        tx.oncomplete = function () { res(rq && rq.result); };
+        tx.onerror = function () { rej(tx.error); };
+      });
+    });
+  }
+  function docPut(id, blob) { return docTx("readwrite", function (s) { return s.put(blob, id); }); }
+  function docGet(id) { return docTx("readonly", function (s) { return s.get(id); }); }
+  function docDelete(id) { return docTx("readwrite", function (s) { return s.delete(id); }); }
+
+  function humanSize(bytes) {
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + " KB";
+    return (bytes / 1048576).toFixed(1) + " MB";
+  }
+  function renderDocs() {
+    let html = moreHeader("Documents");
+    html += '<p class="empty" style="margin-bottom:12px">Save flight & hotel PDFs, tickets and passport photos here — they stay on this device and open offline.</p>';
+    html += '<button class="doc-add-btn" data-act="doc-add">' + ICON.plus + ' Add a document</button>';
+    if (state.docs.length) {
+      html += '<div class="doc-list">';
+      state.docs.slice().reverse().forEach(function (d) {
+        const isImg = (d.type || "").indexOf("image/") === 0;
+        html += '<div class="doc-item" data-doc="' + esc(d.id) + '">' +
+          '<button class="doc-open" data-act="doc-open">' +
+            '<span class="doc-ic">' + (isImg ? ICON.camera : ICON.file) + '</span>' +
+            '<span class="doc-text"><span class="doc-name">' + esc(d.name) + '</span>' +
+            '<span class="doc-meta">' + humanSize(d.size || 0) + '</span></span>' +
+          '</button>' +
+          '<button class="doc-del" data-act="doc-del" aria-label="Delete">' + ICON.trash + '</button>' +
+        '</div>';
+      });
+      html += '</div>';
+    }
+    document.getElementById("panel-more").innerHTML = html;
+  }
+
+  let docFileInput = null;
+  function ensureDocInput() {
+    if (docFileInput) return docFileInput;
+    docFileInput = document.createElement("input");
+    docFileInput.type = "file";
+    docFileInput.accept = "image/*,application/pdf";
+    docFileInput.hidden = true;
+    docFileInput.addEventListener("change", function () {
+      const file = docFileInput.files && docFileInput.files[0];
+      docFileInput.value = "";
+      if (!file) return;
+      const id = genId();
+      docPut(id, file).then(function () {
+        state.docs.push({ id: id, name: file.name, type: file.type, size: file.size, ts: Date.now() });
+        saveState();
+        renderDocs();
+      }).catch(function () {
+        window.alert("Sorry — couldn't save that file on this device.");
+      });
+    });
+    document.body.appendChild(docFileInput);
+    return docFileInput;
+  }
+  function openDoc(id) {
+    const meta = state.docs.find(function (d) { return d.id === id; });
+    docGet(id).then(function (blob) {
+      if (!blob) { window.alert("This file is no longer stored on this device."); return; }
+      const url = URL.createObjectURL(blob);
+      const w = window.open(url, "_blank");
+      // Revoke after a while to free memory (give the new tab time to load).
+      setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+      if (!w && meta) {
+        // Popup blocked — fall back to a download.
+        const a = document.createElement("a");
+        a.href = url; a.download = meta.name; a.click();
+      }
+    });
+  }
+
+  /* ---------- More: mutations ---------- */
+  function togglePack(id) {
+    if (state.packing[id]) delete state.packing[id];
+    else state.packing[id] = true;
+    saveState();
+  }
+  function addPackItem(category, label) {
+    label = (label || "").trim();
+    if (!label) return;
+    if (!state.packingAdd[category]) state.packingAdd[category] = [];
+    state.packingAdd[category].push({ id: genId(), label: label });
+    saveState();
+    renderPacking();
+  }
+  function deletePackItem(id, category) {
+    if (id.indexOf("pk:") === 0) {
+      state.packingHide[id] = true;
+    } else if (state.packingAdd[category]) {
+      state.packingAdd[category] = state.packingAdd[category].filter(function (it) { return it.id !== id; });
+    }
+    delete state.packing[id];
+    saveState();
+    renderPacking();
+  }
+  function addExpense(amount, ccy, label) {
+    amount = parseFloat(amount);
+    if (!isFinite(amount) || amount <= 0) return false;
+    state.expenses.push({ id: genId(), amount: amount, ccy: ccy, label: (label || "").trim(), date: localISO(new Date()), ts: Date.now() });
+    saveState();
+    renderBudget();
+    return true;
+  }
+  function deleteExpense(id) {
+    state.expenses = state.expenses.filter(function (e) { return e.id !== id; });
+    saveState();
+    renderBudget();
+  }
+  function deleteDoc(id) {
+    docDelete(id).catch(function () { /* ignore */ });
+    state.docs = state.docs.filter(function (d) { return d.id !== id; });
+    saveState();
+    renderDocs();
+  }
+
+  /* ---------- More: event handling ---------- */
+  document.addEventListener("click", function (e) {
+    const actEl = e.target.closest("[data-act]");
+    if (!actEl) return;
+    const act = actEl.getAttribute("data-act");
+    if (act === "more-open") { moreView = actEl.getAttribute("data-tool"); renderMore(); window.scrollTo({ top: 0 }); return; }
+    if (act === "more-back") { moreView = null; renderMore(); window.scrollTo({ top: 0 }); return; }
+    if (act === "pack-toggle") {
+      const row = actEl.closest(".pack-item");
+      if (row) {
+        const id = row.getAttribute("data-pack");
+        togglePack(id);
+        row.classList.toggle("done");
+        // Update the progress bar in place.
+        const st = packingStats();
+        const pct = st.total ? Math.round((st.done / st.total) * 100) : 0;
+        const fill = document.querySelector(".pack-fill");
+        const count = document.querySelector(".pack-count");
+        if (fill) fill.style.width = pct + "%";
+        if (count) count.textContent = st.done + " / " + st.total + " packed";
+      }
+      return;
+    }
+    if (act === "pack-del") {
+      const row = actEl.closest(".pack-item");
+      if (row) deletePackItem(row.getAttribute("data-pack"), actEl.getAttribute("data-cat"));
+      return;
+    }
+    if (act === "exp-del") {
+      const row = actEl.closest(".exp-item");
+      if (row) deleteExpense(row.getAttribute("data-exp"));
+      return;
+    }
+    if (act === "emg-map") { openMaps(actEl.getAttribute("data-q"), "", ""); return; }
+    if (act === "phrase-lang") { phraseLang = parseInt(actEl.getAttribute("data-lang"), 10) || 0; renderPhrasebook(); return; }
+    if (act === "doc-add") { ensureDocInput().click(); return; }
+    if (act === "doc-open") {
+      const row = actEl.closest(".doc-item");
+      if (row) openDoc(row.getAttribute("data-doc"));
+      return;
+    }
+    if (act === "doc-del") {
+      const row = actEl.closest(".doc-item");
+      if (row) deleteDoc(row.getAttribute("data-doc"));
+      return;
+    }
+  });
+
+  // Form submits (Enter key / add buttons) for packing & budget.
+  document.addEventListener("submit", function (e) {
+    const form = e.target.closest("[data-act]");
+    if (!form) return;
+    const act = form.getAttribute("data-act");
+    if (act === "pack-add") {
+      e.preventDefault();
+      const input = form.querySelector("input");
+      addPackItem(form.getAttribute("data-cat"), input ? input.value : "");
+      return;
+    }
+    if (act === "exp-add") {
+      e.preventDefault();
+      const amt = form.querySelector(".exp-amt");
+      const ccy = form.querySelector(".exp-ccy");
+      const label = form.querySelector(".exp-label");
+      addExpense(amt ? amt.value : "", ccy ? ccy.value : "CNY", label ? label.value : "");
+      return;
+    }
+  });
+
   /* ---------- Tabs ---------- */
   function initTabs() {
     const tabs = document.querySelectorAll(".tab");
     tabs.forEach(function (tab) {
       tab.addEventListener("click", function () {
         const target = tab.getAttribute("data-target");
+        if (target === "more") { moreView = null; renderMore(); }
         tabs.forEach(function (t) { t.classList.toggle("active", t === tab); });
         document.querySelectorAll(".panel").forEach(function (p) {
           p.classList.toggle("active", p.id === "panel-" + target);
@@ -1633,6 +2072,7 @@
     renderFlights();
     renderHotels();
     renderTips();
+    renderMore();
     updateProgress();
   }
 
@@ -1644,6 +2084,7 @@
     document.querySelector('[data-target="flights"] .ic').innerHTML = NAV_ICON.flights;
     document.querySelector('[data-target="hotels"] .ic').innerHTML = NAV_ICON.hotels;
     document.querySelector('[data-target="tips"] .ic').innerHTML = NAV_ICON.tips;
+    document.querySelector('[data-target="more"] .ic').innerHTML = NAV_ICON.more;
     applyTheme();
     document.getElementById("themeToggle").addEventListener("click", toggleTheme);
     initTabs();

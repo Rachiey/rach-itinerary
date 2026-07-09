@@ -722,5 +722,171 @@ const TRIP_META = {
   end: "2026-10-22",
 };
 
+/* ───────────────────────── PACKING CHECKLIST ─────────────────────────
+   Seed items grouped by category. Tick state, custom additions and
+   removals all persist per-device in localStorage (handled in app.js). */
+const PACKING = [
+  {
+    category: "Documents & money",
+    items: [
+      "Passport (6+ months validity)",
+      "Visas / entry permits sorted",
+      "Travel insurance details (saved offline)",
+      "Some GBP cash to exchange",
+      "Bank card + Revolut card",
+      "Photocopies / photos of passport",
+      "Printed hotel & flight confirmations",
+    ],
+  },
+  {
+    category: "Tech",
+    items: [
+      "Phone + charger",
+      "Portable battery pack",
+      "China plug adapter (Type A / I)",
+      "Japan plug adapter (Type A)",
+      "Charging cables",
+      "Earphones",
+      "Airalo eSIM installed",
+    ],
+  },
+  {
+    category: "Autumn clothing",
+    items: [
+      "Layers (T-shirts + long sleeves)",
+      "Light waterproof jacket",
+      "Jumper / fleece for cool evenings",
+      "Comfortable walking shoes",
+      "Packable umbrella",
+      "Scarf",
+      "Sleepwear",
+    ],
+  },
+  {
+    category: "Health & toiletries",
+    items: [
+      "Any prescription meds",
+      "Painkillers",
+      "Motion-sickness tablets (Shinkansen/flights)",
+      "Hand sanitiser",
+      "Pocket tissues (some CN toilets have none)",
+      "Plasters / blister plasters",
+      "Toothbrush & toiletries",
+    ],
+  },
+  {
+    category: "Handy extras",
+    items: [
+      "Reusable water bottle",
+      "Foldable day bag / tote",
+      "Laundry bag",
+      "Snacks for travel days",
+      "Reusable chopsticks (optional)",
+    ],
+  },
+];
+
+/* ───────────────────────── EMERGENCY & ESSENTIALS ─────────────────────
+   Hotel addresses are pulled live from HOTELS in app.js, so they never
+   drift out of sync. Numbers below are the official published lines. */
+const EMERGENCY = {
+  numbers: [
+    {
+      country: "🇨🇳 China",
+      items: [
+        { label: "Police", num: "110" },
+        { label: "Ambulance", num: "120" },
+        { label: "Fire", num: "119" },
+      ],
+    },
+    {
+      country: "🇯🇵 Japan",
+      items: [
+        { label: "Police", num: "110" },
+        { label: "Ambulance & Fire", num: "119" },
+      ],
+    },
+  ],
+  embassies: [
+    {
+      name: "British Embassy Beijing",
+      country: "China",
+      phone: "+861051924000",
+      phoneLabel: "+86 10 5192 4000",
+      address: "11 Guanghua Road, Jianguomenwai, Chaoyang District, Beijing",
+    },
+    {
+      name: "British Consulate-General Shanghai",
+      country: "China",
+      phone: "+862132792000",
+      phoneLabel: "+86 21 3279 2000",
+      address: "Garden Square, 968 West Beijing Road, Jing'an District, Shanghai",
+    },
+    {
+      name: "British Embassy Tokyo",
+      country: "Japan",
+      phone: "+81352111100",
+      phoneLabel: "+81 3 5211 1100",
+      address: "1 Ichiban-cho, Chiyoda-ku, Tokyo 102-8381",
+    },
+    {
+      name: "British Consulate-General Osaka",
+      country: "Japan",
+      phone: "+81661205600",
+      phoneLabel: "+81 6 6120 5600",
+      address: "Epson Osaka Bldg 19F, 3-5-1 Bakuro-machi, Chuo-ku, Osaka",
+    },
+  ],
+};
+
+/* ───────────────────────── MINI PHRASEBOOK ───────────────────────── */
+const PHRASEBOOK = [
+  {
+    lang: "🇨🇳 Mandarin",
+    phrases: [
+      { en: "Hello", local: "你好", pron: "Nǐ hǎo" },
+      { en: "Thank you", local: "谢谢", pron: "Xièxie" },
+      { en: "You're welcome", local: "不客气", pron: "Bù kèqi" },
+      { en: "Please", local: "请", pron: "Qǐng" },
+      { en: "Yes", local: "是", pron: "Shì" },
+      { en: "No", local: "不是", pron: "Bù shì" },
+      { en: "Excuse me / sorry", local: "对不起", pron: "Duìbùqǐ" },
+      { en: "How much?", local: "多少钱？", pron: "Duōshǎo qián?" },
+      { en: "Too expensive", local: "太贵了", pron: "Tài guì le" },
+      { en: "Where's the toilet?", local: "洗手间在哪里？", pron: "Xǐshǒujiān zài nǎlǐ?" },
+      { en: "I don't eat meat", local: "我不吃肉", pron: "Wǒ bù chī ròu" },
+      { en: "Delicious", local: "好吃", pron: "Hǎochī" },
+      { en: "Can I pay by card?", local: "可以刷卡吗？", pron: "Kěyǐ shuākǎ ma?" },
+      { en: "Do you speak English?", local: "你会说英语吗？", pron: "Nǐ huì shuō Yīngyǔ ma?" },
+      { en: "I don't understand", local: "我不懂", pron: "Wǒ bù dǒng" },
+      { en: "Cheers!", local: "干杯", pron: "Gānbēi" },
+      { en: "Goodbye", local: "再见", pron: "Zàijiàn" },
+      { en: "Help!", local: "救命！", pron: "Jiùmìng!" },
+    ],
+  },
+  {
+    lang: "🇯🇵 Japanese",
+    phrases: [
+      { en: "Hello", local: "こんにちは", pron: "Konnichiwa" },
+      { en: "Thank you", local: "ありがとう", pron: "Arigatō" },
+      { en: "You're welcome", local: "どういたしまして", pron: "Dō itashimashite" },
+      { en: "Please", local: "お願いします", pron: "Onegai shimasu" },
+      { en: "Yes", local: "はい", pron: "Hai" },
+      { en: "No", local: "いいえ", pron: "Iie" },
+      { en: "Excuse me / sorry", local: "すみません", pron: "Sumimasen" },
+      { en: "How much?", local: "いくらですか？", pron: "Ikura desu ka?" },
+      { en: "Where's the toilet?", local: "トイレはどこですか？", pron: "Toire wa doko desu ka?" },
+      { en: "I don't eat meat", local: "肉を食べません", pron: "Niku o tabemasen" },
+      { en: "Delicious", local: "おいしい", pron: "Oishii" },
+      { en: "The bill, please", local: "お会計お願いします", pron: "Okaikei onegai shimasu" },
+      { en: "Do you speak English?", local: "英語を話せますか？", pron: "Eigo o hanasemasu ka?" },
+      { en: "I don't understand", local: "わかりません", pron: "Wakarimasen" },
+      { en: "Cheers!", local: "乾杯", pron: "Kanpai" },
+      { en: "Goodbye", local: "さようなら", pron: "Sayōnara" },
+      { en: "Help!", local: "助けて！", pron: "Tasukete!" },
+    ],
+  },
+];
+
 /* Expose everything to app.js */
-window.TRIP_DATA = { meta: TRIP_META, cities: CITIES, days: DAYS, hotels: HOTELS, shopping: SHOPPING, bookings: BOOKINGS, flights: FLIGHTS, tips: TIPS };
+window.TRIP_DATA = { meta: TRIP_META, cities: CITIES, days: DAYS, hotels: HOTELS, shopping: SHOPPING, bookings: BOOKINGS, flights: FLIGHTS, tips: TIPS, packing: PACKING, emergency: EMERGENCY, phrasebook: PHRASEBOOK };
