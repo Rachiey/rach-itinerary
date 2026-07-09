@@ -14,15 +14,15 @@
  */
 
 const CITIES = {
-  shanghai: { name: "Shanghai", code: "SHA", country: "China", flag: "🇨🇳" },
-  osaka:    { name: "Osaka",    code: "OSA", country: "Japan", flag: "🇯🇵" },
-  tokyo:    { name: "Tokyo",    code: "TYO", country: "Japan", flag: "🇯🇵" },
-  beijing:  { name: "Beijing",  code: "PEK", country: "China", flag: "🇨🇳" },
-  kyoto:    { name: "Kyoto",    code: "KYO", country: "Japan", flag: "🇯🇵"},
-  yokohama: { name: "Yokohama",  code: "YOK", country: "Japan", flag: "🇯🇵" },
-  suzhou:   { name: "Suzhou",    code: "SZH", country: "China", flag: "🇨🇳" },
-  nara:     { name: "Nara",      code: "NRA", country: "Japan", flag: "🇯🇵" },
-  kamakura: { name: "Kamakura",  code: "KAM", country: "Japan", flag: "🇯🇵" },
+  shanghai: { name: "Shanghai", code: "SHA", country: "China", flag: "🇨🇳", lat: 31.2304, lon: 121.4737 },
+  osaka:    { name: "Osaka",    code: "OSA", country: "Japan", flag: "🇯🇵", lat: 34.6937, lon: 135.5023 },
+  tokyo:    { name: "Tokyo",    code: "TYO", country: "Japan", flag: "🇯🇵", lat: 35.6762, lon: 139.6503 },
+  beijing:  { name: "Beijing",  code: "PEK", country: "China", flag: "🇨🇳", lat: 39.9042, lon: 116.4074 },
+  kyoto:    { name: "Kyoto",    code: "KYO", country: "Japan", flag: "🇯🇵", lat: 35.0116, lon: 135.7681 },
+  yokohama: { name: "Yokohama",  code: "YOK", country: "Japan", flag: "🇯🇵", lat: 35.4437, lon: 139.6380 },
+  suzhou:   { name: "Suzhou",    code: "SZH", country: "China", flag: "🇨🇳", lat: 31.2989, lon: 120.5853 },
+  nara:     { name: "Nara",      code: "NRA", country: "Japan", flag: "🇯🇵", lat: 34.6851, lon: 135.8048 },
+  kamakura: { name: "Kamakura",  code: "KAM", country: "Japan", flag: "🇯🇵", lat: 35.3192, lon: 139.5468 },
 };
 
 /* Small helper so seed places get stable, readable ids. */
@@ -530,7 +530,7 @@ const DAYS = [
     photo: "assets/photos/wildanimalpark.png",
     morning: [
       place("d23-m1", "Pre-booked car / Didi to Nanhui", { note: "The park is far out — arrange the transfer in advance." }),
-      place("d23-m2", "Shanghai Wild Animal Park opens", { open: "08:00", close: "17:00", note: "Book tickets ahead; passport needed for entry." }),
+      place("d23-m2", "Shanghai Wild Animal Park opens", { open: "09:00", close: "17:00", note: "Book tickets ahead; passport needed for entry." }),
     ],
     afternoon: [
       place("d23-a1", "Safari drive-through & animal shows"),
@@ -624,25 +624,9 @@ const HOTELS = [
 
 /* ───────────────────────── THINGS TO BUY ───────────────────────── */
 const SHOPPING = [
-  { category: "China", items: [
-    place("s-cn1", "Silk scarf / pyjamas"),
-    place("s-cn2", "Loose-leaf tea + teaware"),
-    place("s-cn3", "Chops / name seal (Old City)"),
-    place("s-cn4", "Cheap electronics accessories"),
-  ]},
-  { category: "Japan", items: [
-    place("s-jp1", "Kit-Kat & snack flavours"),
-    place("s-jp2", "Skincare & pharmacy haul (Don Quijote)"),
-    place("s-jp3", "Stationery (Loft / Itoya)"),
-    place("s-jp4", "Ceramics / chopsticks"),
-    place("s-jp5", "Uniqlo / GU Japan-only lines"),
-    place("s-jp6", "Anime / hobby goods (Akihabara)"),
-  ]},
-  { category: "Gifts", items: [
-    place("s-g1", "Fridge magnets"),
-    place("s-g2", "Local sweets to share"),
-    place("s-g3", "Postcards"),
-  ]},
+  { category: "Shanghai", items: [] },
+  { category: "Osaka",    items: [] },
+  { category: "Tokyo",    items: [] },
 ];
 
 /* ───────────────────────── FLIGHTS ───────────────────────── */
@@ -727,14 +711,8 @@ const BOOKINGS = [
 /* ───────────────────────── TIPS / SUGGESTIONS ───────────────────────── */
 const TIPS = [
   { icon: "🛂", title: "Visit Japan Web QR", body: "Before you land in Japan, register on Visit Japan Web and complete immigration & customs. It generates QR codes — screenshot them or save offline. You scan the QR at the airport kiosks for immigration and customs, which skips the paper forms. Do this a few days before flying, not in the queue.", link: { url: "https://www.vjw.digital.go.jp/", label: "Open Visit Japan Web" } },
-  { icon: "📶", title: "Connectivity", body: "China blocks Google/Instagram/WhatsApp — set up a reputable eSIM or VPN before you fly. Japan is open; grab a pocket Wi-Fi or eSIM at the airport." },
-  { icon: "💳", title: "Payments", body: "China is cashless: link a card to Alipay & WeChat Pay before arrival. Japan still loves cash — carry some yen, and get a Suica/ICOCA/PASMO card for transit & konbini." },
-  { icon: "🚄", title: "Getting around", body: "Osaka→Tokyo is fastest by Shinkansen (~3h). In China use Didi (in Alipay) for taxis and the metro apps. Keep your passport on you for Chinese attraction entry." },
-  { icon: "🎫", title: "Book ahead", body: "teamLab (Tokyo), Shanghai Tower, and the Forbidden City all use timed tickets — reserve a few days out. Fushimi Inari & popular ramen are best done early morning." },
-  { icon: "🧳", title: "Packing", body: "Late Sep–Oct is mild but variable: layers, a light rain jacket, and comfy walking shoes. Leave luggage room for the Japan shopping haul." },
-  { icon: "🈺", title: "Handy phrases", body: "CN: nǐ hǎo (hello), xièxie (thanks), duōshǎo qián (how much). JP: konnichiwa (hello), arigatō (thanks), sumimasen (excuse me)." },
-  { icon: "🍜", title: "Food etiquette", body: "Japan: no tipping, slurping noodles is fine, don't stick chopsticks upright in rice. China: sharing dishes family-style, tea gets refilled constantly." },
-  { icon: "🕗", title: "Time zones", body: "China (UTC+8) and Japan (UTC+9) differ by 1 hour — nudge your watch forward flying into Osaka and back flying into Beijing." },
+  { icon: "📱", title: "China apps to install before you fly", body: "Download and set these up on UK Wi-Fi before landing in Shanghai — the app stores can be a pain once you're in China: Didi (taxis / ride-hail), WeChat Pay and Alipay (link a foreign card in each — you'll pay for almost everything with these), and Amap / 高德地图 (maps & navigation, way better than Google Maps in China, which is blocked)." },
+  { icon: "🇯🇵", title: "Japan apps to install before you fly", body: "Set these up before you land in Osaka: Revolut (best rates for GBP → JPY, no rubbish conversion fees at the till), Suica (add to Apple/Google Wallet — tap through every train, metro, bus and konbini), LINE (Japanese restaurants and shops book through it — you'll need an account for a lot of reservations), Tabelog (the local review app — trust its ratings over Google, 3.5+ is genuinely great), and Airalo (grab a Japan eSIM in the app before you fly so you've got data the second you land — way cheaper than airport SIMs)." },
 ];
 
 const TRIP_META = {

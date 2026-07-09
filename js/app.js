@@ -42,16 +42,331 @@
   }
   function genId() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 
+  /* =====================================================================
+     WEATHER (Open-Meteo, no API key required)
+     ---------------------------------------------------------------------
+     Trip is in the future, so real forecasts only exist within ~16 days.
+     Outside that window we look up the SAME dates last year via the
+     archive API — a solid "here's what it was like this time last year"
+     indicator for packing / planning. Once we're inside 16 days it
+     switches to the actual forecast automatically.
+     Results are cached in localStorage keyed by "city|YYYY-MM-DD" so
+     we don't hammer the API on every render.
+     ===================================================================== */
+  const WEATHER_CACHE_KEY = "rach-weather-v2";
+  const WEATHER = { data: {}, kind: {}, ttl: 6 * 60 * 60 * 1000 /* 6h */ };
+  // Sub-cities without their own weather query — fall back to the nearest
+  // "primary" city so we only fire 4 requests total and everything renders
+  // even when the sub-city fetch would have been slow / rate-limited.
+  const WEATHER_ALIAS = {
+    kyoto: "osaka",
+    nara: "osaka",
+    suzhou: "shanghai",
+    yokohama: "tokyo",
+    kamakura: "tokyo",
+  };
+  function wxCity(cityKey) { return WEATHER_ALIAS[cityKey] || cityKey; }
+  try {
+    const raw = localStorage.getItem(WEATHER_CACHE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.data) { WEATHER.data = parsed.data; WEATHER.kind = parsed.kind || {}; WEATHER.savedAt = parsed.savedAt || 0; }
+    }
+  } catch (e) { /* ignore */ }
+  function saveWeatherCache() {
+    try {
+      localStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify({
+        data: WEATHER.data, kind: WEATHER.kind, savedAt: Date.now(),
+      }));
+    } catch (e) { /* ignore */ }
+  }
+
+  // WMO weather code → { emoji, label }
+  function wxIcon(code) {
+    if (code == null) return { emoji: "", label: "" };
+    if (code === 0) return { emoji: "☀️", label: "Clear" };
+    if (code === 1) return { emoji: "🌤️", label: "Mostly clear" };
+    if (code === 2) return { emoji: "⛅", label: "Partly cloudy" };
+    if (code === 3) return { emoji: "☁️", label: "Cloudy" };
+    if (code === 45 || code === 48) return { emoji: "🌫️", label: "Fog" };
+    if (code >= 51 && code <= 57) return { emoji: "🌦️", label: "Drizzle" };
+    if (code >= 61 && code <= 65) return { emoji: "🌧️", label: "Rain" };
+    if (code === 66 || code === 67) return { emoji: "🌧️", label: "Freezing rain" };
+    if (code >= 71 && code <= 77) return { emoji: "❄️", label: "Snow" };
+    if (code >= 80 && code <= 82) return { emoji: "🌦️", label: "Showers" };
+    if (code === 85 || code === 86) return { emoji: "🌨️", label: "Snow showers" };
+    if (code >= 95 && code <= 99) return { emoji: "⛈️", label: "Storm" };
+    return { emoji: "🌡️", label: "" };
+  }
+
+  function wxKey(cityKey, isoDate) { return wxCity(cityKey) + "|" + isoDate; }
+
+  // Render the little chip. Always returns a span so we can update it in
+  // place when the async fetch resolves.
+  function weatherChip(cityKey, isoDate) {
+    const key = wxKey(cityKey, isoDate);
+    const w = WEATHER.data[key];
+    const kind = WEATHER.kind[key] || "";
+    const attrs = 'class="wx" data-wx-key="' + esc(key) + '"' + (kind ? ' data-wx-kind="' + kind + '"' : '');
+    if (!w) return '<span ' + attrs + ' aria-hidden="true"></span>';
+    const ic = wxIcon(w.code);
+    const t = (w.tmax != null) ? Math.round(w.tmax) + "°" : "";
+    const title = (ic.label || "") + (t ? " · high " + t : "") + (kind === "avg" ? " (avg from last year)" : "");
+    return '<span ' + attrs + ' title="' + esc(title) + '"><span class="wx-ic">' + ic.emoji + '</span>' + (t ? '<span class="wx-t">' + t + '</span>' : '') + '</span>';
+  }
+
+  // Sunrise/sunset row (shown on the expanded day). Refreshed in place.
+  function sunTimes(cityKey, isoDate) {
+    const key = wxKey(cityKey, isoDate);
+    const w = WEATHER.data[key];
+    const attrs = 'class="sun-times" data-sun-key="' + esc(key) + '"';
+    if (!w || (!w.sunrise && !w.sunset)) return '<div ' + attrs + ' hidden></div>';
+    return '<div ' + attrs + '>' + sunTimesInner(w) + '</div>';
+  }
+  function sunTimesInner(w) {
+    const rise = w.sunrise ? '<span class="sun-item">🌅 <span>' + esc(w.sunrise) + '</span></span>' : "";
+    const set = w.sunset ? '<span class="sun-item">🌇 <span>' + esc(w.sunset) + '</span></span>' : "";
+    return rise + set;
+  }
+
+  // After WEATHER.data updates, refresh any chips currently in the DOM
+  // without re-rendering the whole card (keeps flip / open state).
+  function refreshWeatherChips() {
+    const chips = document.querySelectorAll('.wx[data-wx-key]');
+    chips.forEach(function (el) {
+      const key = el.getAttribute("data-wx-key");
+      const w = WEATHER.data[key];
+      if (!w) return;
+      const kind = WEATHER.kind[key] || "";
+      const ic = wxIcon(w.code);
+      const t = (w.tmax != null) ? Math.round(w.tmax) + "°" : "";
+      const title = (ic.label || "") + (t ? " · high " + t : "") + (kind === "avg" ? " (avg from last year)" : "");
+      el.setAttribute("title", title);
+      if (kind) el.setAttribute("data-wx-kind", kind);
+      el.innerHTML = '<span class="wx-ic">' + ic.emoji + '</span>' + (t ? '<span class="wx-t">' + t + '</span>' : '');
+    });
+    document.querySelectorAll('.sun-times[data-sun-key]').forEach(function (el) {
+      const w = WEATHER.data[el.getAttribute("data-sun-key")];
+      if (!w || (!w.sunrise && !w.sunset)) return;
+      el.hidden = false;
+      el.innerHTML = sunTimesInner(w);
+    });
+    updateTodayBanner();
+  }
+
+  function fetchWeatherAll() {
+    // Build one request per city covering all its trip dates.
+    const byCity = {};
+    DATA.days.forEach(function (d) {
+      const ck = wxCity(d.city);
+      if (!byCity[ck]) byCity[ck] = [];
+      byCity[ck].push(d.date);
+    });
+    const now = Date.now();
+    const fresh = WEATHER.savedAt && (now - WEATHER.savedAt) < WEATHER.ttl;
+
+    Object.keys(byCity).forEach(function (cityKey) {
+      const city = DATA.cities[cityKey];
+      if (!city || city.lat == null) return;
+      const dates = byCity[cityKey].sort();
+      // Skip if every trip date for this city is already cached (& cache is fresh).
+      const allCached = fresh && dates.every(function (d) { return WEATHER.data[wxKey(cityKey, d)]; });
+      if (allCached) return;
+      fetchWeatherForCity(cityKey, dates).catch(function () { /* silent */ });
+    });
+  }
+
+  async function fetchWeatherForCity(cityKey, tripDates) {
+    const city = DATA.cities[cityKey];
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const horizon = new Date(today); horizon.setDate(horizon.getDate() + 15);
+
+    const forecastDates = [];
+    const archiveDates = [];
+    tripDates.forEach(function (iso) {
+      const d = new Date(iso + "T00:00:00");
+      if (d >= today && d <= horizon) forecastDates.push(iso);
+      else archiveDates.push(iso);
+    });
+
+    if (forecastDates.length) {
+      const start = forecastDates[0], end = forecastDates[forecastDates.length - 1];
+      const url = "https://api.open-meteo.com/v1/forecast" +
+        "?latitude=" + city.lat + "&longitude=" + city.lon +
+        "&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset" +
+        "&timezone=auto&start_date=" + start + "&end_date=" + end;
+      try {
+        const r = await fetch(url); if (r.ok) ingestOpenMeteo(cityKey, await r.json(), "forecast", null);
+      } catch (e) { /* silent */ }
+    }
+
+    if (archiveDates.length) {
+      // Look up SAME dates one year earlier from the archive.
+      // Use pure string arithmetic — parsing via Date() then toISOString()
+      // shifts by the browser's TZ offset and chops days off the range.
+      const shifted = archiveDates.map(function (iso) {
+        return shiftIsoYears(iso, -1);
+      }).sort();
+      const start = shifted[0], end = shifted[shifted.length - 1];
+      const url = "https://archive-api.open-meteo.com/v1/archive" +
+        "?latitude=" + city.lat + "&longitude=" + city.lon +
+        "&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset" +
+        "&timezone=auto&start_date=" + start + "&end_date=" + end;
+      try {
+        const r = await fetch(url);
+        if (r.ok) ingestOpenMeteo(cityKey, await r.json(), "avg", 1 /* year offset */);
+      } catch (e) { /* silent */ }
+    }
+    saveWeatherCache();
+    refreshWeatherChips();
+  }
+
+  // Add N years to an ISO "YYYY-MM-DD" string without any timezone conversion.
+  function shiftIsoYears(iso, delta) {
+    const parts = iso.split("-");
+    const y = parseInt(parts[0], 10) + delta;
+    return String(y).padStart(4, "0") + "-" + parts[1] + "-" + parts[2];
+  }
+
+  // yearOffset: if the response dates are N years BEHIND the trip dates
+  // (archive case), add N years back so we key by the trip date.
+  function ingestOpenMeteo(cityKey, json, kind, yearOffset) {
+    if (!json || !json.daily || !json.daily.time) return;
+    const t = json.daily.time;
+    const codes = json.daily.weather_code || [];
+    const tmax = json.daily.temperature_2m_max || [];
+    const tmin = json.daily.temperature_2m_min || [];
+    const sunrise = json.daily.sunrise || [];
+    const sunset = json.daily.sunset || [];
+    for (let i = 0; i < t.length; i++) {
+      let iso = t[i];
+      if (yearOffset) iso = shiftIsoYears(iso, yearOffset);
+      const key = wxKey(cityKey, iso);
+      WEATHER.data[key] = {
+        code: codes[i], tmax: tmax[i], tmin: tmin[i],
+        sunrise: hhmm(sunrise[i]), sunset: hhmm(sunset[i]),
+      };
+      WEATHER.kind[key] = kind;
+    }
+  }
+
+  // "2025-10-06T06:12" -> "06:12"
+  function hhmm(isoDateTime) {
+    if (!isoDateTime || typeof isoDateTime !== "string") return "";
+    const t = isoDateTime.split("T")[1];
+    return t ? t.slice(0, 5) : "";
+  }
+
+  /* =====================================================================
+     CURRENCY (open.er-api.com — free, no API key)
+     Shows GBP → CNY / JPY in the masthead. Cached daily in localStorage.
+     ===================================================================== */
+  const FX_CACHE_KEY = "rach-fx-v1";
+  let FX = null;
+  try { const raw = localStorage.getItem(FX_CACHE_KEY); if (raw) FX = JSON.parse(raw); } catch (e) { /* ignore */ }
+
+  function renderFxChip() {
+    const el = document.getElementById("fxChip");
+    if (!el) return;
+    if (!FX || !FX.rates) { el.hidden = true; return; }
+    const cny = FX.rates.CNY, jpy = FX.rates.JPY;
+    if (cny == null && jpy == null) { el.hidden = true; return; }
+    const parts = [];
+    if (cny != null) parts.push('<span class="fx-item">🇨🇳 ¥' + cny.toFixed(1) + '</span>');
+    if (jpy != null) parts.push('<span class="fx-item">🇯🇵 ¥' + Math.round(jpy) + '</span>');
+    el.hidden = false;
+    el.title = "£1 = " + (cny != null ? cny.toFixed(2) + " CNY" : "") + (cny != null && jpy != null ? " · " : "") + (jpy != null ? Math.round(jpy) + " JPY" : "") + (FX.date ? " (rates " + FX.date + ")" : "");
+    el.innerHTML = '<span class="fx-lead">£1</span>' + parts.join("");
+  }
+
+  function fetchCurrency() {
+    // Only refetch once a day.
+    const today = localISO(new Date());
+    if (FX && FX.fetchedOn === today && FX.rates) { renderFxChip(); return; }
+    fetch("https://open.er-api.com/v6/latest/GBP")
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (!j || !j.rates) return;
+        FX = {
+          fetchedOn: today,
+          date: (j.time_last_update_utc || "").slice(5, 16),
+          rates: { CNY: j.rates.CNY, JPY: j.rates.JPY },
+        };
+        try { localStorage.setItem(FX_CACHE_KEY, JSON.stringify(FX)); } catch (e) { /* ignore */ }
+        renderFxChip();
+      })
+      .catch(function () { /* keep any cached value */ });
+  }
+
+  /* =====================================================================
+     TODAY banner — an always-visible strip at the top of the Days tab.
+     Before the trip: countdown. During: today's city + weather + focus
+     (tap to jump to the card). After: a friendly "welcome home".
+     ===================================================================== */
+  function daysBetween(isoA, isoB) {
+    const a = new Date(isoA + "T00:00:00"), b = new Date(isoB + "T00:00:00");
+    return Math.round((b - a) / 86400000);
+  }
+
+  function todayBannerHTML() {
+    const days = effectiveDays();
+    if (!days.length) return "";
+    const todayISO = localISO(new Date());
+    const first = days[0].date, last = days[days.length - 1].date;
+    const todayDay = days.find(function (d) { return d.date === todayISO; });
+
+    if (todayDay) {
+      const city = DATA.cities[todayDay.city] || {};
+      return '<button class="today-banner is-live" data-today-jump="' + esc(todayDay.id) + '">' +
+        '<span class="today-tag">TODAY</span>' +
+        '<span class="today-main">' +
+          '<span class="today-line">' + esc(fmtDate(todayDay.date).dow) + ' · ' + esc(city.name || "") + ' ' + weatherChip(todayDay.city, todayDay.date) + '</span>' +
+          '<span class="today-focus">' + esc(todayDay.focus || "") + '</span>' +
+        '</span>' +
+        '<span class="today-go">' + ICON.chevronRight + '</span>' +
+      '</button>';
+    }
+    if (todayISO < first) {
+      const n = daysBetween(todayISO, first);
+      const c = DATA.cities[days[0].city] || {};
+      const when = n === 0 ? "today" : n === 1 ? "tomorrow" : "in " + n + " days";
+      return '<div class="today-banner is-before">' +
+        '<span class="today-tag">✈️</span>' +
+        '<span class="today-main">' +
+          '<span class="today-line">Trip starts ' + when + '</span>' +
+          '<span class="today-focus">' + esc(fmtDate(first).dow + " " + fmtDate(first).big) + ' · ' + esc(c.name || "") + '</span>' +
+        '</span>' +
+      '</div>';
+    }
+    if (todayISO > last) {
+      return '<div class="today-banner is-after">' +
+        '<span class="today-tag">🏠</span>' +
+        '<span class="today-main"><span class="today-line">Welcome home</span>' +
+        '<span class="today-focus">Hope it was unforgettable.</span></span>' +
+      '</div>';
+    }
+    return "";
+  }
+
+  // Refresh just the banner's contents in place (called when weather lands).
+  function updateTodayBanner() {
+    const host = document.getElementById("todayBanner");
+    if (!host) return;
+    host.innerHTML = todayBannerHTML();
+  }
+
   /* ---------- SVG icon helpers ---------- */
   const ICON = {
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
     chevron: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
+    chevronRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
     plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
     flip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.5 15a9 9 0 1 0 2.1-9.4L1 10"/></svg>',
     plane: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0 0 11.5 2 1.5 1.5 0 0 0 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>',
     train: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="13" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m18 22-2-3"/><circle cx="8.5" cy="13.5" r=".5" fill="currentColor"/><circle cx="15.5" cy="13.5" r=".5" fill="currentColor"/></svg>',
     camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
     pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+    directions: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>',
     bed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v-.5a2.5 2.5 0 0 1 2.5-2.5h3A2.5 2.5 0 0 1 14 7.5V8"/></svg>',
     walk: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="1"/><path d="m9 20 2-5 2 2v3"/><path d="m6 12 3-3 2 2 2-1 3 3"/><path d="M11 9v3"/></svg>',
     clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>',
@@ -85,6 +400,23 @@
     const day = d.getDate();
     const mon = d.toLocaleDateString("en-GB", { month: "short" }).toUpperCase();
     return { dow, big: day + " " + mon };
+  }
+
+  /* Build a universal maps search URL (opens Google Maps / native maps app
+     on mobile, browser on desktop). */
+  function mapsUrl(query) {
+    return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(query);
+  }
+  /* Open directions for a place: prefer a full address, else name + city. */
+  function openMaps(name, address, cityName) {
+    const a = (address || "").trim();
+    const parts = [];
+    if (a) parts.push(a);
+    else if (name) parts.push(name.trim());
+    if (cityName && (!a || a.toLowerCase().indexOf(cityName.toLowerCase()) === -1)) parts.push(cityName);
+    const q = parts.filter(Boolean).join(", ");
+    if (!q) return;
+    window.open(mapsUrl(q), "_blank", "noopener");
   }
 
   /* Merge a seed place with any saved override. */
@@ -131,8 +463,9 @@
      RENDER: a single to-do place row
      travelInfo (itinerary stops only): { first: bool } → shows a "X min from
      hotel / away" chip and adds a Travel-time field to the editor.
+     cityName (day places only): enables a "Directions" button → maps.
      ===================================================================== */
-  function renderPlace(p, containerKey, travelInfo) {
+  function renderPlace(p, containerKey, travelInfo, cityName) {
     const d = p.details || {};
     const hours = formatHours(d.open, d.close);
     const isItin = !!travelInfo;
@@ -141,8 +474,12 @@
       ? '<div class="travel-chip">' + ICON.walk + ' ' + esc(travel) + ' min ' + travelLabel(travelInfo.first, d.travelFrom) + '</div>'
       : "";
     const hoursChip = hours ? '<div class="todo-meta">' + esc(hours) + '</div>' : "";
+    const mapsBtn = cityName
+      ? '<button class="link-maps" data-act="maps">' + ICON.directions + ' Directions</button>'
+      : "";
     return (
       '<div class="todo' + (p.done ? " done" : "") + '" data-place="' + p.id + '" data-container="' + esc(containerKey) + '"' +
+        (cityName ? ' data-city="' + esc(cityName) + '"' : '') +
         (isItin ? ' data-itin="1" data-first="' + (travelInfo.first ? "1" : "0") + '"' : '') + '>' +
         '<div class="todo-row">' +
           '<button class="check" data-act="toggle" aria-label="Toggle done">' + ICON.check + '</button>' +
@@ -160,6 +497,7 @@
             field("Notes", "note", d.note, "Anything to remember…", true, true) +
           '</div>' +
           '<div class="detail-actions">' +
+            mapsBtn +
             '<button class="link-danger" data-act="delete">Remove</button>' +
           '</div>' +
         '</div>' +
@@ -183,11 +521,12 @@
 
   function renderSlot(day, slotKey, label, dotClass, seq) {
     const containerKey = day.id + ":" + slotKey;
+    const cityName = (DATA.cities[day.city] || {}).name || "";
     const list = placesFor(day[slotKey], containerKey);
     const rows = list.map(function (p) {
       const info = { first: seq.n === 0 };
       seq.n++;
-      return renderPlace(p, containerKey, info);
+      return renderPlace(p, containerKey, info, cityName);
     }).join("");
     return (
       '<div class="slot">' +
@@ -200,9 +539,10 @@
 
   function renderBackList(day, slotKey, label) {
     const containerKey = day.id + ":" + slotKey;
+    const cityName = (DATA.cities[day.city] || {}).name || "";
     const list = placesFor(day[slotKey], containerKey);
     const rows = list.length
-      ? list.map(function (p) { return renderPlace(p, containerKey); }).join("")
+      ? list.map(function (p) { return renderPlace(p, containerKey, null, cityName); }).join("")
       : '<p class="empty">Nothing yet — add a spot.</p>';
     return (
       '<div class="slot">' +
@@ -268,6 +608,9 @@
             '<div class="field"><label>Check-in</label><input data-hotelfield="checkIn" value="' + esc(h.checkIn) + '" placeholder="e.g. 15:00"></div>' +
             '<div class="field"><label>Check-out</label><input data-hotelfield="checkOut" value="' + esc(h.checkOut) + '" placeholder="e.g. 12:00"></div>' +
           '</div>' +
+          '<div class="detail-actions">' +
+            '<button class="link-maps" data-act="hotelmaps">' + ICON.directions + ' Directions</button>' +
+          '</div>' +
         '</div>' +
       '</div>'
     );
@@ -286,7 +629,7 @@
     // first stop and "away" (from the previous stop) for the rest.
     const seq = { n: 0 };
 
-    const canReorder = !day._single;
+    const canReorder = !day._single && !day._pinned;
     const reorderHandle = canReorder
       ? '<span class="day-handle" data-act="draghandle" title="Drag to reorder within this leg">' + ICON.grip + '</span>'
       : '';
@@ -302,7 +645,7 @@
         '<div class="day-photo" style="' + bg + '" data-act="flip">' +
           '<div class="stub-code">' + esc(city.code) + '</div>' +
           '<div class="day-caption">' +
-            '<div class="dow">' + dt.dow + ' · ' + esc(city.name) + '</div>' +
+            '<div class="dow">' + dt.dow + ' · ' + esc(city.name) + ' ' + weatherChip(day.city, day.date) + '</div>' +
             '<div class="date">' + dt.big + '</div>' +
           '</div>' +
         '</div>' +
@@ -312,7 +655,7 @@
             reorderHandle +
             '<button class="day-focus" data-act="daytoggle">' +
               '<span class="day-meta">' +
-                '<span class="day-date-mini">' + dt.dow + ' · ' + dt.big + '</span>' +
+                '<span class="day-date-mini">' + weatherChip(day.city, day.date) + ' ' + dt.dow + ' · ' + dt.big + '</span>' +
                 '<h3>' + esc(day.focus) + '</h3>' +
               '</span>' +
               '<span class="city-tag">' + theme.emoji + ' ' + esc(city.code) + '</span>' +
@@ -322,6 +665,7 @@
           '</div>' +
           '<div class="day-collapse">' +
             '<div class="flip-hint">Tap the photo to flip for food &amp; cafés →</div>' +
+            sunTimes(day.city, day.date) +
             renderHotelBar(day) +
             renderSlot(day, "morning", "Morning", "morning", seq) +
             renderSlot(day, "afternoon", "Afternoon", "afternoon", seq) +
@@ -371,9 +715,20 @@
     return "c:" + (c ? c.country : day.city);
   }
 
+  // Dates whose PLAN is pinned to that specific date and can't be shuffled
+  // (travel/transfer days — flights & the shinkansen mean these are fixed).
+  const PINNED_DATES = {
+    "2026-09-28": true, // LHR → Shanghai
+    "2026-10-05": true, // Shanghai → Osaka
+    "2026-10-10": true, // Shinkansen Osaka → Tokyo
+    "2026-10-17": true, // Tokyo → Beijing
+    "2026-10-19": true, // Beijing → Shanghai (train)
+  };
+
   // Returns the trip days with any user reordering applied. Each day keeps its
   // own id + plan, but its DATE is reassigned from the leg's fixed date slots
-  // in the chosen order. Also annotates _leg / _first / _last / _single.
+  // in the chosen order. Pinned days stay on their original date and are
+  // excluded from reordering. Annotates _leg / _first / _last / _single / _pinned.
   function effectiveDays() {
     const groups = {};
     const keyOrder = [];
@@ -385,21 +740,35 @@
     const out = [];
     keyOrder.forEach(function (k) {
       const members = groups[k];
-      const ids = members.map(function (d) { return d.id; });
-      const slots = members.map(function (d) { return d.date; }).sort();
-      let order = (state.order && state.order[k]) ? state.order[k].slice() : null;
-      const valid = order && order.length === ids.length &&
-        order.every(function (id) { return ids.indexOf(id) !== -1; });
-      if (!valid) order = ids.slice();
+      const pinnedMembers = members.filter(function (d) { return PINNED_DATES[d.date]; });
+      const movableMembers = members.filter(function (d) { return !PINNED_DATES[d.date]; });
+      const movableSlots = movableMembers.map(function (d) { return d.date; }).sort();
+      const movableIds = movableMembers.map(function (d) { return d.id; });
+
+      let order = (state.order && state.order[k]) ? state.order[k].slice()
+        .filter(function (id) { return movableIds.indexOf(id) !== -1; }) : null;
+      if (!order || order.length !== movableIds.length) order = movableIds.slice();
+      // Safety: append any movable ids missing from the stored order.
+      movableIds.forEach(function (id) { if (order.indexOf(id) === -1) order.push(id); });
+
       const byId = {};
       members.forEach(function (d) { byId[d.id] = d; });
+
+      // Pinned plans keep their date exactly.
+      pinnedMembers.forEach(function (d) {
+        out.push(Object.assign({}, d, {
+          _leg: k, _pinned: true, _first: false, _last: false, _single: false,
+        }));
+      });
+      // Movable plans get shuffled among the movable date slots.
       order.forEach(function (id, i) {
         out.push(Object.assign({}, byId[id], {
-          date: slots[i],
+          date: movableSlots[i],
           _leg: k,
           _first: i === 0,
           _last: i === order.length - 1,
-          _single: order.length === 1,
+          _single: order.length <= 1,
+          _pinned: false,
         }));
       });
     });
@@ -408,11 +777,12 @@
   }
 
   // Move a day one slot earlier (-1) or later (+1) within its leg.
+  // Only movable (non-pinned) days participate.
   function moveDay(dayId, dir) {
     const eff = effectiveDays();
     const day = eff.find(function (d) { return d.id === dayId; });
-    if (!day) return;
-    const members = eff.filter(function (d) { return d._leg === day._leg; });
+    if (!day || day._pinned) return;
+    const members = eff.filter(function (d) { return d._leg === day._leg && !d._pinned; });
     const idx = members.findIndex(function (d) { return d.id === dayId; });
     const target = idx + dir;
     if (target < 0 || target >= members.length) return;
@@ -424,17 +794,19 @@
     flashDay(dayId);
   }
 
-  // Drop the dragged day in front of the target day (same leg only).
+  // Drop the dragged day in front of the target day (same leg only, no pinned).
   function reorderDayTo(dragId, dropId) {
     if (!dragId || !dropId || dragId === dropId) return;
     const eff = effectiveDays();
     const a = eff.find(function (d) { return d.id === dragId; });
     const b = eff.find(function (d) { return d.id === dropId; });
     if (!a || !b || a._leg !== b._leg) return;
-    let order = eff.filter(function (d) { return d._leg === a._leg; })
+    if (a._pinned || b._pinned) return;
+    let order = eff.filter(function (d) { return d._leg === a._leg && !d._pinned; })
       .map(function (d) { return d.id; })
       .filter(function (id) { return id !== dragId; });
     const to = order.indexOf(dropId);
+    if (to < 0) return;
     order.splice(to, 0, dragId);
     state.order[a._leg] = order;
     saveState();
@@ -470,13 +842,39 @@
         '<button class="view-btn' + (view === "calendar" ? " active" : "") + '" data-view="calendar">' + ICON.calendar + ' Calendar</button>' +
       '</div>';
     const html =
+      '<div id="todayBanner">' + todayBannerHTML() + '</div>' +
       toolbar +
       '<div class="days-list"' + (view === "calendar" ? " hidden" : "") + '>' +
-        '<p class="days-reorder-hint">Reshuffle days within a leg — drag the ⣿ handle (hold &amp; move) or tap ▲▼. Dates stay fixed; your plans move with you.</p>' +
+        '<p class="days-reorder-hint">Want to move some days around? — drag the ⣿ handle (hold &amp; move) or tap ▲▼. Dates stay fixed; your plans move with you.</p>' +
         listHtml +
       '</div>' +
       '<div class="days-calendar"' + (view === "list" ? " hidden" : "") + '>' + renderCalendar() + '</div>';
     document.getElementById("panel-days").innerHTML = html;
+  }
+
+  /* Switch to the Days list, expand a given day card and scroll to it. */
+  function openDayCard(id, smooth) {
+    if (state.view !== "list") { state.view = "list"; saveState(); }
+    // Make sure the Days tab is showing.
+    const daysTab = document.querySelector('.tab[data-target="days"]');
+    if (daysTab && !daysTab.classList.contains("active")) daysTab.click();
+    renderItinerary();
+    requestAnimationFrame(function () {
+      const el = document.querySelector('.day[data-day="' + id + '"]');
+      if (!el) return;
+      el.classList.remove("collapsed");
+      el.classList.add("just-opened");
+      el.scrollIntoView({ behavior: smooth === false ? "auto" : "smooth", block: "start" });
+      setTimeout(function () { el.classList.remove("just-opened"); }, 1600);
+    });
+  }
+
+  /* On load, if today falls within the trip, jump to today's card. */
+  function focusToday() {
+    const days = effectiveDays();
+    const todayISO = localISO(new Date());
+    const todayDay = days.find(function (d) { return d.date === todayISO; });
+    if (todayDay) openDayCard(todayDay.id, false);
   }
 
   /* Local-time ISO (yyyy-mm-dd) so "today" matches the trip dates correctly. */
@@ -757,6 +1155,11 @@
       });
       return;
     }
+    const jumpEl = e.target.closest("[data-today-jump]");
+    if (jumpEl) {
+      openDayCard(jumpEl.getAttribute("data-today-jump"));
+      return;
+    }
     const actEl = e.target.closest("[data-act]");
     if (!actEl) {
       // Tap anywhere on the Eat & Drink (back) side — except text inputs and
@@ -819,6 +1222,26 @@
     if (act === "delete") {
       const todo = actEl.closest(".todo");
       deletePlace(todo);
+      return;
+    }
+    if (act === "maps") {
+      const todo = actEl.closest(".todo");
+      if (todo) {
+        const name = (todo.querySelector(".todo-name") || {}).textContent || "";
+        const addrEl = todo.querySelector('[data-field="address"]');
+        const address = addrEl ? addrEl.value : "";
+        openMaps(name, address, todo.getAttribute("data-city") || "");
+      }
+      return;
+    }
+    if (act === "hotelmaps") {
+      const hotel = actEl.closest(".hotel");
+      if (hotel) {
+        const name = (hotel.querySelector('[data-hotelfield="name"]') || {}).value || "";
+        const area = (hotel.querySelector('[data-hotelfield="area"]') || {}).value || "";
+        const address = (hotel.querySelector('[data-hotelfield="address"]') || {}).value || "";
+        openMaps(name, address || area, "");
+      }
       return;
     }
     if (act === "photo") {
@@ -1023,16 +1446,57 @@
   }
 
   function addPlace(containerKey) {
-    const name = window.prompt("Add a place / item:");
-    if (!name || !name.trim()) return;
-    if (!state.added[containerKey]) state.added[containerKey] = [];
-    state.added[containerKey].push({
-      id: genId(), name: name.trim(), done: false,
-      details: { open: "", close: "", address: "", note: "" },
+    // Find the "Add" button that was clicked and show an inline editor next to it.
+    // (window.prompt() is blocked in some mobile & sandboxed browsers, so we do it inline.)
+    const btn = document.querySelector('button.add-place[data-act="add"][data-container="' + cssEscape(containerKey) + '"]');
+    if (!btn) return;
+
+    // If an editor is already open, just focus its input.
+    const existing = btn.parentNode.querySelector('.add-editor[data-container="' + cssEscape(containerKey) + '"]');
+    if (existing) { const inp = existing.querySelector("input"); if (inp) inp.focus(); return; }
+
+    const wrap = document.createElement("div");
+    wrap.className = "add-editor";
+    wrap.setAttribute("data-container", containerKey);
+    wrap.innerHTML =
+      '<input type="text" class="add-editor-input" placeholder="Add an item… (press Enter)" autocomplete="off" />' +
+      '<button type="button" class="add-editor-save">Add</button>' +
+      '<button type="button" class="add-editor-cancel" aria-label="Cancel">×</button>';
+    btn.parentNode.insertBefore(wrap, btn);
+
+    const input = wrap.querySelector(".add-editor-input");
+    const saveBtn = wrap.querySelector(".add-editor-save");
+    const cancelBtn = wrap.querySelector(".add-editor-cancel");
+
+    function commit() {
+      const name = (input.value || "").trim();
+      if (!name) { close(); return; }
+      if (!state.added[containerKey]) state.added[containerKey] = [];
+      state.added[containerKey].push({
+        id: genId(), name: name, done: false,
+        details: { open: "", close: "", address: "", note: "" },
+      });
+      saveState();
+      rerenderForContainer(containerKey);
+      updateProgress();
+      // Re-open a fresh editor so it's easy to add several in a row.
+      addPlace(containerKey);
+    }
+    function close() { wrap.remove(); }
+
+    saveBtn.addEventListener("click", commit);
+    cancelBtn.addEventListener("click", close);
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); commit(); }
+      else if (e.key === "Escape") { e.preventDefault(); close(); }
     });
-    saveState();
-    rerenderForContainer(containerKey);
-    updateProgress();
+    setTimeout(function () { input.focus(); }, 0);
+  }
+
+  // Tiny CSS.escape polyfill for containerKey values (they contain ":" etc.).
+  function cssEscape(s) {
+    if (window.CSS && typeof window.CSS.escape === "function") return window.CSS.escape(s);
+    return String(s).replace(/([\0-\x1f\x7f]|[!"#$%&'()*+,./:;<=>?@\[\\\]^`{|}~])/g, "\\$1");
   }
 
   function deletePlace(todo) {
@@ -1151,6 +1615,14 @@
     applyTheme();
   }
 
+  /* ---------- Service worker (PWA install + offline) ---------- */
+  function registerServiceWorker() {
+    if (!("serviceWorker" in navigator)) return;
+    // Only register over http(s) — not file://.
+    if (location.protocol !== "http:" && location.protocol !== "https:") return;
+    navigator.serviceWorker.register("sw.js").catch(function () { /* silent */ });
+  }
+
   /* ---------- Boot ---------- */
   function renderAll() {
     renderMasthead();
@@ -1175,5 +1647,10 @@
     document.getElementById("themeToggle").addEventListener("click", toggleTheme);
     initTabs();
     renderAll();
+    renderFxChip();
+    fetchCurrency();
+    fetchWeatherAll();
+    focusToday();
+    registerServiceWorker();
   });
 })();

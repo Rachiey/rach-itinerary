@@ -108,7 +108,9 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 12px);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 img {
@@ -155,7 +157,10 @@ select {
   background: var(--paper-2);
   border: 1px solid var(--line-strong);
   box-shadow: var(--shadow-soft);
-  transition: transform 0.15s ease, color 0.2s ease, background-color 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
   z-index: 3;
 }
 .theme-toggle:hover {
@@ -201,6 +206,28 @@ select {
   font-size: 13px;
   color: var(--ink-faint);
 }
+/* Currency chip in the masthead */
+.masthead .fx {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+}
+.masthead .fx[hidden] { display: none; }
+.masthead .fx .fx-lead {
+  font-weight: 600;
+  color: var(--ink);
+}
+.masthead .fx .fx-item { white-space: nowrap; }
+
 .masthead .progress {
   margin: 16px auto 0;
   max-width: 320px;
@@ -370,7 +397,9 @@ select {
   border-color: transparent;
   background: var(--cc);
   box-shadow: var(--shadow);
-  transition: transform 0.12s, box-shadow 0.12s;
+  transition:
+    transform 0.12s,
+    box-shadow 0.12s;
 }
 .cal-cell.trip:hover {
   transform: translateY(-2px);
@@ -411,8 +440,17 @@ select {
   border-style: solid;
 }
 @keyframes today-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(198, 154, 76, 0.55), var(--shadow); }
-  50% { box-shadow: 0 0 16px 4px rgba(198, 154, 76, 0.75), var(--shadow); }
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(198, 154, 76, 0.55),
+      var(--shadow);
+  }
+  50% {
+    box-shadow:
+      0 0 16px 4px rgba(198, 154, 76, 0.75),
+      var(--shadow);
+  }
 }
 .cal-legend {
   display: flex;
@@ -445,8 +483,14 @@ select {
   animation: day-flash 1.6s ease-out;
 }
 @keyframes day-flash {
-  0% { box-shadow: 0 0 0 3px var(--gold), var(--shadow); }
-  100% { box-shadow: var(--shadow); }
+  0% {
+    box-shadow:
+      0 0 0 3px var(--gold),
+      var(--shadow);
+  }
+  100% {
+    box-shadow: var(--shadow);
+  }
 }
 
 /* =====================================================================
@@ -534,6 +578,46 @@ select {
   font-size: 26px;
   font-weight: 600;
   line-height: 1;
+}
+
+/* Weather chip — inline next to the city name / date */
+.wx {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  margin-left: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  line-height: 1.4;
+}
+.wx:empty { display: none; }
+.wx .wx-ic { font-size: 13px; line-height: 1; }
+.wx .wx-t { font-weight: 600; letter-spacing: 0; }
+
+/* Same chip inside the expanded day-head — different background */
+.day-head .wx {
+  background: var(--paper-2);
+  border-color: var(--line);
+  color: var(--ink);
+  margin-left: 0;
+  margin-right: 6px;
+  padding: 1px 7px;
+  font-size: 10.5px;
+}
+.day-head .wx .wx-ic { font-size: 12px; }
+
+/* Subtle italic hint that historical avg is being shown */
+.wx[data-wx-kind="avg"] .wx-t::after {
+  content: "";
 }
 
 /* Perforation between photo/header and body */
@@ -698,7 +782,10 @@ select {
   background: var(--paper-2);
   border: 1px solid var(--line);
   border-radius: 6px;
-  transition: color 0.12s, border-color 0.12s, background-color 0.12s;
+  transition:
+    color 0.12s,
+    border-color 0.12s,
+    background-color 0.12s;
 }
 .move-btn svg {
   width: 14px;
@@ -740,6 +827,96 @@ body.is-dragging-day {
   font-size: 11px;
   color: var(--ink-faint);
   margin-bottom: 12px;
+}
+
+/* Sunrise / sunset row on the expanded day */
+.sun-times {
+  display: flex;
+  gap: 14px;
+  margin: 0 0 12px;
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  letter-spacing: 0.03em;
+}
+.sun-times[hidden] { display: none; }
+.sun-times .sun-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Today banner at the top of the Days tab */
+.today-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  border-radius: 16px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper-2);
+}
+.today-banner.is-live {
+  background: linear-gradient(135deg, var(--jade-soft), var(--paper-2));
+  border-color: var(--jade);
+  cursor: pointer;
+  transition: 0.15s;
+}
+.today-banner.is-live:hover { filter: brightness(1.02); transform: translateY(-1px); }
+.today-tag {
+  flex-shrink: 0;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #fff;
+  background: var(--jade);
+  padding: 5px 9px;
+  border-radius: 8px;
+}
+.today-banner.is-before .today-tag,
+.today-banner.is-after .today-tag {
+  background: transparent;
+  font-size: 20px;
+  padding: 0;
+}
+.today-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+.today-line {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.today-focus {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.today-go {
+  flex-shrink: 0;
+  color: var(--jade);
+}
+.today-go svg { width: 20px; height: 20px; }
+/* The weather chip sits on a light background in the banner */
+.today-line .wx {
+  background: var(--paper);
+  border-color: var(--line);
+  color: var(--ink);
 }
 
 /* Hotel bar */
@@ -1060,8 +1237,13 @@ body.is-dragging-day {
 }
 .detail-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
   margin-top: 8px;
+}
+.detail-actions:not(:has(.link-maps)) {
+  justify-content: flex-end;
 }
 .link-danger {
   font-family: var(--f-mono);
@@ -1069,6 +1251,21 @@ body.is-dragging-day {
   color: var(--seal);
   letter-spacing: 0.05em;
 }
+.link-maps {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--jade);
+  padding: 6px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--paper);
+}
+.link-maps svg { width: 13px; height: 13px; }
+.link-maps:hover { border-color: var(--jade); background: var(--paper-2); }
 
 /* Add place button */
 .add-place {
@@ -1092,6 +1289,64 @@ body.is-dragging-day {
 .add-place svg {
   width: 16px;
   height: 16px;
+}
+
+/* Inline "add item" editor (replaces window.prompt) */
+.add-editor {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  padding: 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--paper-2);
+}
+.add-editor-input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+}
+.add-editor-input:focus {
+  outline: none;
+  border-color: var(--jade);
+}
+.add-editor-save,
+.add-editor-cancel {
+  padding: 8px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.add-editor-save {
+  background: var(--jade);
+  color: #fff;
+  border-color: var(--jade);
+  font-weight: 600;
+}
+.add-editor-save:hover {
+  filter: brightness(1.05);
+}
+.add-editor-cancel {
+  width: 34px;
+  padding: 0;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ink-soft);
+}
+.add-editor-cancel:hover {
+  color: var(--seal);
+  border-color: var(--seal);
 }
 
 /* Back-of-card (restaurants & cafes) */
@@ -1317,7 +1572,10 @@ body.is-dragging-day {
   background: var(--paper-2);
   padding: 5px 12px;
   border-radius: 999px;
-  transition: color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
 }
 .tip-link::after {
   content: "↗";

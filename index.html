@@ -13,6 +13,17 @@
     />
     <title>China · Japan — Itinerary</title>
 
+    <!-- PWA: installable + offline -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="CN·JP Trip" />
+
     <!-- Fonts: Fraunces (display), Inter (body), IBM Plex Mono (technical) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,7 +32,7 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="css/style.css?v=6" />
+    <link rel="stylesheet" href="css/style.css?v=7" />
   </head>
   <body>
     <div class="app">
@@ -37,6 +48,7 @@
         <h1 id="tripTitle">China · Japan</h1>
         <div class="subtitle" id="tripSub">Autumn 2026</div>
         <div class="daterange" id="tripRange"></div>
+        <div class="fx" id="fxChip" hidden></div>
         <div class="progress">
           <div class="progress-track">
             <div class="progress-fill" id="progressFill"></div>
@@ -80,7 +92,7 @@
       </div>
     </nav>
 
-    <script src="js/data.js?v=6"></script>
-    <script src="js/app.js?v=6"></script>
+    <script src="js/data.js?v=7"></script>
+    <script src="js/app.js?v=7"></script>
   </body>
 </html>
