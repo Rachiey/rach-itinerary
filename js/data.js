@@ -52,7 +52,7 @@ const DAYS = [
   {
     id: "day-01", date: "2026-09-28", city: "shanghai",
     focus: "Travel day · LHR → Shanghai",
-    photo: "../assets/photos/shanghai.png",
+    photo: "assets/photos/shanghai.png",
     morning: [
       place("d1-m1", "Fly London Heathrow (LHR) → Shanghai (PVG)", { open: "12:05", note: "Departs LHR 12:05pm. Arrives PVG 07:55 next morning." }),
       place("d1-m2", "Grab a local SIM / eSIM + Alipay setup", { note: "Set up Alipay/WeChat Pay before you fly — you'll want it the moment you land." }),
