@@ -210,16 +210,13 @@ const DAYS = [
       place("d8-m1", "Depart 1.15pm Shanghai Pudong (PVG) → Osaka Kansai (KIX)", { note: "Flight time ~2h30. Arrive 4.35pm local time." }),
     ],
     afternoon: [
-      place("d8-a1", "Repack + confirm flight to Osaka (KIX)"),
+      place("d8-a1", "Arrive 4.35pm Osaka Airport, check in Namba stay"),
     ],
     evening: [
-      place("d8-e1", "Early night before travel"),
+      place("d8-e1", "Explore local area"),
     ],
     restaurants: [
-      place("d8-r1", "Comfort dumplings nearby"),
-    ],
-    cafes: [
-      place("d8-c1", "Manner Coffee for the road"),
+      place("d8-r1", "Cocoichi"),
     ],
   },
 
