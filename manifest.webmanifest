@@ -1,0 +1,25 @@
+{
+  "name": "China · Japan — Itinerary",
+  "short_name": "CN·JP Trip",
+  "description": "China & Japan trip itinerary — Autumn 2026",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4ede1",
+  "theme_color": "#b23a34",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

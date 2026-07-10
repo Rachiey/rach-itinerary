@@ -14,15 +14,15 @@
  */
 
 const CITIES = {
-  shanghai: { name: "Shanghai", code: "SHA", country: "China", flag: "🇨🇳" },
-  osaka:    { name: "Osaka",    code: "OSA", country: "Japan", flag: "🇯🇵" },
-  tokyo:    { name: "Tokyo",    code: "TYO", country: "Japan", flag: "🇯🇵" },
-  beijing:  { name: "Beijing",  code: "PEK", country: "China", flag: "🇨🇳" },
-  kyoto:    { name: "Kyoto",    code: "KYO", country: "Japan", flag: "🇯🇵"},
-  yokohama: { name: "Yokohama",  code: "YOK", country: "Japan", flag: "🇯🇵" },
-  suzhou:   { name: "Suzhou",    code: "SZH", country: "China", flag: "🇨🇳" },
-  nara:     { name: "Nara",      code: "NRA", country: "Japan", flag: "🇯🇵" },
-  kamakura: { name: "Kamakura",  code: "KAM", country: "Japan", flag: "🇯🇵" },
+  shanghai: { name: "Shanghai", code: "SHA", country: "China", flag: "🇨🇳", lat: 31.2304, lon: 121.4737 },
+  osaka:    { name: "Osaka",    code: "OSA", country: "Japan", flag: "🇯🇵", lat: 34.6937, lon: 135.5023 },
+  tokyo:    { name: "Tokyo",    code: "TYO", country: "Japan", flag: "🇯🇵", lat: 35.6762, lon: 139.6503 },
+  beijing:  { name: "Beijing",  code: "PEK", country: "China", flag: "🇨🇳", lat: 39.9042, lon: 116.4074 },
+  kyoto:    { name: "Kyoto",    code: "KYO", country: "Japan", flag: "🇯🇵", lat: 35.0116, lon: 135.7681 },
+  yokohama: { name: "Yokohama",  code: "YOK", country: "Japan", flag: "🇯🇵", lat: 35.4437, lon: 139.6380 },
+  suzhou:   { name: "Suzhou",    code: "SZH", country: "China", flag: "🇨🇳", lat: 31.2989, lon: 120.5853 },
+  nara:     { name: "Nara",      code: "NRA", country: "Japan", flag: "🇯🇵", lat: 34.6851, lon: 135.8048 },
+  kamakura: { name: "Kamakura",  code: "KAM", country: "Japan", flag: "🇯🇵", lat: 35.3192, lon: 139.5468 },
 };
 
 /* Small helper so seed places get stable, readable ids. */
@@ -52,7 +52,7 @@ const DAYS = [
   {
     id: "day-01", date: "2026-09-28", city: "shanghai",
     focus: "Travel day · LHR → Shanghai",
-    photo: "../assets/photos/shanghai.png",
+    photo: "assets/photos/shanghai.png",
     morning: [
       place("d1-m1", "Fly London Heathrow (LHR) → Shanghai (PVG)", { open: "12:05", note: "Departs LHR 12:05pm. Arrives PVG 07:55 next morning." }),
       place("d1-m2", "Grab a local SIM / eSIM + Alipay setup", { note: "Set up Alipay/WeChat Pay before you fly — you'll want it the moment you land." }),
@@ -73,7 +73,7 @@ const DAYS = [
   {
     id: "day-02", date: "2026-09-29", city: "shanghai",
     focus: "Jing'an Temple & The Bund",
-    photo:  "../assets/photos/shanghai.png",
+    photo:  "assets/photos/shanghai.png",
     morning: [
       place("d2-m1", "Land at Pudong Intl (PVG) 07:55 & transfer in", { note: "Maglev + metro, or a Didi to the hotel." }),
       place("d2-m2", "Jing'an Temple", { open: "07:30", close: "17:00", note: "Golden temple in the heart of the city." }),
@@ -97,7 +97,7 @@ const DAYS = [
   {
     id: "day-03", date: "2026-09-30", city: "shanghai",
     focus: "Wukang Road & Anfu Road",
-    photo:  "../assets/photos/wukang.png",
+    photo:  "assets/photos/wukang.png",
     morning: [
       place("d3-m1", "Wukang Road stroll & French Concession architecture", { note: "Tree-lined streets, historic villas, and boutique shops." }),
     ],
@@ -119,7 +119,7 @@ const DAYS = [
   {
     id: "day-04", date: "2026-10-01", city: "shanghai",
     focus: "Suzhou Day Trip",
-    photo: "../assets/photos/suzhou.png",
+    photo: "assets/photos/suzhou.png",
     morning: [
       place("d4-m1", "Travel to Suzhou via Hongqiao station (~30m)", { note: "Take the high-speed train to Suzhou — check the schedule in advance." }),
       place("d4-m2", "Suzhou Classical Gardens (Humble Administrator's Garden)", { open: "07:30", close: "17:30" }),
@@ -142,7 +142,7 @@ const DAYS = [
   {
     id: "day-05", date: "2026-10-02", city: "shanghai",
     focus: "Nanjing Pedestrian Street",
-    photo: "../assets/photos/shanghai.png",
+    photo: "assets/photos/shanghai.png",
     morning: [
       place("d5-m1", "Shanghai Tower observation deck", { open: "09:00", close: "22:00" }),
     ],
@@ -163,7 +163,7 @@ const DAYS = [
   {
     id: "day-06", date: "2026-10-03", city: "shanghai",
     focus: "Xintiandi & French Concession",
-    photo: "../assets/photos/shanghai.png",
+    photo: "assets/photos/shanghai.png",
     morning: [
       place("d6-m1", "West Bund art museums", { note: "Long Museum / West Bund Museum." }),
     ],
@@ -184,7 +184,7 @@ const DAYS = [
   {
     id: "day-07", date: "2026-10-04", city: "shanghai",
     focus: "Yu Garden & Shanghai Old Street",
-    photo: "../assets/photos/yugarden.png",
+    photo: "assets/photos/yugarden.png",
     morning: [
       place("d7-m1", "Metro/taxi out to Zhujiajiao", { note: "~1h from centre." }),
     ],
@@ -205,7 +205,7 @@ const DAYS = [
   {
     id: "day-08", date: "2026-10-05", city: "osaka",
     focus: "Travel day to Osaka",
-    photo: "../assets/photos/osaka.png",
+    photo: "assets/photos/osaka.png",
     morning: [
       place("d8-m1", "Depart 1.15pm Shanghai Pudong (PVG) → Osaka Kansai (KIX)", { note: "Flight time ~2h30. Arrive 4.35pm local time." }),
     ],
@@ -224,7 +224,7 @@ const DAYS = [
   {
     id: "day-09", date: "2026-10-06", city: "osaka",
     focus: "Nipponbashi & Namba",
-    photo: "../assets/photos/osaka.png",
+    photo: "assets/photos/osaka.png",
     morning: [
       place("d9-m1", "Visit Osaka Castle", { open: "09:00", close: "17:00" }),
     ],
@@ -246,7 +246,7 @@ const DAYS = [
   {
     id: "day-10", date: "2026-10-07", city: "nara",
     focus: "Nara + Kyoto",
-    photo: "../assets/photos/nara.png",
+    photo: "assets/photos/nara.png",
     morning: [
       place("d10-m1", "Take early train to Nara (~45m)", { note: "Visit Todai-ji & Nara Park." }),
       place("d10-m2", "Feed the deer & explore Nara Park"),
@@ -268,7 +268,7 @@ const DAYS = [
   {
     id: "day-11", date: "2026-10-08", city: "osaka",
     focus: "Katsuoji Temple and Nipponbashi / Namba",
-    photo: "../assets/photos/katsuojitemple.png",
+    photo: "assets/photos/katsuojitemple.png",
     morning: [
       place("d11-m1", "Travel to Katsuoji Temple", { open: "08:00", close: "17:00",note: "Take the train to Katsuoji Station, then a short walk." }),
       place("d11-m2", "Walk down to Minoh Waterfall")
@@ -290,7 +290,7 @@ const DAYS = [
   {
     id: "day-12", date: "2026-10-09", city: "kyoto",
     focus: "Kyoto - Arashiyama - Uji",
-    photo: "../assets/photos/kyoto.png",
+    photo: "assets/photos/kyoto.png",
     morning: [
       place("d13-m1", "Arashiyama bamboo grove", { note: "Go early for the quiet groves." }),
       place("d13-m2", "Tenryū-ji & Togetsukyō bridge", { open: "08:30", close: "17:00" }),
@@ -311,7 +311,7 @@ const DAYS = [
   {
     id: "day-13", date: "2026-10-10", city: "osaka",
     focus: "Shinkansen to Tokyo",
-    photo: "../assets/photos/osaka.png",
+    photo: "assets/photos/osaka.png",
     morning: [
       place("d13-m1", "Stay around Namba / Nipponbashi for a slow morning"),
     ],
@@ -333,7 +333,7 @@ const DAYS = [
   {
     id: "day-14", date: "2026-10-11", city: "tokyo",
     focus: "Shibuya & Harajuku",
-    photo: "../assets/photos/shibuya.png",
+    photo: "assets/photos/shibuya.png",
     morning: [
       place("d14-m1", "Meiji Jingū shrine", { open: "05:00", close: "17:30" }),
     ],
@@ -354,7 +354,7 @@ const DAYS = [
   {
     id: "day-15", date: "2026-10-12", city: "tokyo",
     focus: "Ikebukuro & Sunshine City",
-    photo: "../assets/photos/tokyo.png",
+    photo: "assets/photos/tokyo.png",
     morning: [
       place("d15-m1", "Explore Ikebukuro — local morning"),
     ],
@@ -375,7 +375,7 @@ const DAYS = [
   {
     id: "day-16", date: "2026-10-13", city: "tokyo",
     focus: "Gotoku-ji · Shimokitazawa · Shinjuku",
-    photo: "../assets/photos/gotokujitemple.png",
+    photo: "assets/photos/gotokujitemple.png",
     morning: [
       place("d16-m1", "Gotoku-ji (lucky cat temple)", { open: "06:00", close: "17:00", note: "The maneki-neko temple — rows of little waving cats." }),
     ],
@@ -395,7 +395,7 @@ const DAYS = [
   {
     id: "day-17", date: "2026-10-14", city: "tokyo",
     focus: "Kichijōji & Ghibli Museum",
-    photo: "../assets/photos/kichijoji.png",
+    photo: "assets/photos/kichijoji.png",
     morning: [
       place("d17-m1", "Kichijōji & Inokashira Park stroll"),
     ],
@@ -415,7 +415,7 @@ const DAYS = [
   {
     id: "day-18", date: "2026-10-15", city: "kamakura",
     focus: "Day trip · Kamakura → Yokohama",
-    photo: "../assets/photos/kamakura.png",
+    photo: "assets/photos/kamakura.png",
     morning: [
       place("d18-m1", "Train to Kamakura (~1h)", { note: "Ride the retro Enoden line along the coast." }),
       place("d18-m2", "Great Buddha (Kōtoku-in)", { open: "08:00", close: "17:00" }),
@@ -437,7 +437,7 @@ const DAYS = [
   {
     id: "day-19", date: "2026-10-16", city: "yokohama",
     focus: "Yokohama & Chinatown",
-    photo: "../assets/photos/yokohama.png",
+    photo: "assets/photos/yokohama.png",
     morning: [
       place("d19-m1", "Minato Mirai waterfront & Cup Noodles Museum", { open: "10:00", close: "18:00" }),
     ],
@@ -460,7 +460,7 @@ const DAYS = [
   {
     id: "day-20", date: "2026-10-17", city: "beijing",
     focus: "Arrive Beijing · Shopping & food",
-    photo: "../assets/photos/beijing.png",
+    photo: "assets/photos/beijing.png",
     morning: [
       place("d20-m1", "Fly Tokyo → Beijing (PEK)", { note: "Haneda (HND) Terminal 3 08:50 → 12:00 Beijing Capital (PEK) Terminal 3." }),
     ],
@@ -481,7 +481,7 @@ const DAYS = [
   {
     id: "day-21", date: "2026-10-18", city: "beijing",
     focus: "Forbidden City & Tiananmen",
-    photo: "../assets/photos/beijing.png",
+    photo: "assets/photos/beijing.png",
     morning: [
       place("d21-m1", "Tiananmen Square", { open: "05:00", close: "22:00", note: "Free, but reserve a timed slot on the official WeChat mini-program; passport needed for the security check." }),
     ],
@@ -502,7 +502,7 @@ const DAYS = [
   {
     id: "day-22", date: "2026-10-19", city: "beijing",
     focus: "Great Wall → train to Shanghai",
-    photo: "../assets/photos/greatwall.png",
+    photo: "assets/photos/greatwall.png",
     morning: [
       place("d22-m1", "Dawn drive to Mutianyu Great Wall", { open: "07:30", close: "17:30", note: "Leave early to beat crowds — cable car up, toboggan down." }),
     ],
@@ -524,10 +524,10 @@ const DAYS = [
   {
     id: "day-23", date: "2026-10-20", city: "shanghai",
     focus: "Shanghai Wild Animal Park",
-    photo: "../assets/photos/wildanimalpark.png",
+    photo: "assets/photos/wildanimalpark.png",
     morning: [
       place("d23-m1", "Pre-booked car / Didi to Nanhui", { note: "The park is far out — arrange the transfer in advance." }),
-      place("d23-m2", "Shanghai Wild Animal Park opens", { open: "08:00", close: "17:00", note: "Book tickets ahead; passport needed for entry." }),
+      place("d23-m2", "Shanghai Wild Animal Park opens", { open: "09:00", close: "17:00", note: "Book tickets ahead; passport needed for entry." }),
     ],
     afternoon: [
       place("d23-a1", "Safari drive-through & animal shows"),
@@ -545,7 +545,7 @@ const DAYS = [
   {
     id: "day-24", date: "2026-10-21", city: "shanghai",
     focus: "Shanghai Disneyland",
-    photo: "../assets/photos/disneyland.png",
+    photo: "assets/photos/disneyland.png",
     morning: [
       place("d24-m1", "Early Park Entry / rope drop", { open: "08:30", close: "20:30", note: "Buy tickets ahead & link them in the Shanghai Disney app; consider Premier Access." }),
     ],
@@ -565,7 +565,7 @@ const DAYS = [
   {
     id: "day-25", date: "2026-10-22", city: "shanghai",
     focus: "Departure · Fly home",
-    photo: "../assets/photos/shanghai.png",
+    photo: "assets/photos/shanghai.png",
     morning: [
       place("d25-m1", "Checkout & luggage"),
       place("d25-m2", "Transfer to Pudong (PVG)", { note: "Maglev is fun & fast." }),
@@ -621,25 +621,9 @@ const HOTELS = [
 
 /* ───────────────────────── THINGS TO BUY ───────────────────────── */
 const SHOPPING = [
-  { category: "China", items: [
-    place("s-cn1", "Silk scarf / pyjamas"),
-    place("s-cn2", "Loose-leaf tea + teaware"),
-    place("s-cn3", "Chops / name seal (Old City)"),
-    place("s-cn4", "Cheap electronics accessories"),
-  ]},
-  { category: "Japan", items: [
-    place("s-jp1", "Kit-Kat & snack flavours"),
-    place("s-jp2", "Skincare & pharmacy haul (Don Quijote)"),
-    place("s-jp3", "Stationery (Loft / Itoya)"),
-    place("s-jp4", "Ceramics / chopsticks"),
-    place("s-jp5", "Uniqlo / GU Japan-only lines"),
-    place("s-jp6", "Anime / hobby goods (Akihabara)"),
-  ]},
-  { category: "Gifts", items: [
-    place("s-g1", "Fridge magnets"),
-    place("s-g2", "Local sweets to share"),
-    place("s-g3", "Postcards"),
-  ]},
+  { category: "Shanghai", items: [] },
+  { category: "Osaka",    items: [] },
+  { category: "Tokyo",    items: [] },
 ];
 
 /* ───────────────────────── FLIGHTS ───────────────────────── */
@@ -723,14 +707,9 @@ const BOOKINGS = [
 
 /* ───────────────────────── TIPS / SUGGESTIONS ───────────────────────── */
 const TIPS = [
-  { icon: "📶", title: "Connectivity", body: "China blocks Google/Instagram/WhatsApp — set up a reputable eSIM or VPN before you fly. Japan is open; grab a pocket Wi-Fi or eSIM at the airport." },
-  { icon: "💳", title: "Payments", body: "China is cashless: link a card to Alipay & WeChat Pay before arrival. Japan still loves cash — carry some yen, and get a Suica/ICOCA/PASMO card for transit & konbini." },
-  { icon: "🚄", title: "Getting around", body: "Osaka→Tokyo is fastest by Shinkansen (~3h). In China use Didi (in Alipay) for taxis and the metro apps. Keep your passport on you for Chinese attraction entry." },
-  { icon: "🎫", title: "Book ahead", body: "teamLab (Tokyo), Shanghai Tower, and the Forbidden City all use timed tickets — reserve a few days out. Fushimi Inari & popular ramen are best done early morning." },
-  { icon: "🧳", title: "Packing", body: "Late Sep–Oct is mild but variable: layers, a light rain jacket, and comfy walking shoes. Leave luggage room for the Japan shopping haul." },
-  { icon: "🈺", title: "Handy phrases", body: "CN: nǐ hǎo (hello), xièxie (thanks), duōshǎo qián (how much). JP: konnichiwa (hello), arigatō (thanks), sumimasen (excuse me)." },
-  { icon: "🍜", title: "Food etiquette", body: "Japan: no tipping, slurping noodles is fine, don't stick chopsticks upright in rice. China: sharing dishes family-style, tea gets refilled constantly." },
-  { icon: "🕗", title: "Time zones", body: "China (UTC+8) and Japan (UTC+9) differ by 1 hour — nudge your watch forward flying into Osaka and back flying into Beijing." },
+  { icon: "🛂", title: "Visit Japan Web QR", body: "Before you land in Japan, register on Visit Japan Web and complete immigration & customs. It generates QR codes — screenshot them or save offline. You scan the QR at the airport kiosks for immigration and customs, which skips the paper forms. Do this a few days before flying, not in the queue.", link: { url: "https://www.vjw.digital.go.jp/", label: "Open Visit Japan Web" } },
+  { icon: "📱", title: "China apps to install before you fly", body: "Download and set these up on UK Wi-Fi before landing in Shanghai — the app stores can be a pain once you're in China: Didi (taxis / ride-hail), WeChat Pay and Alipay (link a foreign card in each — you'll pay for almost everything with these), and Amap / 高德地图 (maps & navigation, way better than Google Maps in China, which is blocked)." },
+  { icon: "🇯🇵", title: "Japan apps to install before you fly", body: "Set these up before you land in Osaka: Revolut (best rates for GBP → JPY, no rubbish conversion fees at the till), Suica (add to Apple/Google Wallet — tap through every train, metro, bus and konbini), LINE (Japanese restaurants and shops book through it — you'll need an account for a lot of reservations), Tabelog (the local review app — trust its ratings over Google, 3.5+ is genuinely great), and Airalo (grab a Japan eSIM in the app before you fly so you've got data the second you land — way cheaper than airport SIMs)." },
 ];
 
 const TRIP_META = {
@@ -740,5 +719,171 @@ const TRIP_META = {
   end: "2026-10-22",
 };
 
+/* ───────────────────────── PACKING CHECKLIST ─────────────────────────
+   Seed items grouped by category. Tick state, custom additions and
+   removals all persist per-device in localStorage (handled in app.js). */
+const PACKING = [
+  {
+    category: "Documents & money",
+    items: [
+      "Passport (6+ months validity)",
+      "Visas / entry permits sorted",
+      "Travel insurance details (saved offline)",
+      "Some GBP cash to exchange",
+      "Bank card + Revolut card",
+      "Photocopies / photos of passport",
+      "Printed hotel & flight confirmations",
+    ],
+  },
+  {
+    category: "Tech",
+    items: [
+      "Phone + charger",
+      "Portable battery pack",
+      "China plug adapter (Type A / I)",
+      "Japan plug adapter (Type A)",
+      "Charging cables",
+      "Earphones",
+      "Airalo eSIM installed",
+    ],
+  },
+  {
+    category: "Autumn clothing",
+    items: [
+      "Layers (T-shirts + long sleeves)",
+      "Light waterproof jacket",
+      "Jumper / fleece for cool evenings",
+      "Comfortable walking shoes",
+      "Packable umbrella",
+      "Scarf",
+      "Sleepwear",
+    ],
+  },
+  {
+    category: "Health & toiletries",
+    items: [
+      "Any prescription meds",
+      "Painkillers",
+      "Motion-sickness tablets (Shinkansen/flights)",
+      "Hand sanitiser",
+      "Pocket tissues (some CN toilets have none)",
+      "Plasters / blister plasters",
+      "Toothbrush & toiletries",
+    ],
+  },
+  {
+    category: "Handy extras",
+    items: [
+      "Reusable water bottle",
+      "Foldable day bag / tote",
+      "Laundry bag",
+      "Snacks for travel days",
+      "Reusable chopsticks (optional)",
+    ],
+  },
+];
+
+/* ───────────────────────── EMERGENCY & ESSENTIALS ─────────────────────
+   Hotel addresses are pulled live from HOTELS in app.js, so they never
+   drift out of sync. Numbers below are the official published lines. */
+const EMERGENCY = {
+  numbers: [
+    {
+      country: "🇨🇳 China",
+      items: [
+        { label: "Police", num: "110" },
+        { label: "Ambulance", num: "120" },
+        { label: "Fire", num: "119" },
+      ],
+    },
+    {
+      country: "🇯🇵 Japan",
+      items: [
+        { label: "Police", num: "110" },
+        { label: "Ambulance & Fire", num: "119" },
+      ],
+    },
+  ],
+  embassies: [
+    {
+      name: "British Embassy Beijing",
+      country: "China",
+      phone: "+861051924000",
+      phoneLabel: "+86 10 5192 4000",
+      address: "11 Guanghua Road, Jianguomenwai, Chaoyang District, Beijing",
+    },
+    {
+      name: "British Consulate-General Shanghai",
+      country: "China",
+      phone: "+862132792000",
+      phoneLabel: "+86 21 3279 2000",
+      address: "Garden Square, 968 West Beijing Road, Jing'an District, Shanghai",
+    },
+    {
+      name: "British Embassy Tokyo",
+      country: "Japan",
+      phone: "+81352111100",
+      phoneLabel: "+81 3 5211 1100",
+      address: "1 Ichiban-cho, Chiyoda-ku, Tokyo 102-8381",
+    },
+    {
+      name: "British Consulate-General Osaka",
+      country: "Japan",
+      phone: "+81661205600",
+      phoneLabel: "+81 6 6120 5600",
+      address: "Epson Osaka Bldg 19F, 3-5-1 Bakuro-machi, Chuo-ku, Osaka",
+    },
+  ],
+};
+
+/* ───────────────────────── MINI PHRASEBOOK ───────────────────────── */
+const PHRASEBOOK = [
+  {
+    lang: "🇨🇳 Mandarin",
+    phrases: [
+      { en: "Hello", local: "你好", pron: "Nǐ hǎo" },
+      { en: "Thank you", local: "谢谢", pron: "Xièxie" },
+      { en: "You're welcome", local: "不客气", pron: "Bù kèqi" },
+      { en: "Please", local: "请", pron: "Qǐng" },
+      { en: "Yes", local: "是", pron: "Shì" },
+      { en: "No", local: "不是", pron: "Bù shì" },
+      { en: "Excuse me / sorry", local: "对不起", pron: "Duìbùqǐ" },
+      { en: "How much?", local: "多少钱？", pron: "Duōshǎo qián?" },
+      { en: "Too expensive", local: "太贵了", pron: "Tài guì le" },
+      { en: "Where's the toilet?", local: "洗手间在哪里？", pron: "Xǐshǒujiān zài nǎlǐ?" },
+      { en: "I don't eat meat", local: "我不吃肉", pron: "Wǒ bù chī ròu" },
+      { en: "Delicious", local: "好吃", pron: "Hǎochī" },
+      { en: "Can I pay by card?", local: "可以刷卡吗？", pron: "Kěyǐ shuākǎ ma?" },
+      { en: "Do you speak English?", local: "你会说英语吗？", pron: "Nǐ huì shuō Yīngyǔ ma?" },
+      { en: "I don't understand", local: "我不懂", pron: "Wǒ bù dǒng" },
+      { en: "Cheers!", local: "干杯", pron: "Gānbēi" },
+      { en: "Goodbye", local: "再见", pron: "Zàijiàn" },
+      { en: "Help!", local: "救命！", pron: "Jiùmìng!" },
+    ],
+  },
+  {
+    lang: "🇯🇵 Japanese",
+    phrases: [
+      { en: "Hello", local: "こんにちは", pron: "Konnichiwa" },
+      { en: "Thank you", local: "ありがとう", pron: "Arigatō" },
+      { en: "You're welcome", local: "どういたしまして", pron: "Dō itashimashite" },
+      { en: "Please", local: "お願いします", pron: "Onegai shimasu" },
+      { en: "Yes", local: "はい", pron: "Hai" },
+      { en: "No", local: "いいえ", pron: "Iie" },
+      { en: "Excuse me / sorry", local: "すみません", pron: "Sumimasen" },
+      { en: "How much?", local: "いくらですか？", pron: "Ikura desu ka?" },
+      { en: "Where's the toilet?", local: "トイレはどこですか？", pron: "Toire wa doko desu ka?" },
+      { en: "I don't eat meat", local: "肉を食べません", pron: "Niku o tabemasen" },
+      { en: "Delicious", local: "おいしい", pron: "Oishii" },
+      { en: "The bill, please", local: "お会計お願いします", pron: "Okaikei onegai shimasu" },
+      { en: "Do you speak English?", local: "英語を話せますか？", pron: "Eigo o hanasemasu ka?" },
+      { en: "I don't understand", local: "わかりません", pron: "Wakarimasen" },
+      { en: "Cheers!", local: "乾杯", pron: "Kanpai" },
+      { en: "Goodbye", local: "さようなら", pron: "Sayōnara" },
+      { en: "Help!", local: "助けて！", pron: "Tasukete!" },
+    ],
+  },
+];
+
 /* Expose everything to app.js */
-window.TRIP_DATA = { meta: TRIP_META, cities: CITIES, days: DAYS, hotels: HOTELS, shopping: SHOPPING, bookings: BOOKINGS, flights: FLIGHTS, tips: TIPS };
+window.TRIP_DATA = { meta: TRIP_META, cities: CITIES, days: DAYS, hotels: HOTELS, shopping: SHOPPING, bookings: BOOKINGS, flights: FLIGHTS, tips: TIPS, packing: PACKING, emergency: EMERGENCY, phrasebook: PHRASEBOOK };

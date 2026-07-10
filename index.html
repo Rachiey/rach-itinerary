@@ -13,6 +13,30 @@
     />
     <title>China · Japan — Itinerary</title>
 
+    <!-- PWA: installable + offline -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="assets/icons/favicon.ico" sizes="any" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/icons/favicon-32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/icons/favicon-16.png"
+    />
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="CN·JP Trip" />
+
     <!-- Fonts: Fraunces (display), Inter (body), IBM Plex Mono (technical) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,16 +45,23 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style.css?v=11" />
   </head>
   <body>
     <div class="app">
       <!-- Masthead -->
       <header class="masthead">
+        <button
+          id="themeToggle"
+          class="theme-toggle"
+          type="button"
+          aria-label="Toggle dark mode"
+        ></button>
         <span class="kicker">Boarding Pass · 2026</span>
         <h1 id="tripTitle">China · Japan</h1>
         <div class="subtitle" id="tripSub">Autumn 2026</div>
         <div class="daterange" id="tripRange"></div>
+        <div class="fx" id="fxChip" hidden></div>
         <div class="progress">
           <div class="progress-track">
             <div class="progress-fill" id="progressFill"></div>
@@ -47,6 +78,7 @@
         <section id="panel-flights" class="panel"></section>
         <section id="panel-hotels" class="panel"></section>
         <section id="panel-tips" class="panel"></section>
+        <section id="panel-more" class="panel"></section>
       </main>
     </div>
 
@@ -71,10 +103,13 @@
         <button class="tab" data-target="tips">
           <span class="ic"></span><span>Tips</span>
         </button>
+        <button class="tab" data-target="more">
+          <span class="ic"></span><span>More</span>
+        </button>
       </div>
     </nav>
 
-    <script src="js/data.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/data.js?v=8"></script>
+    <script src="js/app.js?v=10"></script>
   </body>
 </html>
