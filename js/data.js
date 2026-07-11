@@ -271,7 +271,9 @@ const DAYS = [
       place("d10-e1", "Have dinner in Kyoto or back in Osaka (Namba)"),
     ],
     restaurants: [
-      place("d10-r1", "Kushikatsu Daruma, Namba", { open: "11:00", close: "22:30", note: "No double-dipping the sauce!" }),
+      place("d10-r2", "Tonkatsu Kiyoshi"),
+      place("d10-r3", "Gyumon Nara"),
+      place("d10-r4", "All You Can Eat Shabu Shabu"),
     ],
     cafes: [
       place("d10-c1", "Lilo Coffee Roasters", { open: "10:00", close: "22:00" }),
