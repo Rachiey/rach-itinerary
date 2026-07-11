@@ -276,7 +276,10 @@ const DAYS = [
       place("d10-r4", "All You Can Eat Shabu Shabu"),
     ],
     cafes: [
-      place("d10-c1", "Lilo Coffee Roasters", { open: "10:00", close: "22:00" }),
+      place("d10-c2", "Good Knight Ice NARA"),
+      place("d10-c3", "Over Macaron"),
+      place("d10-c4", "Chami"),
+      place("d10-c5", "GRAN CHA"),
     ],
   },
   {
