@@ -100,11 +100,7 @@ body {
       rgba(43, 162, 104, 0.13),
       transparent 46%
     ),
-    radial-gradient(
-      circle at 12% 6%,
-      rgba(86, 197, 205, 0.1),
-      transparent 38%
-    ),
+    radial-gradient(circle at 12% 6%, rgba(86, 197, 205, 0.1), transparent 38%),
     var(--paper);
   min-height: 100vh;
   line-height: 1.5;
@@ -258,12 +254,7 @@ select {
 .progress-fill {
   position: relative;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    var(--jade),
-    var(--gold) 45%,
-    var(--seal)
-  );
+  background: linear-gradient(90deg, var(--jade), var(--gold) 45%, var(--seal));
   border-radius: 999px;
   will-change: width;
   box-shadow: 0 0 10px color-mix(in srgb, var(--gold) 55%, transparent);
@@ -284,8 +275,13 @@ select {
   animation: progress-sheen 2.6s ease-in-out infinite;
 }
 @keyframes progress-sheen {
-  0% { transform: translateX(-100%); }
-  60%, 100% { transform: translateX(200%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  60%,
+  100% {
+    transform: translateX(200%);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .progress-fill::after {
@@ -983,9 +979,15 @@ body.is-dragging-day {
   stroke: #fff;
 }
 @keyframes ring-pop {
-  0% { transform: scale(0.6); }
-  60% { transform: scale(1.15); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* Filter + jump bar */
@@ -1072,9 +1074,15 @@ body.is-dragging-day {
   border-radius: 8px;
   background: var(--gold-soft);
 }
-.slot-emoji.morning { background: color-mix(in srgb, var(--gold) 22%, transparent); }
-.slot-emoji.afternoon { background: color-mix(in srgb, var(--seal) 18%, transparent); }
-.slot-emoji.evening { background: color-mix(in srgb, var(--jade) 20%, transparent); }
+.slot-emoji.morning {
+  background: color-mix(in srgb, var(--gold) 22%, transparent);
+}
+.slot-emoji.afternoon {
+  background: color-mix(in srgb, var(--seal) 18%, transparent);
+}
+.slot-emoji.evening {
+  background: color-mix(in srgb, var(--jade) 20%, transparent);
+}
 .slot-tally {
   margin-left: auto;
   font-family: var(--f-mono);
@@ -1092,9 +1100,15 @@ body.is-dragging-day {
   padding-left: 12px;
   margin-left: 2px;
 }
-.slot[data-slot="morning"] { border-left-color: color-mix(in srgb, var(--gold) 45%, var(--line)); }
-.slot[data-slot="afternoon"] { border-left-color: color-mix(in srgb, var(--seal) 40%, var(--line)); }
-.slot[data-slot="evening"] { border-left-color: color-mix(in srgb, var(--jade) 45%, var(--line)); }
+.slot[data-slot="morning"] {
+  border-left-color: color-mix(in srgb, var(--gold) 45%, var(--line));
+}
+.slot[data-slot="afternoon"] {
+  border-left-color: color-mix(in srgb, var(--seal) 40%, var(--line));
+}
+.slot[data-slot="evening"] {
+  border-left-color: color-mix(in srgb, var(--jade) 45%, var(--line));
+}
 
 /* Sticky day header while an expanded day is scrolled */
 .day:not(.collapsed):not(.flipped) .day-head {
@@ -1116,13 +1130,23 @@ body.is-dragging-day {
   animation: name-strike 0.45s ease;
 }
 @keyframes check-pop {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.35); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 @keyframes name-strike {
-  0% { opacity: 0.55; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* Confetti burst when a whole day hits 100% */
@@ -2208,12 +2232,22 @@ body.is-dragging-day {
   animation: squiggle-in 0.4s cubic-bezier(0.2, 1.4, 0.4, 1);
 }
 @keyframes squiggle-in {
-  0% { transform: translateX(-50%) scaleX(0.2); opacity: 0; }
-  60% { opacity: 1; }
-  100% { transform: translateX(-50%) scaleX(1); opacity: 1; }
+  0% {
+    transform: translateX(-50%) scaleX(0.2);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) scaleX(1);
+    opacity: 1;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .tab.active::after { animation: none; }
+  .tab.active::after {
+    animation: none;
+  }
 }
 
 [data-theme="dark"] .tabbar .inner {
@@ -2761,7 +2795,9 @@ body.is-dragging-day {
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition: transform 0.12s ease, background 0.15s ease;
+  transition:
+    transform 0.12s ease,
+    background 0.15s ease;
 }
 .phrase-speak svg {
   width: 20px;
@@ -2776,11 +2812,18 @@ body.is-dragging-day {
   animation: speak-pulse 0.8s ease-in-out infinite;
 }
 @keyframes speak-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--seal) 45%, transparent); }
-  50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--seal) 0%, transparent); }
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--seal) 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--seal) 0%, transparent);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .phrase-speak.speaking { animation: none; }
+  .phrase-speak.speaking {
+    animation: none;
+  }
 }
 .phrase-en {
   font-size: 12.5px;
