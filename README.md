@@ -24,8 +24,9 @@ device/mobile view.
 
 ### Install it as an app
 The app ships a web manifest and a service worker, so on a phone you can use
-**Add to Home Screen** to install it. Once installed the app shell is cached and
-opens instantly, even offline.
+**Add to Home Screen** to install it. Once installed the app shell — including
+all the city header photos (lightweight WebP, ~2.6 MB total) — is cached, so it
+opens instantly and works fully offline.
 
 ## What's inside
 
@@ -114,7 +115,7 @@ css/style.css         boarding-pass design system
 js/data.js            the itinerary (edit me!)
 js/app.js             rendering, interactions, saving & live data
 assets/icons/         app icons (+ generate_icons.py)
-assets/photos/        day header images
+assets/photos/        day header images (optimised WebP)
 ```
 
 > **Note on caching:** the app shell is versioned. When you change `css/style.css`,

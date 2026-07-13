@@ -8,7 +8,7 @@
      get fresh numbers when online but still see the last values offline.
    Bump CACHE_VERSION whenever the shell files change to force an update.
    ===================================================================== */
-const CACHE_VERSION = "rach-itin-v30";
+const CACHE_VERSION = "rach-itin-v32";
 const SHELL_CACHE = CACHE_VERSION + "-shell";
 const RUNTIME_CACHE = CACHE_VERSION + "-runtime";
 
@@ -16,7 +16,7 @@ const SHELL_ASSETS = [
   "./",
   "./index.html",
   "./css/style.css?v=22",
-  "./js/data.js?v=9",
+  "./js/data.js?v=10",
   "./js/app.js?v=22",
   "./manifest.webmanifest",
   "./assets/icons/icon-192.png",
@@ -25,6 +25,26 @@ const SHELL_ASSETS = [
   "./assets/icons/favicon.ico",
   "./assets/icons/favicon-16.png",
   "./assets/icons/favicon-32.png",
+  // City header photos (small WebP ~2.6MB total) — precached so every day
+  // card shows its image offline, on the plane or a dodgy eSIM.
+  "./assets/photos/beijing.webp",
+  "./assets/photos/disneyland.webp",
+  "./assets/photos/gotokujitemple.webp",
+  "./assets/photos/greatwall.webp",
+  "./assets/photos/kamakura.webp",
+  "./assets/photos/katsuojitemple.webp",
+  "./assets/photos/kichijoji.webp",
+  "./assets/photos/kyoto.webp",
+  "./assets/photos/nara.webp",
+  "./assets/photos/osaka.webp",
+  "./assets/photos/shanghai.webp",
+  "./assets/photos/shibuya.webp",
+  "./assets/photos/suzhou.webp",
+  "./assets/photos/tokyo.webp",
+  "./assets/photos/wildanimalpark.webp",
+  "./assets/photos/wukang.webp",
+  "./assets/photos/yokohama.webp",
+  "./assets/photos/yugarden.webp",
 ];
 
 self.addEventListener("install", function (event) {
