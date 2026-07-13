@@ -869,6 +869,7 @@ const EMERGENCY = {
 const PHRASEBOOK = [
   {
     lang: "🇨🇳 Mandarin",
+    code: "zh-CN",
     phrases: [
       { en: "Hello", local: "你好", pron: "Nǐ hǎo" },
       { en: "Thank you", local: "谢谢", pron: "Xièxie" },
@@ -892,6 +893,7 @@ const PHRASEBOOK = [
   },
   {
     lang: "🇯🇵 Japanese",
+    code: "ja-JP",
     phrases: [
       { en: "Hello", local: "こんにちは", pron: "Konnichiwa" },
       { en: "Thank you", local: "ありがとう", pron: "Arigatō" },

@@ -10,21 +10,26 @@
   const DATA = window.TRIP_DATA;
   const STORAGE_KEY = "rach-itinerary-v1";
 
-  /* ---------- City theming (used for default header gradients) ---------- */
+  /* ---------- City theming (used for default header gradients) ----------
+     A cohesive "summer fruit garden" sweep — every accent sits in the citrus
+     palette family (tangerine → mango → lime → leaf → teal → lagoon → grape →
+     guava) and each gradient resolves toward a sunny light so they read as one
+     set rather than a random rainbow. */
   const CITY_THEME = {
-    shanghai: { g: "linear-gradient(135deg,#8f2c27,#b23a34 55%,#c69a4c)", emoji: "🏮", c: "#b23a34" },
-    osaka:    { g: "linear-gradient(135deg,#14504a,#2f6f5e 55%,#6bbfa6)", emoji: "🐙", c: "#2f6f5e" },
-    tokyo:    { g: "linear-gradient(135deg,#3b2a5a,#7d3c98 50%,#d84f8c)", emoji: "🗼", c: "#7d3c98" },
-    beijing:  { g: "linear-gradient(135deg,#6e1e1a,#b23a34 60%,#e0a24a)", emoji: "🏯", c: "#c07a1e" },
-    kyoto:    { g: "linear-gradient(135deg,#1f6b57,#3f8f7a 55%,#9ad3c0)", emoji: "⛩️", c: "#3f8f7a" },
-    nara:     { g: "linear-gradient(135deg,#4a6b2e,#6f9a3e 55%,#b6d68a)", emoji: "🦌", c: "#6f9a3e" },
-    yokohama: { g: "linear-gradient(135deg,#274b7a,#4a6fb0 55%,#9cc0e6)", emoji: "🌉", c: "#4a6fb0" },
-    kamakura: { g: "linear-gradient(135deg,#5a3a7a,#9d6bbf 55%,#d0b0e6)", emoji: "🪷", c: "#9d6bbf" },
-    suzhou:   { g: "linear-gradient(135deg,#6e1e1a,#b23a34 60%,#e0a24a)", emoji: "🏞️", c: "#a13c6e" },
+    shanghai: { g: "linear-gradient(135deg,#c14a24,#ec6f3a 55%,#f4c65a)", emoji: "🏮", c: "#ec6f3a" },
+    suzhou:   { g: "linear-gradient(135deg,#c14a2e,#e0563f 55%,#f0b45a)", emoji: "🏞️", c: "#e0563f" },
+    beijing:  { g: "linear-gradient(135deg,#c47d1c,#eaa72c 55%,#f6d873)", emoji: "🏯", c: "#eaa72c" },
+    nara:     { g: "linear-gradient(135deg,#5e8a24,#8fbf3f 55%,#d6e88a)", emoji: "🦌", c: "#8fbf3f" },
+    kyoto:    { g: "linear-gradient(135deg,#1c7a4c,#2ba268 55%,#9ad07a)", emoji: "⛩️", c: "#2ba268" },
+    osaka:    { g: "linear-gradient(135deg,#0c7d6e,#16a58f 55%,#8fd9b0)", emoji: "🐙", c: "#16a58f" },
+    yokohama: { g: "linear-gradient(135deg,#1c7a8c,#2f9fb0 55%,#9ad9d0)", emoji: "🌉", c: "#2f9fb0" },
+    tokyo:    { g: "linear-gradient(135deg,#7a4a94,#b06fc0 55%,#e6c07a)", emoji: "🗼", c: "#b06fc0" },
+    kamakura: { g: "linear-gradient(135deg,#b84a78,#e56f9c 55%,#f4c07a)", emoji: "🪷", c: "#e56f9c" },
   };
 
   /* ---------- State ---------- */
   let state = loadState();
+  let dayFilter = "all"; // "all" | "todo" | "done" (list view, not persisted)
 
   function loadState() {
     let s = { over: {}, added: {}, hidden: {}, flights: {}, photos: {}, hotels: {}, view: "list", theme: "light", order: {}, packing: {}, packingAdd: {}, packingHide: {}, expenses: [], docs: [] };
@@ -392,6 +397,7 @@
     trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
     ellipsis: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
     star: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>',
+    speaker: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M18.36 5.64a9 9 0 0 1 0 12.72"/></svg>',
   };
   const NAV_ICON = {
     days: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
@@ -560,6 +566,11 @@
     );
   }
 
+  const SLOT_EMOJI = {
+    morning: "☀️", afternoon: "🌆", evening: "🌙",
+    restaurants: "🍜", cafes: "☕",
+  };
+
   function renderSlot(day, slotKey, label, dotClass, seq) {
     const containerKey = day.id + ":" + slotKey;
     const cityName = (DATA.cities[day.city] || {}).name || "";
@@ -569,9 +580,11 @@
       seq.n++;
       return renderPlace(p, containerKey, info, cityName);
     }).join("");
+    const doneCount = list.filter(function (p) { return p.done; }).length;
+    const tally = list.length ? '<span class="slot-tally">' + doneCount + '/' + list.length + '</span>' : '';
     return (
-      '<div class="slot">' +
-        '<div class="slot-head"><span class="dot ' + dotClass + '"></span><h4>' + label + '</h4></div>' +
+      '<div class="slot" data-slot="' + dotClass + '">' +
+        '<div class="slot-head"><span class="slot-emoji ' + dotClass + '">' + (SLOT_EMOJI[slotKey] || "") + '</span><h4>' + label + '</h4>' + tally + '</div>' +
         rows +
         '<button class="add-place" data-act="add" data-container="' + containerKey + '">' + ICON.plus + ' Add a place</button>' +
       '</div>'
@@ -585,9 +598,10 @@
     const rows = list.length
       ? list.map(function (p) { return renderPlace(p, containerKey, null, cityName); }).join("")
       : '<p class="empty">Nothing yet — add a spot.</p>';
+    const slotClass = slotKey === "restaurants" ? "afternoon" : "evening";
     return (
-      '<div class="slot">' +
-        '<div class="slot-head"><span class="dot ' + (slotKey === "restaurants" ? "afternoon" : "evening") + '"></span><h4>' + label + '</h4></div>' +
+      '<div class="slot" data-slot="' + slotClass + '">' +
+        '<div class="slot-head"><span class="slot-emoji ' + slotClass + '">' + (SLOT_EMOJI[slotKey] || "") + '</span><h4>' + label + '</h4></div>' +
         rows +
         '<button class="add-place" data-act="add" data-container="' + containerKey + '">' + ICON.plus + ' Add a place</button>' +
       '</div>'
@@ -657,9 +671,82 @@
     );
   }
 
+  /* How much of a single day is ticked off (all slots incl. eat & drink). */
+  function dayProgress(day) {
+    let total = 0, done = 0;
+    ["morning", "afternoon", "evening", "restaurants", "cafes"].forEach(function (slot) {
+      const key = day.id + ":" + slot;
+      placesFor(day[slot], key).forEach(function (p) { total++; if (p.done) done++; });
+    });
+    return { total: total, done: done, pct: total ? Math.round((done / total) * 100) : 0 };
+  }
+
+  /* Small SVG progress donut shown on each day card. */
+  function ringInner(pct) {
+    const r = 9;
+    const c = 2 * Math.PI * r;
+    const off = c * (1 - Math.max(0, Math.min(100, pct)) / 100);
+    return (
+      '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+        '<defs>' +
+          '<linearGradient id="ringGrad" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">' +
+            '<stop offset="0" stop-color="var(--seal)"/>' +
+            '<stop offset="0.55" stop-color="var(--gold)"/>' +
+            '<stop offset="1" stop-color="var(--jade)"/>' +
+          '</linearGradient>' +
+        '</defs>' +
+        '<circle class="ring-bg" cx="12" cy="12" r="' + r + '"/>' +
+        '<circle class="ring-fg" cx="12" cy="12" r="' + r + '" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '"/>' +
+      '</svg>' +
+      (pct >= 100
+        ? '<span class="ring-num ring-done">' + ICON.check + '</span>'
+        : '<span class="ring-num">' + pct + '</span>')
+    );
+  }
+  function ringHTML(day) {
+    const p = dayProgress(day);
+    if (!p.total) return '';
+    return '<span class="day-ring' + (p.pct >= 100 ? ' is-complete' : '') + '" data-act="daytoggle"' +
+      ' title="' + p.done + ' of ' + p.total + ' done" aria-label="' + p.pct + '% of this day done">' +
+      ringInner(p.pct) + '</span>';
+  }
+  function updateDayRing(dayEl) {
+    if (!dayEl) return;
+    const id = dayEl.getAttribute("data-day");
+    const day = DATA.days.find(function (d) { return d.id === id; });
+    if (!day) return;
+    const ring = dayEl.querySelector(".day-ring");
+    if (!ring) return;
+    const p = dayProgress(day);
+    ring.classList.toggle("is-complete", p.pct >= 100);
+    ring.setAttribute("title", p.done + " of " + p.total + " done");
+    ring.setAttribute("aria-label", p.pct + "% of this day done");
+
+    // Update the existing circle's offset in place so the CSS transition can
+    // animate from the old value to the new one. Replacing the SVG (innerHTML)
+    // would insert a fresh circle already at its target, so it would snap.
+    const fg = ring.querySelector(".ring-fg");
+    const num = ring.querySelector(".ring-num");
+    if (fg && num) {
+      const r = 9;
+      const c = 2 * Math.PI * r;
+      const off = c * (1 - Math.max(0, Math.min(100, p.pct)) / 100);
+      fg.setAttribute("stroke-dashoffset", off.toFixed(1));
+      if (p.pct >= 100) {
+        num.classList.add("ring-done");
+        num.innerHTML = ICON.check;
+      } else {
+        num.classList.remove("ring-done");
+        num.textContent = p.pct;
+      }
+    } else {
+      ring.innerHTML = ringInner(p.pct);
+    }
+  }
+
   function renderDay(day) {
     const city = DATA.cities[day.city];
-    const theme = CITY_THEME[day.city] || { g: "var(--line-strong)", emoji: "📍" };
+    const theme = CITY_THEME[day.city] || { g: "var(--line-strong)", emoji: "📍", c: "var(--line-strong)" };
     const dt = fmtDate(day.date);
     const photo = state.photos[day.id] || day.photo;
     const bg = photo
@@ -694,6 +781,7 @@
         '<div class="day-body">' +
           '<div class="day-head">' +
             reorderHandle +
+            ringHTML(day) +
             '<button class="day-focus" data-act="daytoggle">' +
               '<span class="day-meta">' +
                 '<span class="day-date-mini">' + weatherChip(day.city, day.date) + ' ' + dt.dow + ' · ' + dt.big + '</span>' +
@@ -734,7 +822,7 @@
       '</div>';
 
     return (
-      '<div class="day collapsed" data-day="' + day.id + '" data-leg="' + esc(day._leg || "") + '">' +
+      '<div class="day collapsed" data-day="' + day.id + '" data-leg="' + esc(day._leg || "") + '" data-city="' + esc(day.city) + '" style="--cc:' + (theme.c || "var(--jade)") + '">' +
         '<div class="day-inner">' + front + back + '</div>' +
       '</div>'
     );
@@ -870,11 +958,13 @@
     const view = state.view === "calendar" ? "calendar" : "list";
     let listHtml = "";
     let lastCity = null;
+    const cityOrder = [];
     effectiveDays().forEach(function (day) {
       if (day.city !== lastCity) {
         const c = DATA.cities[day.city];
-        listHtml += '<div class="leg-heading"><span>' + esc(c.flag + " " + c.name + " · " + c.code) + '</span></div>';
+        listHtml += '<div class="leg-heading" data-legcity="' + esc(day.city) + '"><span>' + esc(c.flag + " " + c.name + " · " + c.code) + '</span></div>';
         lastCity = day.city;
+        if (cityOrder.indexOf(day.city) === -1) cityOrder.push(day.city);
       }
       listHtml += renderDay(day);
     });
@@ -883,15 +973,68 @@
         '<button class="view-btn' + (view === "list" ? " active" : "") + '" data-view="list">' + ICON.list + ' List</button>' +
         '<button class="view-btn' + (view === "calendar" ? " active" : "") + '" data-view="calendar">' + ICON.calendar + ' Calendar</button>' +
       '</div>';
+    const filterChips =
+      '<div class="day-filters" role="group" aria-label="Filter days">' +
+        '<div class="filter-set">' +
+          '<button class="chip-filter' + (dayFilter === "all" ? " active" : "") + '" data-dayfilter="all">All</button>' +
+          '<button class="chip-filter' + (dayFilter === "todo" ? " active" : "") + '" data-dayfilter="todo">To-do</button>' +
+          '<button class="chip-filter' + (dayFilter === "done" ? " active" : "") + '" data-dayfilter="done">Done</button>' +
+        '</div>' +
+        '<div class="jump-set">' +
+          '<button class="chip-jump chip-today" data-jumptoday="1">📍 Today</button>' +
+          cityOrder.map(function (ck) {
+            const c = DATA.cities[ck];
+            const t = CITY_THEME[ck] || {};
+            return '<button class="chip-jump" data-jumpcity="' + esc(ck) + '" style="--cc:' + (t.c || "var(--jade)") + '">' + (t.emoji || c.flag) + ' ' + esc(c.name) + '</button>';
+          }).join("") +
+        '</div>' +
+      '</div>';
     const html =
       '<div id="todayBanner">' + todayBannerHTML() + '</div>' +
       toolbar +
       '<div class="days-list"' + (view === "calendar" ? " hidden" : "") + '>' +
+        filterChips +
         '<p class="days-reorder-hint">Want to move some days around? — drag the ⣿ handle (hold &amp; move) or tap ▲▼. Dates stay fixed; your plans move with you.</p>' +
         listHtml +
       '</div>' +
       '<div class="days-calendar"' + (view === "list" ? " hidden" : "") + '>' + renderCalendar() + '</div>';
     document.getElementById("panel-days").innerHTML = html;
+    applyDayFilter();
+  }
+
+  /* Client-side day filtering (All / To-do / Done). Hides leg headings that
+     end up with no visible days so the list stays tidy. */
+  function applyDayFilter() {
+    const panel = document.getElementById("panel-days");
+    if (!panel) return;
+    const todayISO = localISO(new Date());
+    const days = panel.querySelectorAll(".day");
+    days.forEach(function (el) {
+      const id = el.getAttribute("data-day");
+      const day = DATA.days.find(function (d) { return d.id === id; });
+      const p = day ? dayProgress(day) : { total: 0, pct: 0 };
+      // A day is "done" once everything is ticked off OR the date has passed —
+      // past days drop out of To-do automatically to reduce ongoing noise.
+      const past = day ? day.date < todayISO : false;
+      const complete = p.total > 0 && p.pct >= 100;
+      const isDone = complete || past;
+      let show = true;
+      if (dayFilter === "todo") show = !isDone;
+      else if (dayFilter === "done") show = isDone;
+      el.classList.toggle("filtered-out", !show);
+    });
+    // Hide any leg heading with no visible day after it (until the next heading).
+    const kids = Array.from(panel.querySelectorAll(".leg-heading, .day"));
+    let heading = null, headingHasVisible = false;
+    kids.forEach(function (el) {
+      if (el.classList.contains("leg-heading")) {
+        if (heading) heading.classList.toggle("filtered-out", !headingHasVisible);
+        heading = el; headingHasVisible = false;
+      } else if (!el.classList.contains("filtered-out")) {
+        headingHasVisible = true;
+      }
+    });
+    if (heading) heading.classList.toggle("filtered-out", !headingHasVisible);
   }
 
   /* Switch to the Days list, expand a given day card and scroll to it. */
@@ -1155,6 +1298,9 @@
   }
 
   /* ---------- Progress bar ---------- */
+  let progressAnim = null;      // current rAF handle
+  let progressShown = 0;        // exact (fractional) pct currently displayed
+
   function updateProgress() {
     let total = 0, done = 0;
     DATA.days.forEach(function (day) {
@@ -1163,9 +1309,56 @@
         placesFor(day[slot], key).forEach(function (p) { total++; if (p.done) done++; });
       });
     });
-    const pct = total ? Math.round((done / total) * 100) : 0;
-    document.getElementById("progressFill").style.width = pct + "%";
-    document.getElementById("progressLabel").textContent = done + " / " + total + " ticked off · " + pct + "%";
+    const exact = total ? (done / total) * 100 : 0;   // fractional target %
+    animateProgress(exact, done, total);
+  }
+
+  /* Tween the bar from its current fractional fill to the new one so it glides
+     upward smoothly. A single tick only moves ~0.5%, so we animate the exact
+     fraction (not a rounded integer) — otherwise small changes would snap or
+     be swallowed entirely. The label shows the rounded whole percentage. */
+  function animateProgress(targetPct, done, total) {
+    const fill = document.getElementById("progressFill");
+    const label = document.getElementById("progressLabel");
+    if (!fill || !label) return;
+
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const from = progressShown;
+    const diff = targetPct - from;
+
+    if (progressAnim) { cancelAnimationFrame(progressAnim); progressAnim = null; }
+
+    const setFrame = function (value) {
+      const clamped = Math.max(0, Math.min(100, value));
+      fill.style.width = clamped + "%";
+      label.textContent = done + " / " + total + " ticked off · " + Math.round(clamped) + "%";
+    };
+
+    if (reduce || Math.abs(diff) < 0.01) {
+      progressShown = targetPct;
+      setFrame(targetPct);
+      return;
+    }
+
+    // Constant glide speed (~55ms per percent), clamped so even a single tick
+    // gets a visible, unhurried slide and large jumps don't drag on forever.
+    const duration = Math.min(1400, Math.max(420, Math.abs(diff) * 55));
+    const start = performance.now();
+    const easeOut = function (t) { return 1 - Math.pow(1 - t, 3); };
+
+    function frame(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const cur = from + diff * easeOut(t);
+      setFrame(cur);
+      if (t < 1) {
+        progressAnim = requestAnimationFrame(frame);
+      } else {
+        progressShown = targetPct;
+        setFrame(targetPct);
+        progressAnim = null;
+      }
+    }
+    progressAnim = requestAnimationFrame(frame);
   }
 
   /* =====================================================================
@@ -1178,6 +1371,34 @@
       saveState();
       renderItinerary();
       window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const filterEl = e.target.closest("[data-dayfilter]");
+    if (filterEl) {
+      dayFilter = filterEl.getAttribute("data-dayfilter");
+      document.querySelectorAll("[data-dayfilter]").forEach(function (b) {
+        b.classList.toggle("active", b === filterEl);
+      });
+      applyDayFilter();
+      return;
+    }
+    const jumpTodayEl = e.target.closest("[data-jumptoday]");
+    if (jumpTodayEl) {
+      dayFilter = "all";
+      applyDayFilter();
+      focusToday();
+      return;
+    }
+    const jumpCityEl = e.target.closest("[data-jumpcity]");
+    if (jumpCityEl) {
+      const ck = jumpCityEl.getAttribute("data-jumpcity");
+      dayFilter = "all";
+      document.querySelectorAll("[data-dayfilter]").forEach(function (b) {
+        b.classList.toggle("active", b.getAttribute("data-dayfilter") === "all");
+      });
+      applyDayFilter();
+      const head = document.querySelector('.leg-heading[data-legcity="' + cssEscape(ck) + '"]');
+      if (head) head.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
     const calEl = e.target.closest("[data-calday]");
@@ -1432,8 +1653,16 @@
   function togglePlace(todo) {
     const id = todo.getAttribute("data-place");
     const containerKey = todo.getAttribute("data-container");
+    const dayEl = todo.closest(".day");
+    const wasComplete = dayEl ? dayEl.querySelector(".day-ring.is-complete") != null : false;
     const nowDone = !todo.classList.contains("done");
     todo.classList.toggle("done", nowDone);
+    if (nowDone) {
+      todo.classList.remove("just-checked");
+      void todo.offsetWidth; // restart the animation
+      todo.classList.add("just-checked");
+      setTimeout(function () { todo.classList.remove("just-checked"); }, 500);
+    }
 
     if (isAdded(containerKey, id)) {
       const p = state.added[containerKey].find(function (x) { return x.id === id; });
@@ -1443,6 +1672,57 @@
     }
     saveState();
     updateProgress();
+    updateDayRing(dayEl);
+    updateSlotTally(todo.closest(".slot"));
+    // Celebrate when a whole day just tipped over to 100%.
+    if (nowDone && dayEl && !wasComplete && dayEl.querySelector(".day-ring.is-complete")) {
+      celebrate(dayEl.querySelector(".day-ring"));
+    }
+  }
+
+  /* Lightweight, dependency-free confetti burst from an element's centre.
+     Uses the Web Animations API so pieces clean themselves up. */
+  function celebrate(originEl) {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const rect = originEl && originEl.getBoundingClientRect ? originEl.getBoundingClientRect() : null;
+    const cx = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const cy = rect ? rect.top + rect.height / 2 : window.innerHeight / 3;
+    const colors = ["#ec6f3a", "#e9b52b", "#2ba268", "#16a58f", "#e56f9c", "#b06fc0", "#8fbf3f"];
+    const layer = document.createElement("div");
+    layer.className = "confetti-layer";
+    document.body.appendChild(layer);
+    for (let i = 0; i < 34; i++) {
+      const piece = document.createElement("i");
+      piece.className = "confetti-piece";
+      piece.style.background = colors[i % colors.length];
+      piece.style.left = cx + "px";
+      piece.style.top = cy + "px";
+      if (i % 3 === 0) piece.style.borderRadius = "50%";
+      layer.appendChild(piece);
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 50 + Math.random() * 150;
+      const dx = Math.cos(angle) * dist;
+      const up = -(30 + Math.random() * 70);
+      const dy = Math.sin(angle) * dist * 0.5 + up;
+      const rot = Math.random() * 720 - 360;
+      const fall = Math.abs(dy) + 200 + Math.random() * 160;
+      piece.animate([
+        { transform: "translate(0,0) rotate(0deg)", opacity: 1 },
+        { transform: "translate(" + (dx * 0.6) + "px," + dy + "px) rotate(" + (rot * 0.5) + "deg)", opacity: 1, offset: 0.35 },
+        { transform: "translate(" + dx + "px," + fall + "px) rotate(" + rot + "deg)", opacity: 0 }
+      ], { duration: 1000 + Math.random() * 700, easing: "cubic-bezier(0.2,0.6,0.3,1)" });
+    }
+    setTimeout(function () { layer.remove(); }, 1900);
+  }
+
+  /* Keep a slot's "done/total" pill in sync after a tick. */
+  function updateSlotTally(slot) {
+    if (!slot) return;
+    const tally = slot.querySelector(".slot-tally");
+    if (!tally) return;
+    const items = slot.querySelectorAll(".todo");
+    const done = slot.querySelectorAll(".todo.done").length;
+    tally.textContent = done + "/" + items.length;
   }
 
   function setRating(todo, stars) {
@@ -1850,6 +2130,27 @@
   }
 
   /* ---------- Phrasebook ---------- */
+  const speechOK = typeof window !== "undefined" && "speechSynthesis" in window;
+
+  /* Speak a phrase in its native language using the device's voices. */
+  function speakPhrase(text, langCode, btn) {
+    if (!speechOK || !text) return;
+    try {
+      window.speechSynthesis.cancel();               // stop anything already playing
+      const u = new SpeechSynthesisUtterance(text);
+      if (langCode) u.lang = langCode;
+      u.rate = 0.85;                                  // a touch slower so it's learnable
+      const voices = window.speechSynthesis.getVoices();
+      const match = voices.find(function (v) { return langCode && v.lang && v.lang.toLowerCase().indexOf(langCode.toLowerCase().slice(0, 2)) === 0; });
+      if (match) u.voice = match;
+      if (btn) {
+        btn.classList.add("speaking");
+        u.onend = u.onerror = function () { btn.classList.remove("speaking"); };
+      }
+      window.speechSynthesis.speak(u);
+    } catch (e) { /* ignore unsupported */ }
+  }
+
   function renderPhrasebook() {
     let html = moreHeader("Phrasebook");
     html += '<div class="phrase-tabs">';
@@ -1858,12 +2159,21 @@
     });
     html += '</div>';
     const group = DATA.phrasebook[phraseLang] || DATA.phrasebook[0];
+    if (speechOK) {
+      html += '<p class="phrase-hint">Tap the speaker to hear how it sounds.</p>';
+    }
     html += '<div class="phrase-list">';
     group.phrases.forEach(function (p) {
+      const speak = speechOK
+        ? '<button class="phrase-speak" data-act="phrase-speak" data-text="' + esc(p.local) + '" aria-label="Hear &quot;' + esc(p.en) + '&quot;">' + ICON.speaker + '</button>'
+        : '';
       html += '<div class="phrase-item">' +
-        '<div class="phrase-en">' + esc(p.en) + '</div>' +
-        '<div class="phrase-local">' + esc(p.local) + '</div>' +
-        '<div class="phrase-pron">' + esc(p.pron) + '</div>' +
+        '<div class="phrase-text">' +
+          '<div class="phrase-en">' + esc(p.en) + '</div>' +
+          '<div class="phrase-local">' + esc(p.local) + '</div>' +
+          '<div class="phrase-pron">' + esc(p.pron) + '</div>' +
+        '</div>' +
+        speak +
       '</div>';
     });
     html += '</div>';
@@ -2046,6 +2356,12 @@
     }
     if (act === "emg-map") { openMaps(actEl.getAttribute("data-q"), "", ""); return; }
     if (act === "phrase-lang") { phraseLang = parseInt(actEl.getAttribute("data-lang"), 10) || 0; renderPhrasebook(); return; }
+    if (act === "phrase-speak") {
+      const group = DATA.phrasebook[phraseLang] || DATA.phrasebook[0];
+      speakPhrase(actEl.getAttribute("data-text"), group && group.code, actEl);
+      if (navigator.vibrate) navigator.vibrate(8);
+      return;
+    }
     if (act === "doc-add") { ensureDocInput().click(); return; }
     if (act === "doc-open") {
       const row = actEl.closest(".doc-item");
@@ -2086,6 +2402,8 @@
     tabs.forEach(function (tab) {
       tab.addEventListener("click", function () {
         const target = tab.getAttribute("data-target");
+        // Tiny haptic tap on devices that support it.
+        if (navigator.vibrate) navigator.vibrate(12);
         if (target === "more") { moreView = null; renderMore(); }
         tabs.forEach(function (t) { t.classList.toggle("active", t === tab); });
         document.querySelectorAll(".panel").forEach(function (p) {
