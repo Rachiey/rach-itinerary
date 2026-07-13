@@ -210,16 +210,13 @@ const DAYS = [
       place("d8-m1", "Depart 1.15pm Shanghai Pudong (PVG) → Osaka Kansai (KIX)", { note: "Flight time ~2h30. Arrive 4.35pm local time." }),
     ],
     afternoon: [
-      place("d8-a1", "Repack + confirm flight to Osaka (KIX)"),
+      place("d8-a1", "Arrive 4.35pm Osaka Airport, check in Namba stay"),
     ],
     evening: [
-      place("d8-e1", "Early night before travel"),
+      place("d8-e1", "Explore local area"),
     ],
     restaurants: [
-      place("d8-r1", "Comfort dumplings nearby"),
-    ],
-    cafes: [
-      place("d8-c1", "Manner Coffee for the road"),
+      place("d8-r1", "Cocoichi"),
     ],
   },
 
@@ -239,11 +236,23 @@ const DAYS = [
       place("d9-e2", "Casual street-food crawl — takoyaki & okonomiyaki"),
     ],
     restaurants: [
-      place("d9-r1", "Mizuno (okonomiyaki)", { open: "11:00", close: "22:00" }),
-      place("d9-r2", "Kukuru (takoyaki)", { open: "12:00", close: "23:00" }),
+      place("d9-r3", "Salmon Kat Namba"),
+      place("d9-r4", "Tendon Tenya"),
+      place("d9-r5", "Gyukatsu Motomura"),
+      place("d9-r6", "Gyukatsu Tomita"),
+      place("d9-r7", "Nikutareya Meat Bal Namba"),
+      place("d9-r8", "Wagyu Itaden"),
+      place("d9-r9", "Shabushabu New Kobe"),
+      place("d9-r10", "Sukiyaki Shabushabu Daibokujyo"),
     ],
     cafes: [
       place("d9-c1", "% Arabica — Osaka"),
+      place("d9-c2", "Rikuro’s Cheesecake"),
+      place("d9-c3", "Maccha House"),
+      place("d9-c4", "Lazzli Cafe"),
+      place("d9-c5", "Sakimoto Bakery"),
+      place("d9-c6", "Sakimoto Coffee"),
+      place("d9-c7", "Chaya Sizuku"),
     ],
   },
   {
@@ -262,10 +271,15 @@ const DAYS = [
       place("d10-e1", "Have dinner in Kyoto or back in Osaka (Namba)"),
     ],
     restaurants: [
-      place("d10-r1", "Kushikatsu Daruma, Namba", { open: "11:00", close: "22:30", note: "No double-dipping the sauce!" }),
+      place("d10-r2", "Tonkatsu Kiyoshi"),
+      place("d10-r3", "Gyumon Nara"),
+      place("d10-r4", "All You Can Eat Shabu Shabu"),
     ],
     cafes: [
-      place("d10-c1", "Lilo Coffee Roasters", { open: "10:00", close: "22:00" }),
+      place("d10-c2", "Good Knight Ice NARA"),
+      place("d10-c3", "Over Macaron"),
+      place("d10-c4", "Chami"),
+      place("d10-c5", "GRAN CHA"),
     ],
   },
   {
@@ -284,10 +298,22 @@ const DAYS = [
       place("d11-e1", "Dinner in Dotonburi / Namba"),
     ],
     restaurants: [
-      place("d11-r1", "Kyoto kaiseki or Gion ramen"),
+      place("d9-r3", "Salmon Kat Namba"),
+      place("d9-r4", "Tendon Tenya"),
+      place("d9-r5", "Gyukatsu Motomura"),
+      place("d9-r6", "Gyukatsu Tomita"),
+      place("d9-r7", "Nikutareya Meat Bal Namba"),
+      place("d9-r8", "Wagyu Itaden"),
+      place("d9-r9", "Shabushabu New Kobe"),
+      place("d9-r10", "Sukiyaki Shabushabu Daibokujyo"),
     ],
     cafes: [
-      place("d11-c1", "Nakatanidou mochi (Nara)", { open: "10:00", close: "19:00" }),
+      place("d9-c2", "Rikuro’s Cheesecake"),
+      place("d9-c3", "Maccha House"),
+      place("d9-c4", "Lazzli Cafe"),
+      place("d9-c5", "Sakimoto Bakery"),
+      place("d9-c6", "Sakimoto Coffee"),
+      place("d9-c7", "Chaya Sizuku"),
     ],
   },
   {
