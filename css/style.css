@@ -1228,6 +1228,65 @@ body.is-dragging-day {
   transform: rotate(180deg);
 }
 
+/* Rating + memory note — only for restaurants & cafés, revealed once ticked off */
+.todo-rating {
+  display: none;
+  padding: 2px 12px 10px 44px;
+}
+.todo.done .todo-rating {
+  display: block;
+}
+.stars {
+  display: flex;
+  gap: 4px;
+}
+.star {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--line-strong);
+  transition:
+    transform 0.12s ease,
+    color 0.12s ease;
+}
+.star svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+}
+.star.filled {
+  color: var(--gold);
+}
+.star.filled svg {
+  fill: currentColor;
+}
+.star:hover {
+  transform: scale(1.15);
+  color: var(--gold);
+}
+.rating-note {
+  width: 100%;
+  margin-top: 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 7px 9px;
+  background: var(--card);
+  color: var(--ink);
+  resize: vertical;
+  min-height: 40px;
+  font: inherit;
+}
+.rating-note:focus {
+  outline: none;
+  border-color: var(--jade);
+}
+
 /* Expanded detail editor */
 .todo-detail {
   display: none;
@@ -1896,7 +1955,9 @@ body.is-dragging-day {
   border-radius: var(--radius);
   box-shadow: var(--shadow-soft);
   padding: 16px 16px;
-  transition: transform 0.12s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.15s ease;
 }
 .tool-card:active {
   transform: scale(0.98);

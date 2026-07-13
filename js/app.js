@@ -391,6 +391,7 @@
     file: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
     trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
     ellipsis: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
+    star: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>',
   };
   const NAV_ICON = {
     days: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
@@ -483,6 +484,7 @@
     const d = p.details || {};
     const hours = formatHours(d.open, d.close);
     const isItin = !!travelInfo;
+    const isFood = /:(restaurants|cafes)$/.test(containerKey || "");
     const travel = (d.travel == null ? "" : String(d.travel)).trim();
     const travelChip = (isItin && travel)
       ? '<div class="travel-chip">' + ICON.walk + ' ' + esc(travel) + ' min ' + travelLabel(travelInfo.first, d.travelFrom) + '</div>'
@@ -501,6 +503,7 @@
           '<div class="todo-chips">' + travelChip + hoursChip + '</div>' +
           '<button class="todo-expand" data-act="expand" aria-label="Details">' + ICON.chevron + '</button>' +
         '</div>' +
+        (isFood ? renderRating(p) : "") +
         '<div class="todo-detail">' +
           '<div class="detail-grid">' +
             field("Opens", "open", d.open, "e.g. 09:00") +
@@ -531,6 +534,30 @@
       ? '<textarea data-field="' + key + '" placeholder="' + esc(ph) + '">' + esc(val) + '</textarea>'
       : '<input data-field="' + key + '" value="' + esc(val) + '" placeholder="' + esc(ph) + '">';
     return '<div class="' + cls + '"><label>' + label + '</label>' + input + '</div>';
+  }
+
+  /* =====================================================================
+     RENDER: star rating + memory note for a restaurant / cafe.
+     Only meaningful once the place is ticked off (CSS hides it until then),
+     so tapping a star or jotting a note recalls whether it was any good.
+     ===================================================================== */
+  function renderRating(p) {
+    const d = p.details || {};
+    const rating = Math.max(0, Math.min(5, parseInt(d.rating, 10) || 0));
+    let stars = "";
+    for (let n = 1; n <= 5; n++) {
+      stars +=
+        '<button type="button" class="star' + (n <= rating ? " filled" : "") + '"' +
+          ' data-act="rate" data-star="' + n + '"' +
+          ' aria-label="Rate ' + n + ' out of 5">' + ICON.star + '</button>';
+    }
+    return (
+      '<div class="todo-rating">' +
+        '<div class="stars" role="group" aria-label="Your rating out of 5">' + stars + '</div>' +
+        '<textarea class="rating-note" data-field="comment" rows="2"' +
+          ' placeholder="Write a note...">' + esc(d.comment) + '</textarea>' +
+      '</div>'
+    );
   }
 
   function renderSlot(day, slotKey, label, dotClass, seq) {
@@ -1225,6 +1252,11 @@
       togglePlace(todo);
       return;
     }
+    if (act === "rate") {
+      const todo = actEl.closest(".todo");
+      setRating(todo, parseInt(actEl.getAttribute("data-star"), 10));
+      return;
+    }
     if (act === "expand") {
       const todo = actEl.closest(".todo");
       todo.classList.toggle("open");
@@ -1411,6 +1443,42 @@
     }
     saveState();
     updateProgress();
+  }
+
+  function setRating(todo, stars) {
+    const id = todo.getAttribute("data-place");
+    const containerKey = todo.getAttribute("data-container");
+    let rating = Math.max(1, Math.min(5, stars || 0));
+    // Tapping the current rating again clears it (toggle off).
+    const current = parseInt(readPlaceDetail(todo, "rating"), 10) || 0;
+    if (rating === current) rating = 0;
+
+    if (isAdded(containerKey, id)) {
+      const p = state.added[containerKey].find(function (x) { return x.id === id; });
+      if (p) { p.details = p.details || {}; p.details.rating = rating; }
+    } else {
+      const o = ensureOver(id);
+      o.details = o.details || {};
+      o.details.rating = rating;
+    }
+    saveState();
+
+    // Reflect the new rating on the stars without a full re-render.
+    const starEls = todo.querySelectorAll(".stars .star");
+    starEls.forEach(function (el, i) {
+      el.classList.toggle("filled", (i + 1) <= rating);
+    });
+  }
+
+  function readPlaceDetail(todo, field) {
+    const id = todo.getAttribute("data-place");
+    const containerKey = todo.getAttribute("data-container");
+    if (isAdded(containerKey, id)) {
+      const p = (state.added[containerKey] || []).find(function (x) { return x.id === id; });
+      return p && p.details ? p.details[field] : undefined;
+    }
+    const o = state.over[id];
+    return o && o.details ? o.details[field] : undefined;
   }
 
   function updatePlaceDetail(todo, field, value) {
