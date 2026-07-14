@@ -89,10 +89,12 @@ html {
   scrollbar-gutter: stable both-edges;
   /* Stop rubber-band overscroll so the fixed navbar can't detach at the ends. */
   overscroll-behavior: none;
-  /* Full-bleed background photo. Painted on the root element so it is
-     propagated to the whole viewport canvas — including the reserved
-     scrollbar gutters — leaving no uncovered strip at the edges.
-     Mobile image is the default; desktop swaps in at the breakpoint. */
+  /* Fill the reserved scrollbar gutters with the same photo. A fixed pseudo
+     (body::after) can't paint the gutters — only the root element's own
+     background reaches them. These gutters only exist on desktop (mobile uses
+     overlay scrollbars, 0px gutter), where `background-attachment: fixed` is
+     reliable — the iOS-Safari fixed-attachment bug never applies here. Sized
+     cover/center at viewport size so it matches body::after seamlessly. */
   background-color: var(--paper);
   background-image: url("../assets/background/mobileBG.png");
   background-position: center;
@@ -138,8 +140,26 @@ body::before {
     radial-gradient(circle at 12% 6%, rgba(86, 197, 205, 0.1), transparent 38%);
 }
 
+/* Full-bleed background photo. Rendered as a fixed pseudo-element rather than
+   via `background-attachment: fixed` on the body, which iOS Safari mis-scales
+   / fails to paint. This reliably pins the photo to the viewport on every
+   browser and covers the whole content area. The thin scrollbar gutters at
+   the very edges (desktop only) are filled by the html background above. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image: url("../assets/background/mobileBG.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 @media (min-width: 620px) {
-  html {
+  html,
+  body::after {
     background-image: url("../assets/background/desktopBG.png");
   }
 }
