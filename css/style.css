@@ -479,6 +479,13 @@ select {
 .day {
   perspective: 1600px;
   margin-bottom: 18px;
+  position: relative;
+}
+/* When a collapsed card's swap popover is showing, lift the whole card above
+   its neighbours so the popover isn't covered by the card above/below. */
+.day.collapsed:hover,
+.day.collapsed:focus-within {
+  z-index: 6;
 }
 .day-inner {
   position: relative;
@@ -732,6 +739,12 @@ select {
 .day.collapsed .perf {
   display: none;
 }
+/* The photo is hidden when collapsed, so we can safely let the card overflow
+   here — this lets the swap-arrows popover escape the short card instead of
+   being clipped by the face's overflow:hidden. */
+.day.collapsed .day-face {
+  overflow: visible;
+}
 .day.collapsed .day-body {
   padding: 12px 14px;
 }
@@ -786,33 +799,114 @@ select {
   width: 18px;
   height: 18px;
 }
+/* Drag-to-reorder is fiddly on touch, so hide the handle there and let people
+   use the up/down reorder control instead. Mouse/desktop users keep drag. */
+@media (pointer: coarse) {
+  .day-handle {
+    display: none;
+  }
+}
 .day-move {
   flex: none;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  margin-left: 4px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: visible;
+}
+/* Styled hover/focus popover explaining the swap control */
+.day-move[data-pop]::after {
+  content: attr(data-pop);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  z-index: 30;
+  width: max-content;
+  max-width: 180px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  text-align: left;
+  box-shadow: var(--shadow-soft);
+  opacity: 0;
+  transform: translateY(4px) scale(0.96);
+  transform-origin: bottom right;
+  transition:
+    opacity 0.14s ease,
+    transform 0.14s ease;
+  pointer-events: none;
+}
+/* Little arrow tail pointing down at the control */
+.day-move[data-pop]::before {
+  content: "";
+  position: absolute;
+  bottom: calc(100% + 3px);
+  right: 12px;
+  z-index: 30;
+  border: 5px solid transparent;
+  border-top-color: var(--ink);
+  opacity: 0;
+  transition: opacity 0.14s ease;
+  pointer-events: none;
+}
+.day-move:hover::after,
+.day-move:focus-within::after {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.day-move:hover::before,
+.day-move:focus-within::before {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .day-move[data-pop]::after {
+    transition: opacity 0.14s ease;
+    transform: none;
+  }
+}
+/* Touch devices can't hover; the popover would need a tap so skip it there */
+@media (pointer: coarse) {
+  .day-move[data-pop]::after,
+  .day-move[data-pop]::before {
+    display: none;
+  }
 }
 .move-btn {
-  width: 28px;
-  height: 19px;
+  width: 30px;
+  height: 30px;
   display: grid;
   place-items: center;
   color: var(--ink-soft);
-  background: var(--paper-2);
-  border: 1px solid var(--line);
-  border-radius: 6px;
+  background: transparent;
+  border: none;
   transition:
     color 0.12s,
-    border-color 0.12s,
     background-color 0.12s;
 }
+.move-btn + .move-btn {
+  border-left: 1px solid var(--line);
+}
+.move-btn:first-child {
+  border-radius: 999px 0 0 999px;
+}
+.move-btn:last-child {
+  border-radius: 0 999px 999px 0;
+}
 .move-btn svg {
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
 }
 .move-btn:not(:disabled):hover {
   color: var(--seal);
-  border-color: var(--line-strong);
+  background: var(--paper);
 }
 .move-btn:disabled {
   opacity: 0.3;

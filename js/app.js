@@ -338,13 +338,11 @@
     }
     if (todayISO < first) {
       const n = daysBetween(todayISO, first);
-      const c = DATA.cities[days[0].city] || {};
-      const when = n === 0 ? "<strong>today</strong>" : n === 1 ? "<strong>tomorrow</strong>" : "in <strong>" + n + " days</strong>";
+      const when = n === 0 ? "<strong>today</strong>" : n === 1 ? "<strong>tomorrow</strong>" : "in&nbsp;<strong>" + n + " days</strong>";
       return '<div class="today-banner is-before">' +
         '<span class="today-tag">✈️</span>' +
         '<span class="today-main">' +
           '<span class="today-line">Trip starts ' + when + '</span>' +
-          '<span class="today-focus">' + esc(fmtDate(first).dow + " " + fmtDate(first).big) + ' · ' + esc(c.name || "") + '</span>' +
         '</span>' +
       '</div>';
     }
@@ -386,8 +384,8 @@
     sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.9" y1="4.9" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.1" y2="19.1"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.9" y1="19.1" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.1" y2="4.9"/></svg>',
     moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
     grip: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>',
-    up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg>',
-    down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
+    up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="6"/><polyline points="6 12 12 6 18 12"/></svg>',
+    down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="18"/><polyline points="6 12 12 18 18 12"/></svg>',
     back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>',
     suitcase: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M9 21v-14"/><path d="M15 21v-14"/></svg>',
     wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>',
@@ -762,9 +760,9 @@
       ? '<span class="day-handle" data-act="draghandle" title="Drag to reorder within this leg">' + ICON.grip + '</span>'
       : '';
     const reorderMoves = canReorder
-      ? '<span class="day-move">' +
-          '<button class="move-btn" type="button" data-act="moveup"' + (day._first ? ' disabled' : '') + ' aria-label="Move to an earlier date">' + ICON.up + '</button>' +
-          '<button class="move-btn" type="button" data-act="movedown"' + (day._last ? ' disabled' : '') + ' aria-label="Move to a later date">' + ICON.down + '</button>' +
+      ? '<span class="day-move" data-pop="Swap days &mdash; the dates stay fixed, only your plans move">' +
+          '<button class="move-btn" type="button" data-act="moveup"' + (day._first ? ' disabled' : '') + ' aria-label="Swap with the day before">' + ICON.up + '</button>' +
+          '<button class="move-btn" type="button" data-act="movedown"' + (day._last ? ' disabled' : '') + ' aria-label="Swap with the day after">' + ICON.down + '</button>' +
         '</span>'
       : '';
 
@@ -994,7 +992,7 @@
       toolbar +
       '<div class="days-list"' + (view === "calendar" ? " hidden" : "") + '>' +
         filterChips +
-        '<p class="days-reorder-hint">Want to move some days around? — drag the ⣿ handle (hold &amp; move) or tap ▲▼. Dates stay fixed; your plans move with you.</p>' +
+        '<p class="days-reorder-hint">Reordering days keeps the dates fixed — only your plans move with you.</p>' +
         listHtml +
       '</div>' +
       '<div class="days-calendar"' + (view === "list" ? " hidden" : "") + '>' + renderCalendar() + '</div>';
