@@ -1,60 +1,47 @@
-/* =====================================================================
-   style.css — Boarding-pass inspired design system
-   Mobile-first. Vanilla. No build step.
-   ===================================================================== */
-
-/* ---------- Design tokens ---------- */
 :root {
-  /* Paper & ink */
-  --paper: #f0f6e8; /* fresh garden paper */
-  --paper-2: #f8fcf1; /* lighter card paper */
+  --paper: #f0f6e8;
+  --paper-2: #f8fcf1;
   --card: #fdfff8;
-  --ink: #1a2417; /* deep garden ink */
+  --ink: #1a2417;
   --ink-soft: #47523f;
   --ink-faint: #7e8b72;
 
-  /* Accents — sun-ripe citrus */
-  --seal: #ec6f3a; /* zesty tangerine */
+  --seal: #ec6f3a;
   --seal-dark: #d1531f;
-  --jade: #2ba268; /* fresh leaf green */
+  --jade: #2ba268;
   --jade-soft: #d3efdb;
-  --gold: #e9b52b; /* sunny lemon */
+  --gold: #e9b52b;
   --gold-soft: #fbeec1;
 
-  /* Lines */
   --line: #dde8cf;
   --line-strong: #c3d4b0;
 
-  /* Shape */
   --radius: 20px;
   --radius-lg: 26px;
   --shadow: 0 8px 26px rgba(40, 92, 44, 0.14);
   --shadow-soft: 0 3px 14px rgba(40, 92, 44, 0.1);
 
-  /* Layout */
   --nav-h: 68px;
   --max-w: 560px;
 
-  /* Fonts */
   --f-display: "Fraunces", Georgia, serif;
   --f-body: "Inter", system-ui, -apple-system, sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
-/* ---------- Dark theme ---------- */
 [data-theme="dark"] {
-  --paper: #101710; /* deep garden night */
-  --paper-2: #172013; /* raised paper */
-  --card: #1c2618; /* card surface */
-  --ink: #eaf3df; /* fresh off-white ink */
+  --paper: #101710;
+  --paper-2: #172013;
+  --card: #1c2618;
+  --ink: #eaf3df;
   --ink-soft: #bccbac;
   --ink-faint: #859379;
 
-  --seal: #ff9c5a; /* bright tangerine */
+  --seal: #ff9c5a;
   --seal-dark: #e37e3d;
-  --jade: #5fd39a; /* bright leaf */
+  --jade: #5fd39a;
   --jade-soft: #1e3a2b;
-  --gold: #f0cf5c; /* bright lemon */
+  --gold: #f0cf5c;
   --gold-soft: #33301a;
 
   --line: #2b3623;
@@ -63,7 +50,6 @@
   --shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
   --shadow-soft: 0 3px 14px rgba(0, 0, 0, 0.4);
 }
-/* Dark-mode component overrides (hardcoded light values) */
 [data-theme="dark"] .booking.urg-now .booking-when {
   background: #3a201d;
   border-color: #5c322d;
@@ -73,7 +59,6 @@
   border-color: #544427;
 }
 
-/* ---------- Reset ---------- */
 *,
 *::before,
 *::after {
@@ -84,17 +69,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  /* Reserve the scrollbar gutter on both sides so the centred layout stays
-     truly centred and doesn't shift between short/tall tabs (0px on mobile). */
-  scrollbar-gutter: stable both-edges;
-  /* Stop rubber-band overscroll so the fixed navbar can't detach at the ends. */
   overscroll-behavior: none;
-  /* Fill the reserved scrollbar gutters with the same photo. A fixed pseudo
-     (body::after) can't paint the gutters — only the root element's own
-     background reaches them. These gutters only exist on desktop (mobile uses
-     overlay scrollbars, 0px gutter), where `background-attachment: fixed` is
-     reliable — the iOS-Safari fixed-attachment bug never applies here. Sized
-     cover/center at viewport size so it matches body::after seamlessly. */
   background-color: var(--paper);
   background-image: url("../assets/background/mobileBG.png");
   background-position: center;
@@ -118,8 +93,6 @@ body {
     color 0.3s ease;
 }
 
-/* Ambient gradient wash — pinned to the viewport (not the document) so it
-   never re-scales as tab content changes height. */
 body::before {
   content: "";
   position: fixed;
@@ -140,11 +113,22 @@ body::before {
     radial-gradient(circle at 12% 6%, rgba(86, 197, 205, 0.1), transparent 38%);
 }
 
-/* Full-bleed background photo. Rendered as a fixed pseudo-element rather than
-   via `background-attachment: fixed` on the body, which iOS Safari mis-scales
-   / fails to paint. This reliably pins the photo to the viewport on every
-   browser and covers the whole content area. The thin scrollbar gutters at
-   the very edges (desktop only) are filled by the html background above. */
+[data-theme="dark"] body::before {
+  background:
+    linear-gradient(rgba(9, 14, 8, 0.72), rgba(9, 14, 8, 0.72)),
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(233, 181, 43, 0.14),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 0% 100%,
+      rgba(43, 162, 104, 0.12),
+      transparent 46%
+    ),
+    radial-gradient(circle at 12% 6%, rgba(86, 197, 205, 0.08), transparent 38%);
+}
+
 body::after {
   content: "";
   position: fixed;
@@ -182,7 +166,6 @@ select {
   font-size: 16px;
 }
 
-/* ---------- App shell ---------- */
 .app {
   max-width: var(--max-w);
   margin: 0 auto;
@@ -190,7 +173,6 @@ select {
     calc(16px + env(safe-area-inset-left, 0px));
 }
 
-/* ---------- Header / masthead ---------- */
 .masthead {
   padding: calc(26px + env(safe-area-inset-top, 0px)) 4px 14px;
   text-align: center;
@@ -243,7 +225,7 @@ select {
   line-height: 1.02;
   margin-top: 14px;
   letter-spacing: -0.015em;
-  color: var(--seal); /* fallback where background-clip is unsupported */
+  color: var(--seal);
   background: linear-gradient(
     100deg,
     var(--jade) 0%,
@@ -259,7 +241,6 @@ select {
   font-size: 13px;
   color: var(--ink-faint);
 }
-/* Currency chip in the masthead */
 .masthead .fx {
   display: inline-flex;
   align-items: center;
@@ -285,7 +266,6 @@ select {
   white-space: nowrap;
 }
 
-/* ---------- Panels ---------- */
 .panel {
   display: none;
   padding-top: 6px;
@@ -312,7 +292,6 @@ select {
   margin: 18px 4px 12px;
 }
 
-/* City heading between legs of the trip */
 .leg-heading {
   display: flex;
   align-items: center;
@@ -339,9 +318,6 @@ select {
   white-space: nowrap;
 }
 
-/* =====================================================================
-   DAYS TOOLBAR + CALENDAR VIEW
-   ===================================================================== */
 .days-toolbar {
   display: flex;
   gap: 6px;
@@ -462,7 +438,6 @@ select {
   text-transform: uppercase;
   opacity: 0.85;
 }
-/* Today — glowy highlight */
 .cal-cell.is-today {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
@@ -512,7 +487,6 @@ select {
   font-size: 11px;
   color: var(--ink-faint);
 }
-/* Brief highlight when a day is opened from the calendar */
 .day.just-opened .day-face {
   animation: day-flash 1.6s ease-out;
 }
@@ -527,16 +501,11 @@ select {
   }
 }
 
-/* =====================================================================
-   DAY CARD — boarding pass with flip
-   ===================================================================== */
 .day {
   perspective: 1600px;
   margin-bottom: 18px;
   position: relative;
 }
-/* When a collapsed card's swap popover is showing, lift the whole card above
-   its neighbours so the popover isn't covered by the card above/below. */
 .day.collapsed:hover,
 .day.collapsed:focus-within {
   z-index: 6;
@@ -578,10 +547,6 @@ select {
   -webkit-backface-visibility: hidden;
 }
 
-/* iOS Safari leaks the reversed front through the back (backface-visibility
-   is unreliable when a face contains its own stacking contexts — weather
-   chip, pills, etc.). Belt-and-braces: also fade whichever side is turned
-   away, switching opacity at the midpoint of the 0.6s flip. */
 .day-inner > .day-face,
 .day-back {
   transition: opacity 0s linear 0.3s;
@@ -596,7 +561,6 @@ select {
   opacity: 1;
 }
 
-/* Photo header */
 .day-photo {
   position: relative;
   height: 148px;
@@ -650,7 +614,6 @@ select {
   line-height: 1;
 }
 
-/* Weather chip — inline next to the city name / date */
 .wx {
   display: inline-flex;
   align-items: center;
@@ -681,7 +644,6 @@ select {
   letter-spacing: 0;
 }
 
-/* Same chip inside the expanded day-head — different background */
 .day-head .wx {
   background: var(--paper-2);
   border-color: var(--line);
@@ -695,12 +657,10 @@ select {
   font-size: 12px;
 }
 
-/* Subtle italic hint that historical avg is being shown */
 .wx[data-wx-kind="avg"] .wx-t::after {
   content: "";
 }
 
-/* Perforation between photo/header and body */
 .perf {
   position: relative;
   height: 0;
@@ -725,7 +685,6 @@ select {
   right: -24px;
 }
 
-/* Card body */
 .day-body {
   padding: 16px 16px 18px;
 }
@@ -781,21 +740,16 @@ select {
   transform: rotate(180deg);
   color: var(--jade);
 }
-/* Collapsed cards hide everything below the title for easy scanning */
 .day-collapse {
   overflow: hidden;
 }
 .day.collapsed .day-collapse {
   display: none;
 }
-/* Collapsed: drop the photo + perforation and show a thin date+title row */
 .day.collapsed .day-photo,
 .day.collapsed .perf {
   display: none;
 }
-/* The photo is hidden when collapsed, so we can safely let the card overflow
-   here — this lets the swap-arrows popover escape the short card instead of
-   being clipped by the face's overflow:hidden. */
 .day.collapsed .day-face {
   overflow: visible;
 }
@@ -817,7 +771,6 @@ select {
 .day.collapsed .day-focus .city-tag {
   display: none;
 }
-/* Reorder controls (drag handle + up/down) */
 .day-head {
   display: flex;
   align-items: center;
@@ -853,8 +806,6 @@ select {
   width: 18px;
   height: 18px;
 }
-/* Drag-to-reorder is fiddly on touch, so hide the handle there and let people
-   use the up/down reorder control instead. Mouse/desktop users keep drag. */
 @media (pointer: coarse) {
   .day-handle {
     display: none;
@@ -871,7 +822,6 @@ select {
   border-radius: 999px;
   overflow: visible;
 }
-/* Styled hover/focus popover explaining the swap control */
 .day-move[data-pop]::after {
   content: attr(data-pop);
   position: absolute;
@@ -898,7 +848,6 @@ select {
     transform 0.14s ease;
   pointer-events: none;
 }
-/* Little arrow tail pointing down at the control */
 .day-move[data-pop]::before {
   content: "";
   position: absolute;
@@ -926,7 +875,6 @@ select {
     transform: none;
   }
 }
-/* Touch devices can't hover; the popover would need a tap so skip it there */
 @media (pointer: coarse) {
   .day-move[data-pop]::after,
   .day-move[data-pop]::before {
@@ -969,9 +917,7 @@ select {
 .day.dragging {
   opacity: 0.5;
 }
-/* While a day is being dragged, stop the whole list selecting text */
-body.is-dragging-day {
-  -webkit-user-select: none;
+body.is-dragging-day {  -webkit-user-select: none;
   user-select: none;
   cursor: grabbing;
 }
@@ -996,11 +942,6 @@ body.is-dragging-day {
   margin-bottom: 12px;
 }
 
-/* =====================================================================
-   PLAYFUL + FUNCTIONAL: per-day ring, filters, emoji slots, sticky head
-   ===================================================================== */
-
-/* Per-day progress donut in the day header */
 .day-ring {
   flex: none;
   position: relative;
@@ -1074,7 +1015,6 @@ body.is-dragging-day {
   }
 }
 
-/* Filter + jump bar */
 .day-filters {
   display: flex;
   flex-direction: column;
@@ -1146,7 +1086,6 @@ body.is-dragging-day {
   display: none !important;
 }
 
-/* Emoji slot headers + tally */
 .slot-emoji {
   width: 24px;
   height: 24px;
@@ -1194,7 +1133,6 @@ body.is-dragging-day {
   border-left-color: color-mix(in srgb, var(--jade) 45%, var(--line));
 }
 
-/* Sticky day header while an expanded day is scrolled */
 .day:not(.collapsed):not(.flipped) .day-head {
   position: sticky;
   top: 6px;
@@ -1206,7 +1144,6 @@ body.is-dragging-day {
   border-radius: 14px;
 }
 
-/* Tick-off pop */
 .todo.just-checked .check {
   animation: check-pop 0.45s cubic-bezier(0.2, 1.5, 0.4, 1);
 }
@@ -1233,7 +1170,6 @@ body.is-dragging-day {
   }
 }
 
-/* Confetti burst when a whole day hits 100% */
 .confetti-layer {
   position: fixed;
   inset: 0;
@@ -1249,7 +1185,6 @@ body.is-dragging-day {
   will-change: transform, opacity;
 }
 
-/* "Day completed!" flash — dims the card for a beat and shows a centred badge */
 .day-complete-flash {
   position: absolute;
   inset: 0;
@@ -1318,7 +1253,6 @@ body.is-dragging-day {
   }
 }
 
-/* Sunrise / sunset row on the expanded day */
 .sun-times {
   display: flex;
   gap: 14px;
@@ -1337,7 +1271,6 @@ body.is-dragging-day {
   gap: 5px;
 }
 
-/* Today banner at the top of the Days tab */
 .today-banner {
   display: flex;
   align-items: center;
@@ -1377,7 +1310,6 @@ body.is-dragging-day {
   font-size: 20px;
   padding: 0;
 }
-/* Pre-trip countdown & welcome-home read as a quiet caption, not a big card */
 .today-banner.is-before,
 .today-banner.is-after {
   border: none;
@@ -1447,14 +1379,12 @@ body.is-dragging-day {
   width: 20px;
   height: 20px;
 }
-/* The weather chip sits on a light background in the banner */
 .today-line .wx {
   background: var(--paper);
   border-color: var(--line);
   color: var(--ink);
 }
 
-/* Hotel bar */
 .hotel-bar {
   display: flex;
   align-items: center;
@@ -1562,7 +1492,6 @@ body.is-dragging-day {
   border-radius: 12px 12px 0 0;
 }
 
-/* Hotels panel — one card per stay */
 .hotel-card {
   margin-bottom: 16px;
 }
@@ -1587,7 +1516,6 @@ body.is-dragging-day {
   white-space: nowrap;
 }
 
-/* Time-of-day blocks */
 .slot {
   margin-top: 14px;
 }
@@ -1619,7 +1547,6 @@ body.is-dragging-day {
   color: var(--ink-soft);
 }
 
-/* To-do items */
 .todo {
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -1722,7 +1649,6 @@ body.is-dragging-day {
   transform: rotate(180deg);
 }
 
-/* Rating + memory note — only for restaurants & cafés, revealed once ticked off */
 .todo-rating {
   display: none;
   padding: 2px 12px 10px 44px;
@@ -1781,7 +1707,6 @@ body.is-dragging-day {
   border-color: var(--jade);
 }
 
-/* Expanded detail editor */
 .todo-detail {
   display: none;
   padding: 4px 12px 12px 44px;
@@ -1867,7 +1792,6 @@ body.is-dragging-day {
   background: var(--paper-2);
 }
 
-/* Add place button */
 .add-place {
   display: flex;
   align-items: center;
@@ -1891,7 +1815,6 @@ body.is-dragging-day {
   height: 16px;
 }
 
-/* Inline "add item" editor (replaces window.prompt) */
 .add-editor {
   display: flex;
   align-items: center;
@@ -1949,7 +1872,6 @@ body.is-dragging-day {
   border-color: var(--seal);
 }
 
-/* Back-of-card (restaurants & cafes) */
 .day-back .day-face {
   height: 100%;
   display: flex;
@@ -1979,7 +1901,6 @@ body.is-dragging-day {
   flex: 1;
 }
 
-/* ---------- Flip button ---------- */
 .flip-btn {
   display: inline-flex;
   align-items: center;
@@ -2000,14 +1921,10 @@ body.is-dragging-day {
   height: 13px;
 }
 
-/* =====================================================================
-   SHOPPING panel
-   ===================================================================== */
 .shop-group {
   margin-bottom: 22px;
 }
 
-/* ---- Things to buy: per-city colour + sub-categories ---- */
 .shop-city {
   margin-bottom: 22px;
   padding: 4px 12px 12px;
@@ -2134,7 +2051,10 @@ body.is-dragging-day {
   background: var(--paper-2);
   color: var(--ink);
   cursor: pointer;
-  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  transition:
+    background 0.12s,
+    border-color 0.12s,
+    color 0.12s;
 }
 .cat-opt.on {
   border-color: var(--cc);
@@ -2143,9 +2063,6 @@ body.is-dragging-day {
   font-weight: 600;
 }
 
-/* =====================================================================
-   FLIGHTS panel
-   ===================================================================== */
 .flight {
   background: var(--card);
   border: 1px solid var(--line);
@@ -2244,9 +2161,6 @@ body.is-dragging-day {
   font-size: 13px;
 }
 
-/* =====================================================================
-   TIPS panel
-   ===================================================================== */
 .tip {
   display: flex;
   gap: 12px;
@@ -2309,9 +2223,6 @@ body.is-dragging-day {
   transform: scale(0.97);
 }
 
-/* =====================================================================
-   TO BOOK panel
-   ===================================================================== */
 .booking {
   position: relative;
   padding-left: 4px;
@@ -2376,7 +2287,6 @@ body.is-dragging-day {
   color: var(--ink-faint);
 }
 
-/* When-to-book strip */
 .booking-when {
   display: flex;
   align-items: center;
@@ -2413,7 +2323,6 @@ body.is-dragging-day {
   line-height: 1.45;
 }
 
-/* Urgency levels */
 .booking.urg-now {
   border-left-color: var(--seal);
 }
@@ -2461,9 +2370,6 @@ body.is-dragging-day {
   }
 }
 
-/* =====================================================================
-   BOTTOM NAV
-   ===================================================================== */
 .tabbar {
   position: fixed;
   left: 0;
@@ -2568,7 +2474,6 @@ body.is-dragging-day {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='6' viewBox='0 0 28 6'%3E%3Cpath d='M1 3.5 Q 4.25 0.5 7.5 3.5 T 14 3.5 T 20.5 3.5 T 27 3.5' fill='none' stroke='%23ff9c5a' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
-/* ---------- Reset control ---------- */
 .footer-note {
   text-align: center;
   padding: 8px 0 4px;
@@ -2584,7 +2489,6 @@ body.is-dragging-day {
   letter-spacing: 0.05em;
 }
 
-/* ---------- Empty state ---------- */
 .empty {
   font-size: 13px;
   color: var(--ink-faint);
@@ -2592,16 +2496,12 @@ body.is-dragging-day {
   font-style: italic;
 }
 
-/* ---------- Larger screens ---------- */
 @media (min-width: 620px) {
   .app {
     padding: 0 24px;
   }
 }
 
-/* =====================================================================
-   MORE — trip tools hub + feature panels
-   ===================================================================== */
 .tool-grid {
   display: flex;
   flex-direction: column;
@@ -2663,7 +2563,6 @@ body.is-dragging-day {
   height: 20px;
 }
 
-/* Back header shared by tool views */
 .tool-head {
   display: flex;
   align-items: center;
@@ -2686,7 +2585,6 @@ body.is-dragging-day {
   height: 19px;
 }
 
-/* ---------- Packing ---------- */
 .pack-progress {
   margin-bottom: 16px;
 }
@@ -2811,7 +2709,6 @@ body.is-dragging-day {
   text-decoration: underline;
 }
 
-/* ---------- Budget ---------- */
 .budget-total {
   text-align: center;
   background: var(--card);
@@ -2951,7 +2848,6 @@ body.is-dragging-day {
   height: 16px;
 }
 
-/* ---------- Emergency ---------- */
 .emg-card {
   background: var(--card);
   border: 1px solid var(--line);
@@ -3050,7 +2946,6 @@ body.is-dragging-day {
   height: 18px;
 }
 
-/* ---------- Phrasebook ---------- */
 .phrase-tabs {
   display: flex;
   gap: 8px;
@@ -3153,7 +3048,6 @@ body.is-dragging-day {
   color: var(--jade);
 }
 
-/* ---------- Documents ---------- */
 .doc-add-btn {
   display: flex;
   align-items: center;
@@ -3243,9 +3137,6 @@ body.is-dragging-day {
   height: 16px;
 }
 
-/* =====================================================================
-   STAMPS — virtual stamp book
-   ===================================================================== */
 .stamp-add-btn {
   display: flex;
   align-items: center;
@@ -3280,7 +3171,6 @@ body.is-dragging-day {
   transform: scale(0.98);
 }
 
-/* Empty state */
 .stamp-empty {
   display: flex;
   flex-direction: column;
@@ -3313,7 +3203,6 @@ body.is-dragging-day {
   line-height: 1.5;
 }
 
-/* The book — a grid of pressed-in stamps */
 .stamp-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -3331,7 +3220,6 @@ body.is-dragging-day {
   box-shadow: var(--shadow-soft);
 }
 
-/* Remove button, tucked into the top corner */
 .stamp-del {
   position: absolute;
   top: 7px;
@@ -3362,7 +3250,6 @@ body.is-dragging-day {
   transform: scale(0.9);
 }
 
-/* The stamp itself — white perforated mat around the photo */
 .stamp-frame {
   position: relative;
   display: block;
@@ -3386,7 +3273,6 @@ body.is-dragging-day {
 .stamp-card .stamp-frame:active {
   transform: rotate(0deg) scale(0.98);
 }
-/* White stamp paper + perforated edge (holes reveal the card behind) */
 .stamp-frame::before {
   content: "";
   position: absolute;
@@ -3421,7 +3307,6 @@ body.is-dragging-day {
   display: block;
 }
 
-/* Handwritten-label caption */
 .stamp-caption {
   display: flex;
   flex-direction: column;
