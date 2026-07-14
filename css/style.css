@@ -84,9 +84,13 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  /* Reserve the scrollbar gutter on both sides so the centred layout stays
-     truly centred and doesn't shift between short/tall tabs (0px on mobile). */
-  scrollbar-gutter: stable both-edges;
+  /* Always reserve the scrollbar gutter (right edge) so the layout doesn't
+     shift between short/tall tabs. NOT both-edges: that reserves an empty
+     gutter on the left too, which the viewport-fixed background can't cover,
+     leaving a white strip down the left on desktop. */
+  scrollbar-gutter: stable;
+  /* Paper base so no white ever shows through before the photo paints. */
+  background-color: var(--paper);
   /* Stop rubber-band overscroll so the fixed navbar can't detach at the ends. */
   overscroll-behavior: none;
 }
