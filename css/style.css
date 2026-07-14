@@ -102,7 +102,10 @@ html {
 :root {
   --bg-photo: url("../assets/background/background.webp");
   --bg-lqip: url("data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAACwAwCdASoLABgAPu1iqk2zpaQiMAgCcB2JZgCdMoR3ADvdaxEcAAD+7KQZ7AgNZaOyW+OC9rrzODx09uw7rrBAAAA=");
-  --bg-veil: linear-gradient(rgba(240, 246, 232, 0.3), rgba(240, 246, 232, 0.3));
+  --bg-veil: linear-gradient(
+    rgba(240, 246, 232, 0.3),
+    rgba(240, 246, 232, 0.3)
+  );
 }
 [data-theme="dark"] {
   --bg-veil: linear-gradient(rgba(16, 23, 16, 0.62), rgba(16, 23, 16, 0.62));
@@ -167,9 +170,12 @@ body::before {
       rgba(43, 162, 104, 0.1),
       transparent 46%
     ),
-    radial-gradient(circle at 12% 6%, rgba(86, 197, 205, 0.08), transparent 38%),
-    var(--bg-veil),
-    var(--bg-photo);
+    radial-gradient(
+      circle at 12% 6%,
+      rgba(86, 197, 205, 0.08),
+      transparent 38%
+    ),
+    var(--bg-veil), var(--bg-photo);
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -2145,7 +2151,10 @@ body.is-dragging-day {
   background: var(--paper-2);
   color: var(--ink);
   cursor: pointer;
-  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  transition:
+    background 0.12s,
+    border-color 0.12s,
+    color 0.12s;
 }
 .cat-opt.on {
   border-color: var(--cc);
