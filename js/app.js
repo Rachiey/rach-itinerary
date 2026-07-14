@@ -1126,7 +1126,7 @@
         seen.map(function (key) {
           const t = CITY_THEME[key] || {};
           const c = DATA.cities[key] || { code: key };
-          return '<span class="cal-key"><span class="dot" style="background:' + (t.c || "#8a8a8a") + '"></span>' + esc(c.code) + " · " + esc(c.name) + "</span>";
+          return '<span class="cal-key"><span class="dot" style="background:' + (t.c || "#8a8a8a") + '"></span>' + esc(c.name || c.code) + "</span>";
         }).join("") +
       "</div>";
 

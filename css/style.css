@@ -84,11 +84,36 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* Reserve the scrollbar gutter on both sides so the centred layout stays
+     truly centred and doesn't shift between short/tall tabs (0px on mobile). */
+  scrollbar-gutter: stable both-edges;
+  /* Stop rubber-band overscroll so the fixed navbar can't detach at the ends. */
+  overscroll-behavior: none;
 }
 
 body {
   font-family: var(--f-body);
   color: var(--ink);
+  background: var(--paper);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overscroll-behavior: none;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 12px);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Ambient gradient wash — pinned to the viewport (not the document) so it
+   never re-scales as tab content changes height. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background:
     radial-gradient(
       circle at 100% 0%,
@@ -100,15 +125,7 @@ body {
       rgba(43, 162, 104, 0.13),
       transparent 46%
     ),
-    radial-gradient(circle at 12% 6%, rgba(86, 197, 205, 0.1), transparent 38%),
-    var(--paper);
-  min-height: 100vh;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 12px);
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+    radial-gradient(circle at 12% 6%, rgba(86, 197, 205, 0.1), transparent 38%);
 }
 
 img {
