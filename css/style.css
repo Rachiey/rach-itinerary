@@ -3206,3 +3206,248 @@ body.is-dragging-day {
   width: 16px;
   height: 16px;
 }
+
+/* =====================================================================
+   STAMPS — virtual stamp book
+   ===================================================================== */
+.stamp-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1.5px dashed var(--line-strong);
+  background: var(--paper-2);
+  color: var(--seal);
+  font-family: var(--f-mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    transform 0.12s ease;
+}
+.stamp-add-btn svg {
+  width: 19px;
+  height: 19px;
+}
+.stamp-add-btn:hover {
+  border-color: var(--seal);
+  background: var(--gold-soft);
+}
+.stamp-add-btn:active {
+  transform: scale(0.98);
+}
+
+/* Empty state */
+.stamp-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 34px 22px;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  color: var(--ink-faint);
+}
+.stamp-empty-mark {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--seal);
+  box-shadow: var(--shadow-soft);
+}
+.stamp-empty-mark svg {
+  width: 28px;
+  height: 28px;
+}
+.stamp-empty p {
+  font-size: 13.5px;
+  max-width: 30ch;
+  line-height: 1.5;
+}
+
+/* The book — a grid of pressed-in stamps */
+.stamp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px 14px;
+}
+.stamp-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 12px 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+/* Remove button, tucked into the top corner */
+.stamp-del {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  z-index: 3;
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--ink-faint);
+  box-shadow: var(--shadow-soft);
+  opacity: 0.9;
+  transition:
+    color 0.15s ease,
+    transform 0.12s ease;
+}
+.stamp-del svg {
+  width: 14px;
+  height: 14px;
+}
+.stamp-del:hover {
+  color: var(--seal);
+}
+.stamp-del:active {
+  transform: scale(0.9);
+}
+
+/* The stamp itself — white perforated mat around the photo */
+.stamp-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 8px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  filter: drop-shadow(0 4px 7px rgba(40, 60, 30, 0.24));
+  transition: transform 0.16s ease;
+}
+.stamp-card.tilt-l .stamp-frame {
+  transform: rotate(-2.4deg);
+}
+.stamp-card.tilt-r .stamp-frame {
+  transform: rotate(2.4deg);
+}
+.stamp-card .stamp-frame:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+.stamp-card .stamp-frame:active {
+  transform: rotate(0deg) scale(0.98);
+}
+/* White stamp paper + perforated edge (holes reveal the card behind) */
+.stamp-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #fffdf7;
+  --r: 4px;
+  -webkit-mask: radial-gradient(
+      circle var(--r) at var(--r) var(--r),
+      #0000 96%,
+      #000
+    )
+    calc(-1 * var(--r)) calc(-1 * var(--r)) / calc(2 * var(--r))
+    calc(2 * var(--r));
+  mask: radial-gradient(circle var(--r) at var(--r) var(--r), #0000 96%, #000)
+    calc(-1 * var(--r)) calc(-1 * var(--r)) / calc(2 * var(--r))
+    calc(2 * var(--r));
+}
+.stamp-img-wrap {
+  position: relative;
+  z-index: 1;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: var(--paper-2);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+.stamp-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Handwritten-label caption */
+.stamp-caption {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stamp-title {
+  width: 100%;
+  font-family: var(--f-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px dashed transparent;
+  padding: 3px 0;
+}
+.stamp-title::placeholder {
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.stamp-title:focus {
+  outline: none;
+  border-bottom-color: var(--line-strong);
+}
+.stamp-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.stamp-line-ic {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: var(--seal);
+}
+.stamp-line-ic svg {
+  width: 13px;
+  height: 13px;
+}
+.stamp-line input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 0;
+  padding: 3px 0;
+}
+.stamp-line input::placeholder {
+  color: var(--ink-faint);
+}
+.stamp-line input:focus {
+  outline: none;
+}
+.stamp-line input[type="date"] {
+  color: var(--ink-soft);
+}
+@media (prefers-reduced-motion: reduce) {
+  .stamp-frame,
+  .stamp-del,
+  .stamp-add-btn {
+    transition: none;
+  }
+}

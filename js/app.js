@@ -32,7 +32,7 @@
   let dayFilter = "all"; // "all" | "todo" | "done" (list view, not persisted)
 
   function loadState() {
-    let s = { over: {}, added: {}, hidden: {}, flights: {}, photos: {}, hotels: {}, view: "list", theme: "light", order: {}, packing: {}, packingAdd: {}, packingHide: {}, expenses: [], docs: [] };
+    let s = { over: {}, added: {}, hidden: {}, flights: {}, photos: {}, hotels: {}, view: "list", theme: "light", order: {}, packing: {}, packingAdd: {}, packingHide: {}, expenses: [], docs: [], stamps: [] };
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) s = Object.assign(s, JSON.parse(raw));
@@ -44,6 +44,7 @@
     if (!s.packingHide || typeof s.packingHide !== "object") s.packingHide = {};
     if (!Array.isArray(s.expenses)) s.expenses = [];
     if (!Array.isArray(s.docs)) s.docs = [];
+    if (!Array.isArray(s.stamps)) s.stamps = [];
     if (s.theme !== "dark") s.theme = "light";
     return s;
   }
@@ -396,6 +397,8 @@
     ellipsis: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
     star: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>',
     speaker: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M18.36 5.64a9 9 0 0 1 0 12.72"/></svg>',
+    stamp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M19.27 13.73A2.5 2.5 0 0 0 17.5 13h-11A2.5 2.5 0 0 0 4 15.5V17a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1.5c0-.66-.26-1.3-.73-1.77Z"/><path d="M14 13V8.5C14 7 15 7 15 5a3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 2 1 2 1 3.5V13"/></svg>',
+    lightbulb: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg>',
   };
   const NAV_ICON = {
     days: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
@@ -404,6 +407,7 @@
     flights: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5a2.1 2.1 0 0 0-3-3L13 8 4.8 6.2a.5.5 0 0 0-.5.8L8 11l-3 3H2l2 3 3 2 1-3 3-3 3.5 3.7a.5.5 0 0 0 .8-.5z"/></svg>',
     hotels: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v16"/><path d="M16 8h3a2 2 0 0 1 2 2v11"/><path d="M1 21h22"/><path d="M7 7h.01M11 7h.01M7 11h.01M11 11h.01M7 15h.01M11 15h.01"/></svg>',
     tips: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg>',
+    stamps: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M19.27 13.73A2.5 2.5 0 0 0 17.5 13h-11A2.5 2.5 0 0 0 4 15.5V17a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1.5c0-.66-.26-1.3-.73-1.77Z"/><path d="M14 13V8.5C14 7 15 7 15 5a3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 2 1 2 1 3.5V13"/></svg>',
     more: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>',
   };
 
@@ -1345,7 +1349,8 @@
   }
 
   function renderTips() {
-    let html = '<h2 class="section-title">Good to know</h2>';
+    let html = moreHeader("Good to know");
+    html += '<p class="empty" style="margin-bottom:14px">Bits worth sorting before you go — apps to install, entry admin and other things that are much easier done from home.</p>';
     DATA.tips.forEach(function (t) {
       const link = t.link
         ? '<a class="tip-link" href="' + esc(t.link.url) + '" target="_blank" rel="noopener noreferrer">' + esc(t.link.label || t.link.url) + '</a>'
@@ -1356,10 +1361,7 @@
           '<div><h3>' + esc(t.title) + '</h3><p>' + esc(t.body) + '</p>' + link + '</div>' +
         '</div>';
     });
-    html +=
-      '<div class="footer-note">Everything you tick or add is saved on this device.<br>' +
-      '<button class="reset-btn" id="reset">Reset all my changes</button></div>';
-    document.getElementById("panel-tips").innerHTML = html;
+    document.getElementById("panel-more").innerHTML = html;
   }
 
   function renderHotels() {
@@ -1378,6 +1380,131 @@
         '</div>';
     });
     document.getElementById("panel-hotels").innerHTML = html;
+  }
+
+  /* =====================================================================
+     STAMPS — a virtual stamp book. Users photograph the stamps / seals
+     they collect on the trip; each photo is downscaled + re-encoded to
+     WebP and kept in IndexedDB (same store as documents), so only the
+     blob id + title / place / date live in localStorage.
+     ===================================================================== */
+  const stampPhotoUrls = {}; // photoId -> object URL (session cache)
+
+  function renderStamps() {
+    // Newest first, so a freshly-pressed stamp lands at the top.
+    const stamps = state.stamps.slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });
+    let html = '<h2 class="section-title">Stamp book</h2>' +
+      '<p class="empty" style="margin-bottom:14px">Collect the stamps and seals you pick up along the way — temples, stations, museums, konbini. Snap a photo and it\u2019s pressed into your book.</p>' +
+      '<button class="stamp-add-btn" data-act="stamp-add">' + ICON.stamp + ' Add a stamp</button>';
+
+    if (!stamps.length) {
+      html += '<div class="stamp-empty">' +
+        '<span class="stamp-empty-mark">' + ICON.stamp + '</span>' +
+        '<p>Your book is empty for now. When you collect your first stamp, tap \u201CAdd a stamp\u201D to press it in.</p>' +
+      '</div>';
+    } else {
+      html += '<div class="stamp-grid">';
+      stamps.forEach(function (s, i) {
+        const tilt = (i % 2 === 0) ? "tilt-l" : "tilt-r";
+        html +=
+          '<figure class="stamp-card ' + tilt + '" data-stamp="' + esc(s.id) + '">' +
+            '<button class="stamp-del" data-act="stamp-del" aria-label="Remove this stamp">' + ICON.trash + '</button>' +
+            '<button class="stamp-frame" data-act="stamp-view" aria-label="View this stamp full size">' +
+              '<span class="stamp-img-wrap"><img class="stamp-img" data-photo="' + esc(s.photo) + '" alt="' + esc(s.title || "Collected stamp") + '"></span>' +
+            '</button>' +
+            '<figcaption class="stamp-caption">' +
+              '<input class="stamp-title" data-stampfield="title" value="' + esc(s.title || "") + '" placeholder="Name this stamp" aria-label="Stamp title">' +
+              '<label class="stamp-line"><span class="stamp-line-ic">' + ICON.pin + '</span>' +
+                '<input data-stampfield="place" value="' + esc(s.place || "") + '" placeholder="Where you got it" aria-label="Location"></label>' +
+              '<label class="stamp-line"><span class="stamp-line-ic">' + ICON.calendar + '</span>' +
+                '<input type="date" data-stampfield="date" value="' + esc(s.date || "") + '" aria-label="Date collected"></label>' +
+            '</figcaption>' +
+          '</figure>';
+      });
+      html += '</div>';
+    }
+    document.getElementById("panel-stamps").innerHTML = html;
+    hydrateStampPhotos();
+  }
+
+  // Load any stamp thumbnails on screen that haven't been given a src yet.
+  function hydrateStampPhotos() {
+    document.querySelectorAll("img.stamp-img[data-photo]").forEach(function (img) {
+      const pid = img.getAttribute("data-photo");
+      if (!pid || img.getAttribute("src")) return;
+      if (stampPhotoUrls[pid]) { img.src = stampPhotoUrls[pid]; return; }
+      docGet(pid).then(function (blob) {
+        if (!blob) return;
+        const u = URL.createObjectURL(blob);
+        stampPhotoUrls[pid] = u;
+        document.querySelectorAll('img.stamp-img[data-photo="' + cssEscape(pid) + '"]').forEach(function (el) { el.src = u; });
+      }).catch(function () { /* ignore */ });
+    });
+  }
+
+  let stampPhotoInput = null;
+  function ensureStampInput() {
+    if (stampPhotoInput) return stampPhotoInput;
+    stampPhotoInput = document.createElement("input");
+    stampPhotoInput.type = "file";
+    stampPhotoInput.accept = "image/*";
+    stampPhotoInput.hidden = true;
+    stampPhotoInput.addEventListener("change", function () {
+      const file = stampPhotoInput.files && stampPhotoInput.files[0];
+      stampPhotoInput.value = "";
+      if (!file) return;
+      compressToWebp(file, 1000, 0.82).then(function (blob) {
+        const pid = genId();
+        return docPut(pid, blob).then(function () {
+          state.stamps.push({ id: genId(), photo: pid, title: "", place: "", date: localISO(new Date()), ts: Date.now() });
+          saveState();
+          renderStamps();
+          // Focus the new stamp's title so it can be named straight away.
+          const title = document.querySelector(".stamp-grid .stamp-card .stamp-title");
+          if (title) title.focus();
+        });
+      }).catch(function () {
+        window.alert("Sorry — couldn't process that image.");
+      });
+    });
+    document.body.appendChild(stampPhotoInput);
+    return stampPhotoInput;
+  }
+
+  function deleteStamp(id) {
+    const s = state.stamps.find(function (x) { return x.id === id; });
+    if (!s) return;
+    if (!window.confirm("Remove this stamp from your book?")) return;
+    if (s.photo) {
+      docDelete(s.photo).catch(function () { /* ignore */ });
+      if (stampPhotoUrls[s.photo]) { URL.revokeObjectURL(stampPhotoUrls[s.photo]); delete stampPhotoUrls[s.photo]; }
+    }
+    state.stamps = state.stamps.filter(function (x) { return x.id !== id; });
+    saveState();
+    renderStamps();
+  }
+
+  function updateStampField(id, field, value) {
+    const s = state.stamps.find(function (x) { return x.id === id; });
+    if (!s) return;
+    s[field] = value;
+    saveState();
+  }
+
+  function viewStamp(id) {
+    const s = state.stamps.find(function (x) { return x.id === id; });
+    if (!s || !s.photo) return;
+    const open = function (u) {
+      const w = window.open(u, "_blank", "noopener");
+      if (!w) { const a = document.createElement("a"); a.href = u; a.target = "_blank"; a.click(); }
+    };
+    if (stampPhotoUrls[s.photo]) { open(stampPhotoUrls[s.photo]); return; }
+    docGet(s.photo).then(function (blob) {
+      if (!blob) return;
+      const u = URL.createObjectURL(blob);
+      stampPhotoUrls[s.photo] = u;
+      open(u);
+    });
   }
 
   /* ---------- Progress bar ---------- */
@@ -1740,6 +1867,12 @@
     if (hEl) {
       const hotel = hEl.closest(".hotel");
       updateHotel(hotel, hEl.getAttribute("data-hotelfield"), hEl.value);
+      return;
+    }
+    const sEl = e.target.closest("[data-stampfield]");
+    if (sEl) {
+      const card = sEl.closest(".stamp-card");
+      if (card) updateStampField(card.getAttribute("data-stamp"), sEl.getAttribute("data-stampfield"), sEl.value);
       return;
     }
   });
@@ -2198,10 +2331,11 @@
      MORE — hub of extra trip tools (packing, budget, emergency,
      phrasebook, documents). One panel with a lightweight in-panel router.
      ===================================================================== */
-  let moreView = null; // null = hub; else "packing"|"budget"|"emergency"|"phrasebook"|"docs"
+  let moreView = null; // null = hub; else "tips"|"packing"|"budget"|"emergency"|"phrasebook"|"docs"
   let phraseLang = 0;  // index into DATA.phrasebook
 
   const MORE_TOOLS = [
+    { key: "tips", icon: ICON.lightbulb, title: "Good to know", sub: "Trip tips & things to sort before you fly" },
     { key: "packing", icon: ICON.suitcase, title: "Packing list", sub: "Tick things off as you pack" },
     { key: "budget", icon: ICON.wallet, title: "Budget tracker", sub: "Log spend in ¥ / £, auto-converted" },
     { key: "emergency", icon: ICON.phone, title: "Emergency & essentials", sub: "Numbers, embassies, hotel addresses" },
@@ -2210,6 +2344,7 @@
   ];
 
   function renderMore() {
+    if (moreView === "tips") return renderTips();
     if (moreView === "packing") return renderPacking();
     if (moreView === "budget") return renderBudget();
     if (moreView === "emergency") return renderEmergency();
@@ -2228,6 +2363,9 @@
       '</button>';
     });
     html += '</div>';
+    html +=
+      '<div class="footer-note">Everything you tick or add is saved on this device.<br>' +
+      '<button class="reset-btn" id="reset">Reset all my changes</button></div>';
     document.getElementById("panel-more").innerHTML = html;
   }
 
@@ -2642,6 +2780,17 @@
       if (row) deleteDoc(row.getAttribute("data-doc"));
       return;
     }
+    if (act === "stamp-add") { ensureStampInput().click(); return; }
+    if (act === "stamp-view") {
+      const card = actEl.closest(".stamp-card");
+      if (card) viewStamp(card.getAttribute("data-stamp"));
+      return;
+    }
+    if (act === "stamp-del") {
+      const card = actEl.closest(".stamp-card");
+      if (card) deleteStamp(card.getAttribute("data-stamp"));
+      return;
+    }
   });
 
   // Form submits (Enter key / add buttons) for packing & budget.
@@ -2686,7 +2835,7 @@
   /* ---------- Reset ---------- */
   document.addEventListener("click", function (e) {
     if (e.target && e.target.id === "reset") {
-      if (window.confirm("Reset all ticks, added places, photos and flight info back to the starting itinerary?")) {
+      if (window.confirm("Reset all ticks, added places, photos, stamps and flight info back to the starting itinerary?")) {
         localStorage.removeItem(STORAGE_KEY);
         state = loadState();
         renderAll();
@@ -2736,7 +2885,7 @@
     renderShopping();
     renderFlights();
     renderHotels();
-    renderTips();
+    renderStamps();
     renderMore();
     updateProgress();
   }
@@ -2748,7 +2897,7 @@
     document.querySelector('[data-target="buy"] .ic').innerHTML = NAV_ICON.buy;
     document.querySelector('[data-target="flights"] .ic').innerHTML = NAV_ICON.flights;
     document.querySelector('[data-target="hotels"] .ic').innerHTML = NAV_ICON.hotels;
-    document.querySelector('[data-target="tips"] .ic').innerHTML = NAV_ICON.tips;
+    document.querySelector('[data-target="stamps"] .ic').innerHTML = NAV_ICON.stamps;
     document.querySelector('[data-target="more"] .ic').innerHTML = NAV_ICON.more;
     applyTheme();
     document.getElementById("themeToggle").addEventListener("click", toggleTheme);
