@@ -339,7 +339,7 @@
     if (todayISO < first) {
       const n = daysBetween(todayISO, first);
       const c = DATA.cities[days[0].city] || {};
-      const when = n === 0 ? "today" : n === 1 ? "tomorrow" : "in " + n + " days";
+      const when = n === 0 ? "<strong>today</strong>" : n === 1 ? "<strong>tomorrow</strong>" : "in <strong>" + n + " days</strong>";
       return '<div class="today-banner is-before">' +
         '<span class="today-tag">✈️</span>' +
         '<span class="today-main">' +
@@ -1676,8 +1676,37 @@
     updateSlotTally(todo.closest(".slot"));
     // Celebrate when a whole day just tipped over to 100%.
     if (nowDone && dayEl && !wasComplete && dayEl.querySelector(".day-ring.is-complete")) {
-      celebrate(dayEl.querySelector(".day-ring"));
+      celebrateDay(dayEl);
     }
+  }
+
+  /* Fade the card for a beat and show a "Day completed!" badge with a confetti
+     burst from the card's centre, so the celebration is unmissable even if the
+     little progress ring is scrolled out of view. */
+  function celebrateDay(dayEl) {
+    // Show the flash on whichever side is currently facing the user — the
+    // back (restaurants/cafés) if the card is flipped, otherwise the front.
+    const flipped = dayEl.classList.contains("flipped");
+    const face = flipped
+      ? dayEl.querySelector(".day-back .day-face")
+      : dayEl.querySelector(".day-inner > .day-face");
+    const target = face || dayEl.querySelector(".day-face");
+    celebrate(target || dayEl); // confetti bursts from the card centre
+    if (!target) return;
+
+    const old = target.querySelector(".day-complete-flash");
+    if (old) old.remove();
+
+    const flash = document.createElement("div");
+    flash.className = "day-complete-flash";
+    flash.innerHTML =
+      '<div class="day-complete-badge">' + ICON.check +
+        '<span>Day completed!</span>' +
+      '</div>';
+    target.appendChild(flash);
+
+    setTimeout(function () { flash.classList.add("out"); }, 1200);
+    setTimeout(function () { flash.remove(); }, 1650);
   }
 
   /* Lightweight, dependency-free confetti burst from an element's centre.
@@ -2428,7 +2457,6 @@
   /* ---------- Masthead ---------- */
   function renderMasthead() {
     document.getElementById("tripTitle").textContent = DATA.meta.title;
-    document.getElementById("tripSub").textContent = DATA.meta.subtitle;
     const s = fmtDate(DATA.meta.start), en = fmtDate(DATA.meta.end);
     document.getElementById("tripRange").textContent = s.big + " → " + en.big + " · " + DATA.days.length + " days";
   }

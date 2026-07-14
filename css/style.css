@@ -173,25 +173,23 @@ select {
   width: 20px;
   height: 20px;
 }
-.masthead .kicker {
-  font-family: var(--f-mono);
-  font-size: 11px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--seal);
-  display: inline-block;
-  border: 1px solid var(--line-strong);
-  padding: 4px 12px;
-  border-radius: 999px;
-  background: var(--paper-2);
+.masthead .masthead-squiggle {
+  display: block;
+  width: 64px;
+  height: 10px;
+  margin: 0 auto;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='10' viewBox='0 0 64 10'%3E%3Cpath d='M1 5.5 Q 5 1 9 5.5 T 17 5.5 T 25 5.5 T 33 5.5 T 41 5.5 T 49 5.5 T 57 5.5 T 63 5.5' fill='none' stroke='%23ec6f3a' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 64px 10px;
 }
 .masthead h1 {
   font-family: var(--f-display);
   font-weight: 600;
-  font-size: clamp(30px, 9vw, 42px);
+  font-size: clamp(40px, 13vw, 62px);
   line-height: 1.02;
-  margin-top: 12px;
-  letter-spacing: -0.01em;
+  margin-top: 14px;
+  letter-spacing: -0.015em;
   color: var(--seal); /* fallback where background-clip is unsupported */
   background: linear-gradient(
     100deg,
@@ -202,13 +200,6 @@ select {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-.masthead .subtitle {
-  font-family: var(--f-mono);
-  font-size: 12px;
-  color: var(--ink-soft);
-  margin-top: 8px;
-  letter-spacing: 0.08em;
 }
 .masthead .daterange {
   margin-top: 10px;
@@ -239,62 +230,6 @@ select {
 }
 .masthead .fx .fx-item {
   white-space: nowrap;
-}
-
-.masthead .progress {
-  margin: 16px auto 0;
-  max-width: 320px;
-}
-.progress-track {
-  height: 8px;
-  background: var(--line);
-  border-radius: 999px;
-  overflow: hidden;
-}
-.progress-fill {
-  position: relative;
-  height: 100%;
-  background: linear-gradient(90deg, var(--jade), var(--gold) 45%, var(--seal));
-  border-radius: 999px;
-  will-change: width;
-  box-shadow: 0 0 10px color-mix(in srgb, var(--gold) 55%, transparent);
-  overflow: hidden;
-}
-.progress-fill::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    color-mix(in srgb, #fff 60%, transparent) 50%,
-    transparent
-  );
-  transform: translateX(-100%);
-  animation: progress-sheen 2.6s ease-in-out infinite;
-}
-@keyframes progress-sheen {
-  0% {
-    transform: translateX(-100%);
-  }
-  60%,
-  100% {
-    transform: translateX(200%);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .progress-fill::after {
-    animation: none;
-    display: none;
-  }
-}
-.progress-label {
-  font-family: var(--f-mono);
-  font-size: 11px;
-  color: var(--ink-faint);
-  margin-top: 6px;
-  letter-spacing: 0.05em;
 }
 
 /* ---------- Panels ---------- */
@@ -555,6 +490,7 @@ select {
 }
 
 .day-face {
+  position: relative;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   background: var(--card);
@@ -1165,6 +1101,75 @@ body.is-dragging-day {
   will-change: transform, opacity;
 }
 
+/* "Day completed!" flash — dims the card for a beat and shows a centred badge */
+.day-complete-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--card) 60%, transparent);
+  -webkit-backdrop-filter: blur(1.5px);
+  backdrop-filter: blur(1.5px);
+  animation: dc-fade-in 0.25s ease both;
+}
+.day-complete-flash.out {
+  animation: dc-fade-out 0.45s ease forwards;
+}
+.day-complete-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--jade), var(--seal));
+  color: #fff;
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 19px;
+  letter-spacing: 0.01em;
+  box-shadow: 0 10px 26px rgba(43, 162, 104, 0.35);
+  animation: dc-pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+.day-complete-badge svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 3.2;
+}
+@keyframes dc-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes dc-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes dc-pop {
+  0% {
+    transform: scale(0.55);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .day-complete-flash,
+  .day-complete-badge {
+    animation: none;
+  }
+}
+
 /* Sunrise / sunset row on the expanded day */
 .sun-times {
   display: flex;
@@ -1223,6 +1228,44 @@ body.is-dragging-day {
   background: transparent;
   font-size: 20px;
   padding: 0;
+}
+/* Pre-trip countdown & welcome-home read as a quiet caption, not a big card */
+.today-banner.is-before,
+.today-banner.is-after {
+  border: none;
+  background: transparent;
+  justify-content: center;
+  gap: 8px;
+  padding: 2px 0 10px;
+  margin-bottom: 10px;
+}
+.today-banner.is-before .today-tag,
+.today-banner.is-after .today-tag {
+  font-size: 16px;
+}
+.today-banner.is-before .today-main,
+.today-banner.is-after .today-main {
+  flex: 0 1 auto;
+  align-items: center;
+  text-align: center;
+}
+.today-banner.is-before .today-line,
+.today-banner.is-after .today-line {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  text-transform: none;
+}
+.today-banner.is-before .today-line strong {
+  color: var(--seal);
+  font-weight: 600;
+}
+.today-banner.is-before .today-focus,
+.today-banner.is-after .today-focus {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-faint);
+  letter-spacing: 0.01em;
 }
 .today-main {
   display: flex;
