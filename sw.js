@@ -8,20 +8,17 @@
      get fresh numbers when online but still see the last values offline.
    Bump CACHE_VERSION whenever the shell files change to force an update.
    ===================================================================== */
-const CACHE_VERSION = "rach-itin-v44";
+const CACHE_VERSION = "rach-itin-v39";
 const SHELL_CACHE = CACHE_VERSION + "-shell";
 const RUNTIME_CACHE = CACHE_VERSION + "-runtime";
 
 const SHELL_ASSETS = [
   "./",
   "./index.html",
-  "./css/style.css?v=31",
+  "./css/style.css?v=27",
   "./js/data.js?v=12",
   "./js/app.js?v=26",
   "./manifest.webmanifest",
-  "./assets/background/background.webp",
-  "./assets/background/tablet.webp",
-  "./assets/background/desktop.webp",
   "./assets/icons/icon-192.png",
   "./assets/icons/icon-512.png",
   "./assets/icons/apple-touch-icon.png",
@@ -94,32 +91,7 @@ self.addEventListener("fetch", function (event) {
     return;
   }
 
-  // Page navigations (HTML) → network-first, fall back to cache when offline.
-  // HTML is unversioned, so serving it cache-first would pin users to a stale
-  // index.html that references old CSS/JS (e.g. missing the backgrounds) until
-  // an extra refresh. Network-first guarantees a fresh deploy shows instantly
-  // while still working offline from the cached copy.
-  const isNavigation =
-    req.mode === "navigate" ||
-    (req.headers.get("accept") || "").indexOf("text/html") !== -1;
-  if (url.origin === self.location.origin && isNavigation) {
-    event.respondWith(
-      fetch(req).then(function (res) {
-        const copy = res.clone();
-        caches.open(SHELL_CACHE).then(function (c) { c.put(req, copy); });
-        return res;
-      }).catch(function () {
-        return caches.match(req).then(function (hit) {
-          return hit || caches.match("./index.html") || caches.match("./");
-        });
-      })
-    );
-    return;
-  }
-
-  // Same-origin shell/assets (versioned CSS/JS, images, icons) → cache-first,
-  // update in the background. Safe because these URLs are content-addressed
-  // (?v=N) or immutable (hashed image names).
+  // Same-origin shell/assets → cache-first, update in the background.
   if (url.origin === self.location.origin) {
     event.respondWith(
       caches.match(req).then(function (cached) {

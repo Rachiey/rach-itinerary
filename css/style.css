@@ -84,60 +84,17 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  /* Always reserve the scrollbar gutter (right edge) so the layout doesn't
-     shift between short/tall tabs. NOT both-edges: that reserves an empty
-     gutter on the left too, which the viewport-fixed background can't cover,
-     leaving a white strip down the left on desktop. */
-  scrollbar-gutter: stable;
-  /* Paper base so no white ever shows through before the photo paints. */
-  background-color: var(--paper);
+  /* Reserve the scrollbar gutter on both sides so the centred layout stays
+     truly centred and doesn't shift between short/tall tabs (0px on mobile). */
+  scrollbar-gutter: stable both-edges;
   /* Stop rubber-band overscroll so the fixed navbar can't detach at the ends. */
   overscroll-behavior: none;
-}
-
-/* Responsive background art. --bg-photo (full WebP) + --bg-lqip (tiny inlined
-   blurred placeholder) are swapped per device via the media queries below, so
-   each viewport gets art drawn for its aspect ratio. --bg-veil is the
-   legibility wash and flips for dark mode. Default = mobile portrait. */
-:root {
-  --bg-photo: url("../assets/background/background.webp");
-  --bg-lqip: url("data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAACwAwCdASoLABgAPu1iqk2zpaQiMAgCcB2JZgCdMoR3ADvdaxEcAAD+7KQZ7AgNZaOyW+OC9rrzODx09uw7rrBAAAA=");
-  --bg-veil: linear-gradient(
-    rgba(240, 246, 232, 0.3),
-    rgba(240, 246, 232, 0.3)
-  );
-}
-[data-theme="dark"] {
-  --bg-veil: linear-gradient(rgba(16, 23, 16, 0.62), rgba(16, 23, 16, 0.62));
-}
-
-/* Tablet (iPad portrait & similar) */
-@media (min-width: 700px) {
-  :root {
-    --bg-photo: url("../assets/background/tablet.webp");
-    --bg-lqip: url("data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAACQAwCdASoSABgAPu1irFAzpSQisBgIAnAdiUAXYAMHmKhol7CAAP7sDxnsnv160t528RTcUydvba600/huS50yIDcmVR7copcHTsISgl0pVMAAAAA=");
-  }
-}
-
-/* Desktop / landscape */
-@media (min-width: 1024px) {
-  :root {
-    --bg-photo: url("../assets/background/desktop.webp");
-    --bg-lqip: url("data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAABQAwCdASoYAA4APu1iqk2ppaQiMAgBMB2JZgCw7CHfrEjIcAD+sReh0r7G9gHPKnrtdgW9WO6+yvhBqXB1Ae4AwB1PwAAA");
-  }
 }
 
 body {
   font-family: var(--f-body);
   color: var(--ink);
-  /* LQIP paints the instant CSS parses — zero network wait — then body::before
-     swaps in the full WebP on top. */
-  background-color: var(--paper);
-  background-image: var(--bg-lqip);
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background: var(--paper);
   min-height: 100vh;
   min-height: 100dvh;
   overscroll-behavior: none;
@@ -150,35 +107,25 @@ body {
 }
 
 /* Ambient gradient wash — pinned to the viewport (not the document) so it
-   never re-scales as tab content changes height.
-   Layers (top -> bottom): colour tints, the legibility veil, then the photo. */
+   never re-scales as tab content changes height. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-color: var(--paper);
-  background-image:
+  background:
     radial-gradient(
       circle at 100% 0%,
-      rgba(233, 181, 43, 0.14),
+      rgba(233, 181, 43, 0.18),
       transparent 42%
     ),
     radial-gradient(
       circle at 0% 100%,
-      rgba(43, 162, 104, 0.1),
+      rgba(43, 162, 104, 0.13),
       transparent 46%
     ),
-    radial-gradient(
-      circle at 12% 6%,
-      rgba(86, 197, 205, 0.08),
-      transparent 38%
-    ),
-    var(--bg-veil), var(--bg-photo);
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
+    radial-gradient(circle at 12% 6%, rgba(86, 197, 205, 0.1), transparent 38%);
 }
 
 img {
@@ -2151,10 +2098,7 @@ body.is-dragging-day {
   background: var(--paper-2);
   color: var(--ink);
   cursor: pointer;
-  transition:
-    background 0.12s,
-    border-color 0.12s,
-    color 0.12s;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
 }
 .cat-opt.on {
   border-color: var(--cc);
