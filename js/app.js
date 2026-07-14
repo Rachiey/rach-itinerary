@@ -992,7 +992,6 @@
       toolbar +
       '<div class="days-list"' + (view === "calendar" ? " hidden" : "") + '>' +
         filterChips +
-        '<p class="days-reorder-hint">Reordering days keeps the dates fixed — only your plans move with you.</p>' +
         listHtml +
       '</div>' +
       '<div class="days-calendar"' + (view === "list" ? " hidden" : "") + '>' + renderCalendar() + '</div>';
@@ -1227,8 +1226,7 @@
   }
 
   function renderFlights() {
-    let html = '<h2 class="section-title">Flight info</h2>' +
-      '<p class="empty" style="margin-bottom:12px">Tap a field to fill in your times &amp; seats — it saves automatically.</p>';
+    let html = '<h2 class="section-title">Flight info</h2>';
     DATA.flights.forEach(function (f) {
       const s = state.flights[f.id] || {};
       const val = function (k, d) { return s[k] != null ? s[k] : (d || ""); };
