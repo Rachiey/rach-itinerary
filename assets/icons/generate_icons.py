@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Generate PWA icons from the source ginkgo photo.
+"""Generate PWA icons from the source persimmon photo.
 
-Resizes assets/icons/ginkgo.png (a square RGB image) into the PWA icon sizes
+Resizes assets/icons/persimmon.png (a square RGB image) into the PWA icon sizes
 using high-quality Lanczos downscaling. Outputs 192, 512, a 180px apple-touch
 icon, small favicon PNGs and a multi-size favicon.ico.
 """
@@ -10,7 +10,7 @@ import os
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SOURCE = os.path.join(HERE, "ginkgo.png")
+SOURCE = os.path.join(HERE, "persimmon.png")
 
 SIZES = {
     "icon-192.png": 192,
