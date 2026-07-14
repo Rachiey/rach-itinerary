@@ -351,7 +351,8 @@ select {
 }
 .cal-cell {
   position: relative;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 5 / 6;
+  min-height: 58px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -360,7 +361,7 @@ select {
   border-radius: 12px;
   border: 1px solid var(--line);
   background: var(--paper-2);
-  padding: 0;
+  padding: 14px 0 4px;
   font-family: inherit;
 }
 .cal-cell.empty {
@@ -1952,21 +1953,141 @@ body.is-dragging-day {
 .shop-group {
   margin-bottom: 22px;
 }
-.shop-group > h3 {
+
+/* ---- Things to buy: per-city colour + sub-categories ---- */
+.shop-city {
+  margin-bottom: 22px;
+  padding: 4px 12px 12px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--cc);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+}
+.shop-city-name {
   font-family: var(--f-display);
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 600;
-  margin: 0 4px 8px;
+  margin: 10px 2px 4px;
   display: flex;
   align-items: center;
   gap: 8px;
+  color: var(--cc);
 }
-.shop-group > h3::before {
-  content: "";
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
-  background: var(--gold);
+.shop-city-name .shop-flag {
+  font-size: 16px;
+}
+.shop-empty {
+  color: var(--ink-faint);
+  font-size: 13px;
+  margin: 4px 2px 10px;
+}
+.shop-cat {
+  margin-top: 12px;
+}
+.shop-cat-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 2px 6px;
+}
+.shop-cat-emoji {
+  font-size: 14px;
+}
+.shop-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 3px 7px;
+  border-radius: 999px;
+  color: var(--cc);
+  background: color-mix(in srgb, var(--cc) 14%, transparent);
+  white-space: nowrap;
+}
+.shop-thumb-wrap {
+  display: flex;
+  align-items: center;
+}
+.shop-photo-btn {
+  display: block;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--paper-2);
+  cursor: pointer;
+  line-height: 0;
+}
+.todo-row .shop-photo-btn {
+  width: 36px;
+  height: 36px;
+}
+.todo-row .shop-photo {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+}
+.shop-photo-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 2px;
+  flex-wrap: wrap;
+}
+.shop-photo-row .shop-photo-btn {
+  width: 64px;
+  height: 64px;
+}
+.shop-photo-row .shop-photo {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+}
+.shop-photo-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.shop-cat-picker {
+  margin: 2px 0 8px;
+}
+.shop-cat-picker > label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 5px;
+}
+.cat-opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.cat-opt {
+  font-size: 12px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.cat-opt.on {
+  border-color: var(--cc);
+  color: var(--cc);
+  background: color-mix(in srgb, var(--cc) 12%, transparent);
+  font-weight: 600;
 }
 
 /* =====================================================================

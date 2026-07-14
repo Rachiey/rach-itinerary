@@ -1137,17 +1137,104 @@
     return '<div class="cal-wrap">' + head + '<div class="cal-grid">' + cells + "</div>" + legend + hint + "</div>";
   }
 
+  /* Sub-categories for "Things to buy". Order here = display order. */
+  const SHOP_CATS = [
+    { key: "food",        label: "Food & drink",  emoji: "🍜" },
+    { key: "beauty",      label: "Beauty",        emoji: "💄" },
+    { key: "clothes",     label: "Clothes",       emoji: "👕" },
+    { key: "accessories", label: "Accessories",   emoji: "👜" },
+    { key: "gifts",       label: "Gifts",         emoji: "🎁" },
+    { key: "tech",        label: "Technology",    emoji: "💻" },
+    { key: "utensils",    label: "Utensils",      emoji: "🍽️" },
+    { key: "stationery",  label: "Stationery",    emoji: "✏️" },
+    { key: "other",       label: "Other",         emoji: "🛍️" },
+  ];
+  const SHOP_CAT_MAP = {};
+  SHOP_CATS.forEach(function (c) { SHOP_CAT_MAP[c.key] = c; });
+  function shopCat(key) { return SHOP_CAT_MAP[key] || SHOP_CAT_MAP.other; }
+
   function renderShopping() {
     let html = '<h2 class="section-title">Things to buy</h2>';
     DATA.shopping.forEach(function (group) {
       const containerKey = "shop:" + group.category;
+      const cityKey = group.city || "";
+      const theme = CITY_THEME[cityKey] || {};
+      const city = (DATA.cities && DATA.cities[cityKey]) || {};
+      const colour = theme.c || "var(--gold)";
+      const flag = city.flag || "";
       const list = placesFor(group.items, containerKey);
-      html += '<div class="shop-group"><h3>' + esc(group.category) + '</h3>';
-      html += list.map(function (p) { return renderPlace(p, containerKey); }).join("");
-      html += '<button class="add-place" data-act="add" data-container="' + containerKey + '">' + ICON.plus + ' Add an item</button>';
+
+      html += '<div class="shop-city" style="--cc:' + colour + '">';
+      html += '<h3 class="shop-city-name">' + esc(group.category) +
+        (flag ? ' <span class="shop-flag">' + flag + '</span>' : '') + '</h3>';
+
+      if (list.length) {
+        // Bucket items by sub-category, preserving SHOP_CATS order.
+        const buckets = {};
+        list.forEach(function (p) {
+          const key = shopCat((p.details || {}).cat).key;
+          (buckets[key] = buckets[key] || []).push(p);
+        });
+        SHOP_CATS.forEach(function (cat) {
+          const items = buckets[cat.key];
+          if (!items || !items.length) return;
+          html += '<div class="shop-cat">' +
+            '<div class="shop-cat-label"><span class="shop-cat-emoji">' + cat.emoji + '</span>' + esc(cat.label) + '</div>' +
+            items.map(function (p) { return renderShopItem(p, containerKey); }).join("") +
+            '</div>';
+        });
+      } else {
+        html += '<p class="shop-empty">Nothing added yet.</p>';
+      }
+
+      html += '<button class="add-place" data-act="add" data-container="' + esc(containerKey) + '">' + ICON.plus + ' Add an item</button>';
       html += '</div>';
     });
     document.getElementById("panel-buy").innerHTML = html;
+    hydrateShopPhotos();
+  }
+
+  /* One "thing to buy" card: name, category chip, brand/photo reference. */
+  function renderShopItem(p, containerKey) {
+    const d = p.details || {};
+    const cat = shopCat(d.cat);
+    const photo = (d.photo || "").trim();
+    const chip = '<span class="shop-chip">' + cat.emoji + ' ' + esc(cat.label) + '</span>';
+    const thumb = photo
+      ? '<button class="shop-photo-btn" data-act="shop-photo-view" aria-label="View photo">' +
+          '<img class="shop-photo" data-photo="' + esc(photo) + '" alt="' + esc(p.name) + '"></button>'
+      : '';
+    // Category picker buttons for the editor.
+    const picker = SHOP_CATS.map(function (c) {
+      return '<button type="button" class="cat-opt' + (c.key === cat.key ? " on" : "") + '"' +
+        ' data-act="shop-cat" data-cat="' + c.key + '">' + c.emoji + ' ' + esc(c.label) + '</button>';
+    }).join("");
+    const photoAction = photo
+      ? '<button class="link-maps" data-act="shop-photo">' + ICON.camera + ' Replace photo</button>' +
+        '<button class="link-danger" data-act="shop-photo-del">Remove photo</button>'
+      : '<button class="link-maps" data-act="shop-photo">' + ICON.camera + ' Add a photo</button>';
+    return (
+      '<div class="todo shop-item' + (p.done ? " done" : "") + '" data-place="' + p.id + '" data-container="' + esc(containerKey) + '">' +
+        '<div class="todo-row">' +
+          '<button class="check" data-act="toggle" aria-label="Mark bought">' + ICON.check + '</button>' +
+          '<div class="todo-name">' + esc(p.name) + '</div>' +
+          '<div class="todo-chips">' + chip + '</div>' +
+          (thumb ? '<div class="shop-thumb-wrap">' + thumb + '</div>' : '') +
+          '<button class="todo-expand" data-act="expand" aria-label="Details">' + ICON.chevron + '</button>' +
+        '</div>' +
+        '<div class="todo-detail">' +
+          '<div class="shop-cat-picker"><label>Category</label><div class="cat-opts">' + picker + '</div></div>' +
+          '<div class="detail-grid">' +
+            field("What to look for", "note", d.note, "Brand, size, colour…", true, true) +
+            field("Where to buy", "address", d.address, "Shop / area", true) +
+          '</div>' +
+          '<div class="shop-photo-row">' + thumb + '<div class="shop-photo-actions">' + photoAction + '</div></div>' +
+          '<div class="detail-actions">' +
+            '<button class="link-danger" data-act="delete">Remove item</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
   }
 
   /* Booked state for a booking (seed → state.over, added → its own flag). */
@@ -1486,6 +1573,22 @@
     if (act === "delete") {
       const todo = actEl.closest(".todo");
       deletePlace(todo);
+      return;
+    }
+    if (act === "shop-photo") {
+      addShopPhoto(actEl.closest(".todo"));
+      return;
+    }
+    if (act === "shop-photo-del") {
+      removeShopPhoto(actEl.closest(".todo"));
+      return;
+    }
+    if (act === "shop-photo-view") {
+      viewShopPhoto(actEl.closest(".todo"));
+      return;
+    }
+    if (act === "shop-cat") {
+      setShopCat(actEl.closest(".todo"), actEl.getAttribute("data-cat"));
       return;
     }
     if (act === "maps") {
@@ -1890,6 +1993,9 @@
   function deletePlace(todo) {
     const id = todo.getAttribute("data-place");
     const containerKey = todo.getAttribute("data-container");
+    // Free any attached shopping photo blob.
+    const pid = readShopDetail({ id: id, containerKey: containerKey }, "photo");
+    if (pid) { docDelete(pid).catch(function () {}); delete shopPhotoUrls[pid]; }
     if (isAdded(containerKey, id)) {
       state.added[containerKey] = state.added[containerKey].filter(function (p) { return p.id !== id; });
     } else {
@@ -1914,6 +2020,144 @@
     else delete state.photos[dayId];
     saveState();
     renderItinerary();
+  }
+
+  /* =====================================================================
+     SHOPPING: photo references (so you know the exact brand to look for).
+     Images are downscaled and re-encoded to WebP in the browser, then the
+     blob is kept in IndexedDB (same store as documents). Only the blob id
+     lives in the item's details, so localStorage stays small.
+     ===================================================================== */
+  const shopPhotoUrls = {}; // photoId -> object URL (session cache)
+
+  // Downscale + convert to WebP (falls back to JPEG if the browser can't
+  // encode WebP). Returns a Promise<Blob>.
+  function compressToWebp(file, maxDim, quality) {
+    return new Promise(function (resolve, reject) {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = function () {
+        URL.revokeObjectURL(url);
+        let w = img.naturalWidth || img.width;
+        let h = img.naturalHeight || img.height;
+        if (w > h && w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+        else if (h >= w && h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+        const canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        canvas.toBlob(function (blob) {
+          if (blob && blob.type === "image/webp") { resolve(blob); return; }
+          // WebP not supported by this browser's encoder — fall back to JPEG.
+          canvas.toBlob(function (b2) {
+            b2 ? resolve(b2) : reject(new Error("encode-failed"));
+          }, "image/jpeg", quality);
+        }, "image/webp", quality);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); reject(new Error("load-failed")); };
+      img.src = url;
+    });
+  }
+
+  // Load any thumbnails on screen that haven't been given a src yet.
+  function hydrateShopPhotos() {
+    document.querySelectorAll("img.shop-photo[data-photo]").forEach(function (img) {
+      const pid = img.getAttribute("data-photo");
+      if (!pid || img.getAttribute("src")) return;
+      if (shopPhotoUrls[pid]) { img.src = shopPhotoUrls[pid]; return; }
+      docGet(pid).then(function (blob) {
+        if (!blob) return;
+        const u = URL.createObjectURL(blob);
+        shopPhotoUrls[pid] = u;
+        document.querySelectorAll('img.shop-photo[data-photo="' + cssEscape(pid) + '"]').forEach(function (el) { el.src = u; });
+      }).catch(function () { /* ignore */ });
+    });
+  }
+
+  let shopPhotoInput = null;
+  let shopPhotoTarget = null; // { id, containerKey }
+  function ensureShopPhotoInput() {
+    if (shopPhotoInput) return shopPhotoInput;
+    shopPhotoInput = document.createElement("input");
+    shopPhotoInput.type = "file";
+    shopPhotoInput.accept = "image/*";
+    shopPhotoInput.hidden = true;
+    shopPhotoInput.addEventListener("change", function () {
+      const file = shopPhotoInput.files && shopPhotoInput.files[0];
+      shopPhotoInput.value = "";
+      const target = shopPhotoTarget; shopPhotoTarget = null;
+      if (!file || !target) return;
+      compressToWebp(file, 1000, 0.8).then(function (blob) {
+        const pid = genId();
+        return docPut(pid, blob).then(function () {
+          // Remove any previous photo for this item.
+          const prev = readShopDetail(target, "photo");
+          if (prev) { docDelete(prev).catch(function () {}); delete shopPhotoUrls[prev]; }
+          writeShopDetail(target, "photo", pid);
+          saveState();
+          renderShopping();
+        });
+      }).catch(function () {
+        window.alert("Sorry — couldn't process that image.");
+      });
+    });
+    document.body.appendChild(shopPhotoInput);
+    return shopPhotoInput;
+  }
+
+  // Read/write a detail field for a shop item identified by {id, containerKey}
+  // (seed items go through the override store, added items store inline).
+  function readShopDetail(target, field) {
+    if (isAdded(target.containerKey, target.id)) {
+      const p = (state.added[target.containerKey] || []).find(function (x) { return x.id === target.id; });
+      return p && p.details ? p.details[field] : undefined;
+    }
+    const o = state.over[target.id];
+    return o && o.details ? o.details[field] : undefined;
+  }
+  function writeShopDetail(target, field, value) {
+    if (isAdded(target.containerKey, target.id)) {
+      const p = state.added[target.containerKey].find(function (x) { return x.id === target.id; });
+      if (p) { p.details = p.details || {}; p.details[field] = value; }
+    } else {
+      const o = ensureOver(target.id);
+      o.details = o.details || {};
+      o.details[field] = value;
+    }
+  }
+
+  function targetFromTodo(todo) {
+    return { id: todo.getAttribute("data-place"), containerKey: todo.getAttribute("data-container") };
+  }
+  function addShopPhoto(todo) {
+    shopPhotoTarget = targetFromTodo(todo);
+    ensureShopPhotoInput().click();
+  }
+  function removeShopPhoto(todo) {
+    const target = targetFromTodo(todo);
+    const pid = readShopDetail(target, "photo");
+    if (pid) { docDelete(pid).catch(function () {}); delete shopPhotoUrls[pid]; }
+    writeShopDetail(target, "photo", "");
+    saveState();
+    renderShopping();
+  }
+  function viewShopPhoto(todo) {
+    const pid = readShopDetail(targetFromTodo(todo), "photo");
+    if (!pid) return;
+    const open = function (u) {
+      const w = window.open(u, "_blank", "noopener");
+      if (!w) { const a = document.createElement("a"); a.href = u; a.target = "_blank"; a.click(); }
+    };
+    if (shopPhotoUrls[pid]) { open(shopPhotoUrls[pid]); return; }
+    docGet(pid).then(function (blob) {
+      if (!blob) return;
+      const u = URL.createObjectURL(blob);
+      shopPhotoUrls[pid] = u;
+      open(u);
+    });
+  }
+  function setShopCat(todo, cat) {
+    updatePlaceDetail(todo, "cat", cat);
+    renderShopping();
   }
 
   function updateHotel(hotelEl, field, value) {

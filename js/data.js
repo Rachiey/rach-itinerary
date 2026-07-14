@@ -40,6 +40,18 @@ function place(id, name, details = {}) {
   };
 }
 
+/* Helper for "Things to buy" items. cat = a SHOP_CATS key (see app.js):
+ * food · beauty · clothes · accessories · gifts · tech · utensils ·
+ * stationery · other. note = what to look for (brand, tips). */
+function buy(id, name, cat, note, address = "") {
+  return {
+    id,
+    name,
+    done: false,
+    details: { cat: cat || "other", note: note || "", address: address, photo: "" },
+  };
+}
+
 /*
  * Each day:
  *   id, date (ISO), city (key of CITIES), focus (the area/theme),
@@ -650,10 +662,41 @@ const HOTELS = [
 
 /* ───────────────────────── THINGS TO BUY ───────────────────────── */
 const SHOPPING = [
-  { category: "Shanghai", items: [] },
-  { category: "Osaka",    items: [] },
-  { category: "Tokyo",    items: [] },
+  { city: "shanghai", category: "Shanghai", items: [
+    buy("sh-tea",    "Tea — Longjing / Pu'er",         "food",        "Loose-leaf from a proper tea house, not the tourist tins."),
+    buy("sh-herb",   "Herborist skincare",             "beauty",      "Shanghai-born brand — cheaper here than at home."),
+    buy("sh-silk",   "Silk scarf",                      "clothes",     "Check the weight & sheen; haggle at the fabric market."),
+    buy("sh-chops",  "Porcelain rice bowls & chopsticks","utensils",   "Jingdezhen porcelain if you can find it."),
+    buy("sh-jade",   "Jade or cloisonné trinket",       "gifts",       "Ask for a certificate for real jade."),
+  ] },
+  { city: "osaka", category: "Osaka", items: [
+    buy("os-kitkat", "KitKat — regional flavours",      "food",        "Matcha, sake, hojicha — the airport has the widest range."),
+    buy("os-takoyaki","Takoyaki pan",                   "utensils",    "Cast-iron one from Doguyasuji kitchen street."),
+    buy("os-uniqlo", "Uniqlo / GU basics",              "clothes",     "Japan-only lines & sizes."),
+    buy("os-pokemon","Osaka-limited Pokémon merch",     "gifts",       "Pokémon Center in Daimaru Umeda."),
+  ] },
+  { city: "kyoto", category: "Kyoto", items: [
+    buy("ky-matcha", "Matcha & hojicha tea",            "food",        "Ippodo or Uji matcha — proper ceremonial grade."),
+    buy("ky-yatsu",  "Yatsuhashi sweets",               "food",        "Cinnamon mochi — a classic Kyoto souvenir."),
+    buy("ky-yuzen",  "Yuzen / kimono fabric",           "clothes",     "Nishijin textiles; furoshiki wrapping cloths too."),
+    buy("ky-incense","Incense (kōdō)",                  "gifts",       "Shoyeido or Kungyokudo near the temples."),
+    buy("ky-fan",    "Folding fan (sensu)",             "accessories", "Hand-painted ones make lovely gifts."),
+    buy("ky-knife",  "Kitchen knife",                   "utensils",    "Nishiki Market has renowned bladesmiths."),
+  ] },
+  { city: "tokyo", category: "Tokyo", items: [
+    buy("tk-muji",   "Muji stationery",                 "stationery",  "Bigger range & Japan-only items at the flagship."),
+    buy("tk-shiseido","Shiseido / DHC skincare",        "beauty",      "Matsumoto Kiyoshi drugstores for deals."),
+    buy("tk-yodobashi","Camera / gadgets",              "tech",        "Yodobashi Akiba — tax-free with passport."),
+    buy("tk-onitsuka","Onitsuka Tiger trainers",        "accessories", "Cheaper than the UK; more colourways."),
+    buy("tk-kitkat", "Tokyo Banana & sweets",           "food",        "Classic edible souvenir from the station."),
+  ] },
+  { city: "beijing", category: "Beijing", items: [
+    buy("bj-cloi",   "Cloisonné (Jǐngtàilán)",          "gifts",       "Enamelware — a Beijing speciality."),
+    buy("bj-tea",    "Tea & snacks",                    "food",        "Pick up at Wangfujing."),
+    buy("bj-silk",   "Silk from Silk Street",           "clothes",     "Haggle hard — start at ~30%."),
+  ] },
 ];
+
 
 /* ───────────────────────── FLIGHTS ───────────────────────── */
 const FLIGHTS = [
