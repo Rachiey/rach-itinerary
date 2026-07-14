@@ -89,12 +89,22 @@ html {
   scrollbar-gutter: stable both-edges;
   /* Stop rubber-band overscroll so the fixed navbar can't detach at the ends. */
   overscroll-behavior: none;
+  /* Full-bleed background photo. Painted on the root element so it is
+     propagated to the whole viewport canvas — including the reserved
+     scrollbar gutters — leaving no uncovered strip at the edges.
+     Mobile image is the default; desktop swaps in at the breakpoint. */
+  background-color: var(--paper);
+  background-image: url("../assets/background/mobileBG.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 body {
   font-family: var(--f-body);
   color: var(--ink);
-  background: var(--paper);
+  background: transparent;
   min-height: 100vh;
   min-height: 100dvh;
   overscroll-behavior: none;
@@ -128,22 +138,8 @@ body::before {
     radial-gradient(circle at 12% 6%, rgba(86, 197, 205, 0.1), transparent 38%);
 }
 
-/* Full-bleed background photo — pinned to the viewport and sized to cover.
-   Mobile image is the default; desktop swaps in via the min-width breakpoint. */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  background-image: url("../assets/background/mobileBG.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 @media (min-width: 620px) {
-  body::after {
+  html {
     background-image: url("../assets/background/desktopBG.png");
   }
 }
