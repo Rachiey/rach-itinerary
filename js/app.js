@@ -32,7 +32,7 @@
   let dayFilter = "all"; // "all" | "todo" | "done" (list view, not persisted)
 
   function loadState() {
-    let s = { over: {}, added: {}, hidden: {}, flights: {}, photos: {}, hotels: {}, view: "list", theme: "light", order: {}, packing: {}, packingAdd: {}, packingHide: {}, expenses: [], docs: [], stamps: [] };
+    let s = { over: {}, added: {}, hidden: {}, flights: {}, photos: {}, hotels: {}, view: "list", theme: "light", order: {}, packing: {}, packingAdd: {}, packingHide: {}, expenses: [], docs: [], stamps: [], recipes: [] };
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) s = Object.assign(s, JSON.parse(raw));
@@ -45,6 +45,7 @@
     if (!Array.isArray(s.expenses)) s.expenses = [];
     if (!Array.isArray(s.docs)) s.docs = [];
     if (!Array.isArray(s.stamps)) s.stamps = [];
+    if (!Array.isArray(s.recipes)) s.recipes = [];
     if (s.theme !== "dark") s.theme = "light";
     return s;
   }
@@ -406,6 +407,8 @@
     buy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>',
     flights: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5a2.1 2.1 0 0 0-3-3L13 8 4.8 6.2a.5.5 0 0 0-.5.8L8 11l-3 3H2l2 3 3 2 1-3 3-3 3.5 3.7a.5.5 0 0 0 .8-.5z"/></svg>',
     hotels: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v16"/><path d="M16 8h3a2 2 0 0 1 2 2v11"/><path d="M1 21h22"/><path d="M7 7h.01M11 7h.01M7 11h.01M11 11h.01M7 15h.01M11 15h.01"/></svg>',
+    travel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
+    camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
     tips: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg>',
     stamps: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M19.27 13.73A2.5 2.5 0 0 0 17.5 13h-11A2.5 2.5 0 0 0 4 15.5V17a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1.5c0-.66-.26-1.3-.73-1.77Z"/><path d="M14 13V8.5C14 7 15 7 15 5a3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 2 1 2 1 3.5V13"/></svg>',
     more: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>',
@@ -1316,8 +1319,15 @@
     document.getElementById("panel-book").innerHTML = html;
   }
 
-  function renderFlights() {
-    let html = '<h2 class="section-title">Flight info</h2>';
+  /* =====================================================================
+     TRAVEL — flights / trains + hotels combined into one tab.
+     ===================================================================== */
+  function renderTravel() {
+    document.getElementById("panel-travel").innerHTML = flightsMarkup() + hotelsMarkup();
+  }
+
+  function flightsMarkup() {
+    let html = '<h2 class="section-title">Flights &amp; trains</h2>';
     DATA.flights.forEach(function (f) {
       const s = state.flights[f.id] || {};
       const val = function (k, d) { return s[k] != null ? s[k] : (d || ""); };
@@ -1342,7 +1352,7 @@
           '</div>' +
         '</div>';
     });
-    document.getElementById("panel-flights").innerHTML = html;
+    return html;
   }
   function fField(label, key, val) {
     return '<div class="field"><label>' + label + '</label><input data-fflight="' + key + '" value="' + esc(val) + '" placeholder="—"></div>';
@@ -1364,8 +1374,8 @@
     document.getElementById("panel-more").innerHTML = html;
   }
 
-  function renderHotels() {
-    let html = '<h2 class="section-title">Where you\'re staying</h2>' +
+  function hotelsMarkup() {
+    let html = '<h2 class="section-title" style="margin-top:22px">Where you\'re staying</h2>' +
       '<p class="empty" style="margin-bottom:14px">Every stay on the trip. Tap a card to edit the name, address or check-in / check-out — it saves automatically and syncs to the day cards.</p>';
     DATA.hotels.forEach(function (seed) {
       const city = DATA.cities[seed.city];
@@ -1379,7 +1389,279 @@
           renderHotelBlock(seed) +
         '</div>';
     });
-    document.getElementById("panel-hotels").innerHTML = html;
+    return html;
+  }
+
+  /* =====================================================================
+     CAMERA — Fujifilm X100VI scene settings + film-simulation recipes.
+     Two views: "scenes" (pick a situation → recommended settings) and
+     "recipes" (seed recipes + your own, saved on this device).
+     ===================================================================== */
+  let cameraView = "scenes"; // "scenes" | "recipes"
+  let cameraScene = null;    // selected scene id (null → first scene)
+  const recipePhotoUrls = {};    // photoId -> object URL (session cache)
+  let pendingRecipePhoto = null; // blob id of an example photo waiting to be attached on submit
+
+  /* Build a list of signed values (e.g. "−2", "−1.5" … "0" … "+4") for the
+     tone / colour dropdowns, matching how Fujifilm labels them. */
+  function signedRange(min, max, step) {
+    const out = [];
+    for (let v = min; v <= max + 1e-9; v += step) {
+      const r = Math.round(v * 10) / 10;
+      if (r === 0) { out.push("0"); continue; }
+      out.push((r > 0 ? "+" : "−") + String(r).replace("-", ""));
+    }
+    return out;
+  }
+
+  // Fujifilm X100VI film simulations (for the recipe's headline chip).
+  const RECIPE_SIMS = [
+    "Provia / Standard", "Velvia / Vivid", "Astia / Soft", "Classic Chrome",
+    "Reala Ace", "PRO Neg. Hi", "PRO Neg. Std", "Classic Negative",
+    "Nostalgic Neg", "Eterna / Cinema", "Eterna Bleach Bypass",
+    "Acros", "Acros + Ye", "Acros + R", "Acros + G",
+    "Monochrome", "Mono + Ye", "Mono + R", "Mono + G", "Sepia",
+  ];
+
+  // Each in-camera setting gets its own labelled dropdown so custom recipes
+  // lay out identically to the seeded spec sheets. `wbRed` / `wbBlue` are
+  // merged into the White balance row on save.
+  const RECIPE_FIELDS = [
+    { key: "dr",        label: "Dynamic range",     options: ["DR-Auto", "DR100", "DR200", "DR400"] },
+    { key: "grain",     label: "Grain effect",      options: ["Off", "Weak / Small", "Weak / Large", "Strong / Small", "Strong / Large"] },
+    { key: "ccfx",      label: "Color chrome FX",   options: ["Off", "Weak", "Strong"] },
+    { key: "ccblue",    label: "Color chrome blue", options: ["Off", "Weak", "Strong"] },
+    { key: "wb",        label: "White balance",     options: ["Auto", "Auto white priority", "Auto ambience priority", "Daylight", "Shade", "Fluorescent 1", "Fluorescent 2", "Fluorescent 3", "Incandescent", "2500K", "2800K", "3200K", "3500K", "4000K", "4500K", "5000K", "5500K", "6000K", "6500K", "7000K", "7500K", "8000K"] },
+    { key: "wbRed",     label: "WB shift · Red",    options: signedRange(-9, 9, 1) },
+    { key: "wbBlue",    label: "WB shift · Blue",   options: signedRange(-9, 9, 1) },
+    { key: "highlight", label: "Highlight",         options: signedRange(-2, 4, 0.5) },
+    { key: "shadow",    label: "Shadow",            options: signedRange(-2, 4, 0.5) },
+    { key: "color",     label: "Color",             options: signedRange(-4, 4, 1) },
+    { key: "sharpness", label: "Sharpness",         options: signedRange(-4, 4, 1) },
+    { key: "clarity",   label: "Clarity",           options: signedRange(-5, 5, 1) },
+    { key: "nr",        label: "Noise reduction",   options: signedRange(-4, 4, 1) },
+    { key: "iso",       label: "ISO",               options: ["Auto", "Auto up to 3200", "Auto up to 6400", "Auto up to 12800", "125 (base)", "160", "200", "250", "320", "400", "500", "640", "800", "1000", "1250", "1600", "2000", "2500", "3200", "4000", "5000", "6400", "12800"] },
+    { key: "expcomp",   label: "Exposure comp",     options: ["−1 EV", "−2/3 EV", "−1/3 EV", "0 EV", "+1/3 EV", "+2/3 EV", "+1 EV", "+1 1/3 EV", "+1 2/3 EV", "+2 EV"] },
+  ];
+
+  function renderCamera() {
+    let html = '<h2 class="section-title">Camera</h2>' +
+      '<p class="empty" style="margin-bottom:14px">Quick settings for your Fujifilm X100VI. Pick a scene for a starting point, or keep your favourite film recipes to hand.</p>' +
+      '<div class="cam-seg">' +
+        '<button class="cam-seg-btn' + (cameraView === "scenes" ? " on" : "") + '" data-act="cam-view" data-view="scenes">Scene settings</button>' +
+        '<button class="cam-seg-btn' + (cameraView === "recipes" ? " on" : "") + '" data-act="cam-view" data-view="recipes">Film recipes</button>' +
+      '</div>';
+    html += (cameraView === "recipes") ? cameraRecipesMarkup() : cameraScenesMarkup();
+    document.getElementById("panel-camera").innerHTML = html;
+    if (cameraView === "recipes") hydrateRecipePhotos();
+  }
+
+  function specRows(settings) {
+    return (settings || []).map(function (row) {
+      return '<div class="cam-spec"><span class="cam-spec-k">' + esc(row.k) + '</span>' +
+        '<span class="cam-spec-v">' + esc(row.v) + '</span></div>';
+    }).join("");
+  }
+
+  function cameraScenesMarkup() {
+    const scenes = DATA.cameraScenes || [];
+    if (!scenes.length) return '<p class="empty">No scenes yet.</p>';
+    const activeId = (cameraScene && scenes.some(function (s) { return s.id === cameraScene; }))
+      ? cameraScene : scenes[0].id;
+    let html = '<div class="cam-chip-row">';
+    scenes.forEach(function (s) {
+      html += '<button class="cam-chip' + (s.id === activeId ? " on" : "") + '" data-act="cam-scene" data-scene="' + esc(s.id) + '">' +
+        '<span class="cam-chip-emoji">' + s.emoji + '</span>' + esc(s.name) + '</button>';
+    });
+    html += '</div>';
+    const scene = scenes.find(function (s) { return s.id === activeId; });
+    html += '<div class="cam-detail">' +
+      '<div class="cam-detail-head"><span class="cam-detail-emoji">' + scene.emoji + '</span>' +
+        '<div class="cam-detail-text"><h3>' + esc(scene.name) + '</h3><p>' + esc(scene.summary) + '</p></div></div>' +
+      '<div class="cam-specs">' + specRows(scene.settings) + '</div>' +
+      (scene.tip ? '<div class="cam-tip">' + ICON.lightbulb + '<span>' + esc(scene.tip) + '</span></div>' : '') +
+    '</div>';
+    return html;
+  }
+
+  function cameraRecipesMarkup() {
+    let html = '<form class="cam-recipe-add" data-act="recipe-add">' +
+      '<input class="crx-name" type="text" placeholder="Recipe name" aria-label="Recipe name" required>' +
+      '<div class="crx-settings">' +
+        recipeSelectRow("Film simulation", "crx-sel crx-sim", "", RECIPE_SIMS) +
+        RECIPE_FIELDS.map(function (f) {
+          return recipeSelectRow(f.label, "crx-sel", ' data-recipefield="' + f.key + '"', f.options);
+        }).join("") +
+      '</div>' +
+      '<textarea class="crx-notes" rows="2" placeholder="Notes (optional)" aria-label="Notes"></textarea>' +
+      '<div class="crx-photo">' + recipePhotoPreviewHTML() + '</div>' +
+      '<button type="submit" class="cam-recipe-submit">' + ICON.plus + ' Add recipe</button>' +
+    '</form>';
+    const seeds = DATA.cameraRecipes || [];
+    const mine = state.recipes.slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });
+    html += '<div class="cam-recipe-list">';
+    seeds.forEach(function (r) { html += recipeCard(r, false); });
+    mine.forEach(function (r) { html += recipeCard(r, true); });
+    html += '</div>';
+    return html;
+  }
+
+  // One labelled dropdown row in the add form. First option "—" means "not
+  // set" and is omitted from the saved recipe.
+  function recipeSelectRow(label, className, dataAttr, options) {
+    let opts = '<option value="">—</option>';
+    (options || []).forEach(function (v) {
+      opts += '<option value="' + esc(v) + '">' + esc(v) + '</option>';
+    });
+    return '<label class="crx-field"><span class="crx-field-label">' + esc(label) + '</span>' +
+      '<select class="' + className + '"' + (dataAttr || "") + '>' + opts + '</select></label>';
+  }
+
+  // Inner markup for the add-form's example-photo slot. Shows either an
+  // "add" button or the chosen photo with replace / remove controls.
+  function recipePhotoPreviewHTML() {
+    if (pendingRecipePhoto) {
+      return '<div class="crx-photo-preview">' +
+        '<img class="crx-photo-img" data-photo="' + esc(pendingRecipePhoto) + '" alt="Example photo preview">' +
+        '<div class="crx-photo-acts">' +
+          '<button type="button" class="crx-photo-btn" data-act="recipe-photo">' + ICON.camera + ' Replace</button>' +
+          '<button type="button" class="crx-photo-btn danger" data-act="recipe-photo-clear">Remove</button>' +
+        '</div>' +
+      '</div>';
+    }
+    return '<button type="button" class="crx-photo-add" data-act="recipe-photo">' + ICON.camera + ' Add an example photo</button>';
+  }
+
+  // Re-draw just the photo slot (keeps any text the user has already typed).
+  function updateRecipePhotoPreview() {
+    const box = document.querySelector(".cam-recipe-add .crx-photo");
+    if (box) { box.innerHTML = recipePhotoPreviewHTML(); hydrateRecipePhotos(); }
+  }
+
+  function recipeCard(r, custom) {
+    let body;
+    if (Array.isArray(r.settings)) {
+      body = '<div class="cam-specs">' + specRows(r.settings) + '</div>';
+    } else {
+      const lines = String(r.body || "").split(/\r?\n/).filter(function (l) { return l.trim(); });
+      body = lines.length
+        ? '<div class="cam-recipe-body">' + lines.map(function (l) {
+            return '<span class="cam-recipe-line">' + esc(l.trim()) + '</span>';
+          }).join("") + '</div>'
+        : '';
+    }
+    const photo = r.photo
+      ? '<button class="cam-recipe-photo" data-act="recipe-photo-view" aria-label="View example photo full size">' +
+          '<img class="cam-recipe-img" data-photo="' + esc(r.photo) + '" alt="Example photo for ' + esc(r.name || "recipe") + '">' +
+        '</button>'
+      : '';
+    return '<div class="cam-recipe" data-recipe="' + esc(r.id) + '">' +
+      '<div class="cam-recipe-head">' +
+        '<div class="cam-recipe-title">' + esc(r.name || "Recipe") + '</div>' +
+        (r.filmSim ? '<span class="cam-recipe-sim">' + esc(r.filmSim) + '</span>' : '') +
+        (custom ? '<button class="cam-recipe-del" data-act="recipe-del" aria-label="Delete recipe">' + ICON.trash + '</button>' : '') +
+      '</div>' +
+      photo +
+      body +
+      (r.notes ? '<div class="cam-recipe-notes">' + esc(r.notes) + '</div>' : '') +
+    '</div>';
+  }
+
+  // Load any recipe example photos on screen that haven't been given a src yet
+  // (both the add-form preview and the saved recipe cards).
+  function hydrateRecipePhotos() {
+    document.querySelectorAll("img.crx-photo-img[data-photo], img.cam-recipe-img[data-photo]").forEach(function (img) {
+      const pid = img.getAttribute("data-photo");
+      if (!pid || img.getAttribute("src")) return;
+      if (recipePhotoUrls[pid]) { img.src = recipePhotoUrls[pid]; return; }
+      docGet(pid).then(function (blob) {
+        if (!blob) return;
+        const u = URL.createObjectURL(blob);
+        recipePhotoUrls[pid] = u;
+        document.querySelectorAll('img[data-photo="' + cssEscape(pid) + '"]').forEach(function (el) {
+          if (el.classList.contains("crx-photo-img") || el.classList.contains("cam-recipe-img")) el.src = u;
+        });
+      }).catch(function () { /* ignore */ });
+    });
+  }
+
+  let recipePhotoInput = null;
+  function ensureRecipeInput() {
+    if (recipePhotoInput) return recipePhotoInput;
+    recipePhotoInput = document.createElement("input");
+    recipePhotoInput.type = "file";
+    recipePhotoInput.accept = "image/*";
+    recipePhotoInput.hidden = true;
+    recipePhotoInput.addEventListener("change", function () {
+      const file = recipePhotoInput.files && recipePhotoInput.files[0];
+      recipePhotoInput.value = "";
+      if (!file) return;
+      compressToWebp(file, 1400, 0.82).then(function (blob) {
+        const pid = genId();
+        return docPut(pid, blob).then(function () {
+          // Drop any previous pending photo so we don't orphan its blob.
+          clearPendingRecipePhoto();
+          pendingRecipePhoto = pid;
+          updateRecipePhotoPreview();
+        });
+      }).catch(function () {
+        window.alert("Sorry — couldn't process that image.");
+      });
+    });
+    document.body.appendChild(recipePhotoInput);
+    return recipePhotoInput;
+  }
+
+  // Remove the not-yet-saved example photo (blob + cached URL).
+  function clearPendingRecipePhoto() {
+    if (!pendingRecipePhoto) return;
+    const pid = pendingRecipePhoto;
+    pendingRecipePhoto = null;
+    docDelete(pid).catch(function () { /* ignore */ });
+    if (recipePhotoUrls[pid]) { URL.revokeObjectURL(recipePhotoUrls[pid]); delete recipePhotoUrls[pid]; }
+  }
+
+  function addRecipe(name, filmSim, settings, notes) {
+    name = (name || "").trim();
+    if (!name) return false;
+    const rec = {
+      id: genId(), name: name, filmSim: (filmSim || "").trim(),
+      settings: Array.isArray(settings) ? settings : [], notes: (notes || "").trim(),
+      ts: Date.now(), custom: true,
+    };
+    // Attach the previewed example photo (if any) without deleting its blob.
+    if (pendingRecipePhoto) { rec.photo = pendingRecipePhoto; pendingRecipePhoto = null; }
+    state.recipes.push(rec);
+    saveState();
+    renderCamera();
+    return true;
+  }
+  function deleteRecipe(id) {
+    const r = state.recipes.find(function (x) { return x.id === id; });
+    if (r && r.photo) {
+      docDelete(r.photo).catch(function () { /* ignore */ });
+      if (recipePhotoUrls[r.photo]) { URL.revokeObjectURL(recipePhotoUrls[r.photo]); delete recipePhotoUrls[r.photo]; }
+    }
+    state.recipes = state.recipes.filter(function (x) { return x.id !== id; });
+    saveState();
+    renderCamera();
+  }
+
+  // Open a saved recipe's example photo full-size in a new tab.
+  function viewRecipePhoto(id) {
+    const r = state.recipes.find(function (x) { return x.id === id; });
+    if (!r || !r.photo) return;
+    const open = function (u) {
+      const w = window.open(u, "_blank", "noopener");
+      if (!w) { const a = document.createElement("a"); a.href = u; a.target = "_blank"; a.click(); }
+    };
+    if (recipePhotoUrls[r.photo]) { open(recipePhotoUrls[r.photo]); return; }
+    docGet(r.photo).then(function (blob) {
+      if (!blob) return;
+      const u = URL.createObjectURL(blob);
+      recipePhotoUrls[r.photo] = u;
+      open(u);
+    }).catch(function () { /* ignore */ });
   }
 
   /* =====================================================================
@@ -2791,6 +3073,29 @@
       if (card) deleteStamp(card.getAttribute("data-stamp"));
       return;
     }
+    if (act === "cam-view") {
+      cameraView = actEl.getAttribute("data-view") || "scenes";
+      renderCamera();
+      window.scrollTo({ top: 0 });
+      return;
+    }
+    if (act === "cam-scene") {
+      cameraScene = actEl.getAttribute("data-scene");
+      renderCamera();
+      return;
+    }
+    if (act === "recipe-photo") { ensureRecipeInput().click(); return; }
+    if (act === "recipe-photo-clear") { clearPendingRecipePhoto(); updateRecipePhotoPreview(); return; }
+    if (act === "recipe-photo-view") {
+      const card = actEl.closest(".cam-recipe");
+      if (card) viewRecipePhoto(card.getAttribute("data-recipe"));
+      return;
+    }
+    if (act === "recipe-del") {
+      const card = actEl.closest(".cam-recipe");
+      if (card) deleteRecipe(card.getAttribute("data-recipe"));
+      return;
+    }
   });
 
   // Form submits (Enter key / add buttons) for packing & budget.
@@ -2810,6 +3115,37 @@
       const ccy = form.querySelector(".exp-ccy");
       const label = form.querySelector(".exp-label");
       addExpense(amt ? amt.value : "", ccy ? ccy.value : "CNY", label ? label.value : "");
+      return;
+    }
+    if (act === "recipe-add") {
+      e.preventDefault();
+      const nameEl = form.querySelector(".crx-name");
+      const simEl = form.querySelector(".crx-sim");
+      const notesEl = form.querySelector(".crx-notes");
+      const getVal = function (key) {
+        const el = form.querySelector('[data-recipefield="' + key + '"]');
+        return el && el.value ? el.value : "";
+      };
+      // Build the spec sheet in field order, merging the WB shifts into the
+      // White balance row so it reads like the seeded recipes.
+      const settings = [];
+      RECIPE_FIELDS.forEach(function (f) {
+        if (f.key === "wbRed" || f.key === "wbBlue") return;
+        if (f.key === "wb") {
+          const wb = getVal("wb"), r = getVal("wbRed"), b = getVal("wbBlue");
+          if (wb || r || b) {
+            const parts = [];
+            if (wb) parts.push(wb);
+            if (r) parts.push(r + " Red");
+            if (b) parts.push(b + " Blue");
+            settings.push({ k: "White balance", v: parts.join(" · ") });
+          }
+          return;
+        }
+        const v = getVal(f.key);
+        if (v) settings.push({ k: f.label, v: v });
+      });
+      addRecipe(nameEl ? nameEl.value : "", simEl ? simEl.value : "", settings, notesEl ? notesEl.value : "");
       return;
     }
   });
@@ -2883,8 +3219,8 @@
     renderItinerary();
     renderBookings();
     renderShopping();
-    renderFlights();
-    renderHotels();
+    renderTravel();
+    renderCamera();
     renderStamps();
     renderMore();
     updateProgress();
@@ -2895,8 +3231,8 @@
     document.querySelector('[data-target="days"] .ic').innerHTML = NAV_ICON.days;
     document.querySelector('[data-target="book"] .ic').innerHTML = NAV_ICON.book;
     document.querySelector('[data-target="buy"] .ic').innerHTML = NAV_ICON.buy;
-    document.querySelector('[data-target="flights"] .ic').innerHTML = NAV_ICON.flights;
-    document.querySelector('[data-target="hotels"] .ic').innerHTML = NAV_ICON.hotels;
+    document.querySelector('[data-target="travel"] .ic').innerHTML = NAV_ICON.travel;
+    document.querySelector('[data-target="camera"] .ic').innerHTML = NAV_ICON.camera;
     document.querySelector('[data-target="stamps"] .ic').innerHTML = NAV_ICON.stamps;
     document.querySelector('[data-target="more"] .ic').innerHTML = NAV_ICON.more;
     applyTheme();

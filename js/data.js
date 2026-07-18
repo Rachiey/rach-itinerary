@@ -966,5 +966,224 @@ const PHRASEBOOK = [
   },
 ];
 
+/* ───────────────────────── CAMERA — FUJIFILM X100VI ─────────────────────────
+ * Scene-based starting points for the X100VI. These are sensible defaults to
+ * dial in quickly, not gospel — nudge to taste. `settings` renders as a tidy
+ * spec sheet; `tip` is the one thing to remember for that situation.
+ */
+const CAMERA_SCENES = [
+  {
+    id: "sc-sunny", name: "Sunny / bright", emoji: "☀️",
+    summary: "Hard light, deep shadows — protect the highlights.",
+    settings: [
+      { k: "Mode", v: "A (aperture priority)" },
+      { k: "Aperture", v: "f/8" },
+      { k: "ISO", v: "125 (base)" },
+      { k: "Shutter", v: "Auto" },
+      { k: "Exp. comp", v: "−1/3 EV" },
+      { k: "Dynamic range", v: "DR100" },
+      { k: "Film sim", v: "Provia / Classic Chrome" },
+      { k: "White balance", v: "Daylight" },
+      { k: "ND filter", v: "On for wide apertures" },
+    ],
+    tip: "Use the built-in 4-stop ND if you want f/2 in bright sun.",
+  },
+  {
+    id: "sc-cloudy", name: "Cloudy / overcast", emoji: "☁️",
+    summary: "Soft, flat light — add a little warmth and contrast.",
+    settings: [
+      { k: "Mode", v: "A (aperture priority)" },
+      { k: "Aperture", v: "f/5.6" },
+      { k: "ISO", v: "Auto (max 3200)" },
+      { k: "Exp. comp", v: "+1/3 EV" },
+      { k: "Dynamic range", v: "DR100" },
+      { k: "Film sim", v: "Classic Chrome" },
+      { k: "White balance", v: "Cloudy / Auto" },
+      { k: "Highlight", v: "0 · Shadow +1" },
+    ],
+    tip: "Cloudy WB warms up grey skies without going orange.",
+  },
+  {
+    id: "sc-golden", name: "Golden hour", emoji: "🌅",
+    summary: "Warm, low sun — lean into the glow.",
+    settings: [
+      { k: "Mode", v: "A (aperture priority)" },
+      { k: "Aperture", v: "f/2.8" },
+      { k: "ISO", v: "Auto (max 3200)" },
+      { k: "Exp. comp", v: "+1/3 EV" },
+      { k: "Film sim", v: "Classic Chrome / Velvia" },
+      { k: "White balance", v: "Daylight" },
+      { k: "Grain", v: "Weak · Small" },
+    ],
+    tip: "Shoot into the light for haze; meter off the sky to keep colour.",
+  },
+  {
+    id: "sc-night", name: "Nighttime / city", emoji: "🌃",
+    summary: "Neon and low light — keep it steady, embrace the mood.",
+    settings: [
+      { k: "Mode", v: "A or M" },
+      { k: "Aperture", v: "f/2" },
+      { k: "ISO", v: "Auto (max 6400)" },
+      { k: "Shutter", v: "min 1/60" },
+      { k: "Exp. comp", v: "−1 EV" },
+      { k: "Dynamic range", v: "DR200" },
+      { k: "Film sim", v: "Classic Neg" },
+      { k: "White balance", v: "Auto (or 3200K)" },
+      { k: "Noise reduction", v: "−2" },
+    ],
+    tip: "Underexpose slightly to keep neon saturated and shadows inky.",
+  },
+  {
+    id: "sc-waterfall", name: "Waterfalls / long exposure", emoji: "🌊",
+    summary: "Silky water — you'll need the ND and something steady.",
+    settings: [
+      { k: "Mode", v: "M or S (shutter priority)" },
+      { k: "Aperture", v: "f/11" },
+      { k: "Shutter", v: "1/4 – 2 sec" },
+      { k: "ISO", v: "125 (base)" },
+      { k: "ND filter", v: "On (4-stop)" },
+      { k: "Film sim", v: "Velvia" },
+      { k: "Drive", v: "2-sec self-timer" },
+      { k: "Support", v: "Tripod / rest on a rock" },
+    ],
+    tip: "No tripod? Brace on a railing and use the 2-sec timer.",
+  },
+  {
+    id: "sc-landscape", name: "Landscape", emoji: "🏞️",
+    summary: "Front-to-back sharp, punchy colour.",
+    settings: [
+      { k: "Mode", v: "A (aperture priority)" },
+      { k: "Aperture", v: "f/8 – f/11" },
+      { k: "ISO", v: "125 (base)" },
+      { k: "Exp. comp", v: "0" },
+      { k: "Dynamic range", v: "DR100" },
+      { k: "Film sim", v: "Velvia" },
+      { k: "White balance", v: "Daylight" },
+      { k: "Focus", v: "AF-S, single point on the horizon" },
+    ],
+    tip: "f/8 is the lens's sharpest — only stop down more for depth.",
+  },
+  {
+    id: "sc-street", name: "Street photography", emoji: "🚶",
+    summary: "Be ready in an instant — pre-focus and shoot from the hip.",
+    settings: [
+      { k: "Mode", v: "A or M" },
+      { k: "Aperture", v: "f/5.6 – f/8" },
+      { k: "Shutter", v: "min 1/250" },
+      { k: "ISO", v: "Auto (max 6400)" },
+      { k: "Exp. comp", v: "0" },
+      { k: "Film sim", v: "Classic Neg / Acros" },
+      { k: "Focus", v: "Zone / MF at 2–3 m" },
+      { k: "Drive", v: "Snapshot ready" },
+    ],
+    tip: "Set MF to ~2.5 m at f/8 for a deep zone — no waiting on AF.",
+  },
+  {
+    id: "sc-portrait", name: "Portrait", emoji: "👤",
+    summary: "Flattering skin tones with soft background separation.",
+    settings: [
+      { k: "Mode", v: "A (aperture priority)" },
+      { k: "Aperture", v: "f/2 – f/2.8" },
+      { k: "ISO", v: "Auto (max 3200)" },
+      { k: "Exp. comp", v: "+1/3 EV" },
+      { k: "Dynamic range", v: "DR200" },
+      { k: "Film sim", v: "Astia / Classic Chrome" },
+      { k: "White balance", v: "Auto" },
+      { k: "Focus", v: "Face / eye detection on" },
+    ],
+    tip: "Astia keeps skin soft; step back and let the 35mm-equiv flatter.",
+  },
+  {
+    id: "sc-indoor", name: "Indoor / low light", emoji: "🏮",
+    summary: "Cafés, izakayas, museums — hold detail without flash.",
+    settings: [
+      { k: "Mode", v: "A (aperture priority)" },
+      { k: "Aperture", v: "f/2" },
+      { k: "ISO", v: "Auto (max 12800)" },
+      { k: "Shutter", v: "min 1/60" },
+      { k: "Exp. comp", v: "0" },
+      { k: "Dynamic range", v: "DR200" },
+      { k: "Film sim", v: "Classic Neg" },
+      { k: "White balance", v: "Auto" },
+    ],
+    tip: "Don't fear ISO 6400+ — clean files, and grain suits the mood.",
+  },
+];
+
+/* Seed film-simulation recipes for the X100VI. Users can add their own in the
+ * app; these are read-only starting points. `settings` is a spec list. */
+const CAMERA_RECIPES = [
+  {
+    id: "rc-classic-chrome", name: "Everyday Classic Chrome", filmSim: "Classic Chrome",
+    settings: [
+      { k: "Dynamic range", v: "DR200" },
+      { k: "Grain", v: "Weak · Small" },
+      { k: "Color chrome FX", v: "Strong" },
+      { k: "Color chrome blue", v: "Weak" },
+      { k: "White balance", v: "Auto · +1 Red · −2 Blue" },
+      { k: "Highlight", v: "−1" },
+      { k: "Shadow", v: "+1" },
+      { k: "Color", v: "+1" },
+      { k: "Sharpness", v: "0" },
+      { k: "Noise reduction", v: "−2" },
+      { k: "ISO", v: "up to 6400" },
+      { k: "Exp. comp", v: "+1/3 typical" },
+    ],
+    notes: "Muted, filmic everyday look — great for streets and overcast days.",
+  },
+  {
+    id: "rc-kodak-gold", name: "Kodak Gold (Classic Neg)", filmSim: "Classic Negative",
+    settings: [
+      { k: "Dynamic range", v: "DR400" },
+      { k: "Grain", v: "Strong · Small" },
+      { k: "Color chrome FX", v: "Strong" },
+      { k: "Color chrome blue", v: "Weak" },
+      { k: "White balance", v: "5500K · +2 Red · −4 Blue" },
+      { k: "Highlight", v: "−1" },
+      { k: "Shadow", v: "+1" },
+      { k: "Color", v: "+2" },
+      { k: "Sharpness", v: "−1" },
+      { k: "Clarity", v: "−2" },
+      { k: "Noise reduction", v: "−4" },
+      { k: "ISO", v: "up to 6400" },
+      { k: "Exp. comp", v: "+1/3 to +2/3" },
+    ],
+    notes: "Warm nostalgic golds — sunny days, autumn leaves, snapshots.",
+  },
+  {
+    id: "rc-acros", name: "Acros Street B&W", filmSim: "Acros + R",
+    settings: [
+      { k: "Dynamic range", v: "DR400" },
+      { k: "Grain", v: "Strong · Large" },
+      { k: "White balance", v: "Auto · 0 Red · 0 Blue" },
+      { k: "Highlight", v: "+1" },
+      { k: "Shadow", v: "+2" },
+      { k: "Sharpness", v: "+1" },
+      { k: "Clarity", v: "+2" },
+      { k: "Toning", v: "0 (neutral)" },
+      { k: "Noise reduction", v: "−4" },
+      { k: "ISO", v: "up to 6400" },
+    ],
+    notes: "High-contrast monochrome with a gritty street feel.",
+  },
+  {
+    id: "rc-velvia-land", name: "Velvia Landscape", filmSim: "Velvia",
+    settings: [
+      { k: "Dynamic range", v: "DR100" },
+      { k: "Grain", v: "Off" },
+      { k: "Color chrome FX", v: "Strong" },
+      { k: "Color chrome blue", v: "Strong" },
+      { k: "White balance", v: "Daylight · 0 Red · 0 Blue" },
+      { k: "Highlight", v: "0" },
+      { k: "Shadow", v: "+1" },
+      { k: "Color", v: "0" },
+      { k: "Sharpness", v: "+1" },
+      { k: "Noise reduction", v: "−2" },
+      { k: "ISO", v: "125 (base)" },
+    ],
+    notes: "Saturated, punchy scenery — skies, temples, mountains.",
+  },
+];
+
 /* Expose everything to app.js */
-window.TRIP_DATA = { meta: TRIP_META, cities: CITIES, days: DAYS, hotels: HOTELS, shopping: SHOPPING, bookings: BOOKINGS, flights: FLIGHTS, tips: TIPS, packing: PACKING, emergency: EMERGENCY, phrasebook: PHRASEBOOK };
+window.TRIP_DATA = { meta: TRIP_META, cities: CITIES, days: DAYS, hotels: HOTELS, shopping: SHOPPING, bookings: BOOKINGS, flights: FLIGHTS, tips: TIPS, packing: PACKING, emergency: EMERGENCY, phrasebook: PHRASEBOOK, cameraScenes: CAMERA_SCENES, cameraRecipes: CAMERA_RECIPES };
