@@ -71,8 +71,12 @@ html {
   -webkit-text-size-adjust: 100%;
   overscroll-behavior: none;
   background-color: var(--paper);
-  background-image: url("../assets/background/mobileBG.png");
-  background-position: center;
+  background-image: linear-gradient(
+    160deg,
+    var(--paper-2) 0%,
+    var(--paper) 45%,
+    var(--jade-soft) 100%
+  );
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -115,7 +119,6 @@ body::before {
 
 [data-theme="dark"] body::before {
   background:
-    linear-gradient(rgba(9, 14, 8, 0.72), rgba(9, 14, 8, 0.72)),
     radial-gradient(
       circle at 100% 0%,
       rgba(233, 181, 43, 0.14),
@@ -127,25 +130,6 @@ body::before {
       transparent 46%
     ),
     radial-gradient(circle at 12% 6%, rgba(86, 197, 205, 0.08), transparent 38%);
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  background-image: url("../assets/background/mobileBG.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-@media (min-width: 620px) {
-  html,
-  body::after {
-    background-image: url("../assets/background/desktopBG.png");
-  }
 }
 
 img {
