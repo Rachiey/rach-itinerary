@@ -24,9 +24,36 @@
   --nav-h: 68px;
   --max-w: 560px;
 
+  /* Top safe-area inset. Chrome (Android) reports 0 for
+     safe-area-inset-top even in standalone PWA mode, so the value is
+     clamped to a status-bar-sized minimum in the display-mode override
+     below to stop the masthead being cropped behind the status bar. */
+  --safe-top: env(safe-area-inset-top, 0px);
+
   --f-display: "Fraunces", Georgia, serif;
   --f-body: "Inter", system-ui, -apple-system, sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* Installed / "Add to Home Screen" PWA: viewport-fit=cover makes the page
+   render under the system status bar, but Chrome on Android returns 0 for
+   safe-area-inset-top, so guarantee enough top room to clear it. */
+@media all and (display-mode: standalone) {
+  :root {
+    --safe-top: max(env(safe-area-inset-top, 0px), 28px);
+  }
+}
+
+/* Touch devices in a regular browser tab. Chrome's redesigned Android UI
+   renders web content edge-to-edge (address bar moved to the bottom) so the
+   page extends up under the status bar, yet Chrome reports 0 for
+   safe-area-inset-top in a normal tab. Guarantee a status-bar-sized minimum
+   so the top of the masthead isn't cropped. Desktop (fine pointer) is left
+   untouched. */
+@media (pointer: coarse) {
+  :root {
+    --safe-top: max(env(safe-area-inset-top, 0px), 28px);
+  }
 }
 
 [data-theme="dark"] {
@@ -158,13 +185,13 @@ select {
 }
 
 .masthead {
-  padding: calc(26px + env(safe-area-inset-top, 0px)) 4px 14px;
+  padding: calc(26px + var(--safe-top)) 4px 14px;
   text-align: center;
   position: relative;
 }
 .theme-toggle {
   position: absolute;
-  top: calc(22px + env(safe-area-inset-top, 0px));
+  top: calc(22px + var(--safe-top));
   right: 2px;
   width: 40px;
   height: 40px;
