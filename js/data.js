@@ -269,7 +269,7 @@ const DAYS = [
   },
   {
     id: "day-10", date: "2026-10-07", city: "nara",
-    focus: "Nara + Kyoto",
+    focus: "Nara, Uji + Kyoto",
     photo: "assets/photos/nara.webp",
     morning: [
       place("d10-m1", "Take early train to Nara (~45m)", { note: "Visit Todai-ji & Nara Park." }),
@@ -296,15 +296,15 @@ const DAYS = [
   },
   {
     id: "day-11", date: "2026-10-08", city: "osaka",
-    focus: "Katsuoji Temple and Nipponbashi / Namba",
+    focus: "Katsuoji Temple and Kobe",
     photo: "assets/photos/katsuojitemple.webp",
     morning: [
       place("d11-m1", "Travel to Katsuoji Temple", { open: "08:00", close: "17:00",note: "Take the train to Katsuoji Station, then a short walk." }),
       place("d11-m2", "Walk down to Minoh Waterfall")
     ],
     afternoon: [
-      place("d11-a1", "Hover around Namba/Nipponbashi"),
-      place("d11-a2", "Ship suitcases to Tokyo"),
+      place("d11-a1", "Lunch near Osaka station"),
+      place("d11-a2", "Train to Kobe"),
     ],
     evening: [
       place("d11-e1", "Dinner in Dotonburi / Namba"),
