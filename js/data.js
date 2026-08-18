@@ -61,159 +61,175 @@ function buy(id, name, cat, note, address = "") {
  */
 const DAYS = [
   /* ───────────────────────── SHANGHAI (leg 1) ───────────────────────── */
-  {
-    id: "day-01", date: "2026-09-28", city: "shanghai",
-    focus: "Travel day · LHR → Shanghai",
-    photo: "assets/photos/shanghai.webp",
-    morning: [
-      place("d1-m1", "Fly London Heathrow (LHR) → Shanghai (PVG)", { open: "12:05", note: "Departs LHR 12:05pm. Arrives PVG 07:55 next morning." }),
-      place("d1-m2", "Grab a local SIM / eSIM + Alipay setup", { note: "Set up Alipay/WeChat Pay before you fly — you'll want it the moment you land." }),
-    ],
-    afternoon: [
-      place("d1-a1", "In the air ✈️"),
-    ],
-    evening: [
-      place("d1-e1", "Overnight flight — try to sleep to beat jet lag"),
-    ],
-    restaurants: [
-      place("d1-r1", "Airline dinner / airport bite before boarding"),
-    ],
-    cafes: [
-      place("d1-c1", "Heathrow lounge coffee"),
-    ],
-  },
-  {
-    id: "day-02", date: "2026-09-29", city: "shanghai",
-    focus: "Jing'an Temple & The Bund",
-    photo:  "assets/photos/shanghai.webp",
-    morning: [
-      place("d2-m1", "Land at Pudong Intl (PVG) 07:55 & transfer in", { note: "Maglev + metro, or a Didi to the hotel." }),
-      place("d2-m2", "Jing'an Temple", { open: "07:30", close: "17:00", note: "Golden temple in the heart of the city." }),
-    ],
-    afternoon: [
-      place("d2-a1", "Check into hotel", { open: "15:00", note: "Check-in from 3pm — drop bags & freshen up." }),
-      place("d2-a2", "Shopping on Huaihai Road", { note: "Leafy flagship shopping street in the former French Concession." }),
-    ],
-    evening: [
-      place("d2-e1", "The Bund promenade & night skyline", { open: "24h", note: "Best light ~7pm when the Pudong towers switch on." }),
-    ],
-    restaurants: [
-      place("d2-r1", "Lost Heaven (Yunnan)", { open: "11:30", close: "22:00", address: "17 Yan'an East Rd" }),
-      place("d2-r2", "M on the Bund", { open: "17:30", close: "22:30" }),
-    ],
-    cafes: [
-      place("d2-c1", "% Arabica — the Bund", { open: "08:00", close: "19:00" }),
-      place("d2-c2", "Manner Coffee", { note: "Cheap, everywhere, genuinely good." }),
-    ],
-  },
-  {
-    id: "day-03", date: "2026-09-30", city: "shanghai",
-    focus: "Wukang Road & Anfu Road",
-    photo:  "assets/photos/wukang.webp",
-    morning: [
-      place("d3-m1", "Wukang Road stroll & French Concession architecture", { note: "Tree-lined streets, historic villas, and boutique shops." }),
-    ],
-    afternoon: [
-      place("d3-a1", "Yuyuan Bazaar & Nine-Turn Bridge"),
-      place("d3-a2", "City God Temple"),
-    ],
-    evening: [
-      place("d3-e1", "Xiaolongbao dinner in the Old City"),
-    ],
-    restaurants: [
-      place("d3-r1", "Nanxiang Steamed Bun (original)", { open: "10:00", close: "21:00" }),
-      place("d3-r2", "Jia Jia Tang Bao", { open: "07:30", close: "13:00", note: "Sells out — go early." }),
-    ],
-    cafes: [
-      place("d3-c1", "Old Heaven / teahouse stop"),
-    ],
-  },
-  {
-    id: "day-04", date: "2026-10-01", city: "shanghai",
-    focus: "Suzhou Day Trip",
-    photo: "assets/photos/suzhou.webp",
-    morning: [
-      place("d4-m1", "Travel to Suzhou via Hongqiao station (~30m)", { note: "Take the high-speed train to Suzhou — check the schedule in advance." }),
-      place("d4-m2", "Suzhou Classical Gardens (Humble Administrator's Garden)", { open: "07:30", close: "17:30" }),
-      place("d4-m3", "Pingjiang Road stroll" , { note: "Historic canal-side street with shops & tea houses." })
-    ],
-    afternoon: [
-      place("d4-a1", "Shantang Street & canals"),
-    ],
-    evening: [
-      place("d4-e1", "Train back to Shanghai (~30m)"),
-    ],
-    restaurants: [
-      place("d4-r1", "Song He Lou (Suzhou)", { open: "11:00", close: "21:00" }),
-      place("d4-r2", "Li Bai Xie", { open: "11:00", close: "20:00" }),
-    ],
-    cafes: [
-      place("d4-c1", "Be Fine Cha", { open: "09:00", close: "18:00" }),
-    ],
-  },
-  {
-    id: "day-05", date: "2026-10-02", city: "shanghai",
-    focus: "Nanjing Pedestrian Street",
-    photo: "assets/photos/shanghai.webp",
-    morning: [
-      place("d5-m1", "Shanghai Tower observation deck", { open: "09:00", close: "22:00" }),
-    ],
-    afternoon: [
-      place("d5-a1", "Super Brand Mall / riverside"),
-      place("d5-a2", "Shanghai Ocean Aquarium (optional)"),
-    ],
-    evening: [
-      place("d5-e1", "Sunset views from Flair rooftop"),
-    ],
-    restaurants: [
-      place("d5-r1", "Flair Rooftop (Ritz-Carlton)", { open: "17:00", close: "01:00" }),
-    ],
-    cafes: [
-      place("d5-c1", "% Arabica — IFC", { open: "08:00", close: "20:00" }),
-    ],
-  },
-  {
-    id: "day-06", date: "2026-10-03", city: "shanghai",
-    focus: "Xintiandi & French Concession",
-    photo: "assets/photos/shanghai.webp",
-    morning: [
-      place("d6-m1", "West Bund art museums", { note: "Long Museum / West Bund Museum." }),
-    ],
-    afternoon: [
-      place("d6-a1", "Xintiandi shikumen blocks"),
-      place("d6-a2", "Tianzifang round two (if wanted)"),
-    ],
-    evening: [
-      place("d6-e1", "Cocktails at Xintiandi"),
-    ],
-    restaurants: [
-      place("d6-r1", "Ye Shanghai (Xintiandi)", { open: "11:00", close: "22:00" }),
-    ],
-    cafes: [
-      place("d6-c1", "Blue Bottle Coffee", { open: "08:00", close: "19:00" }),
-    ],
-  },
-  {
-    id: "day-07", date: "2026-10-04", city: "shanghai",
-    focus: "Yu Garden & Shanghai Old Street",
-    photo: "assets/photos/yugarden.webp",
-    morning: [
-      place("d7-m1", "Metro/taxi out to Zhujiajiao", { note: "~1h from centre." }),
-    ],
-    afternoon: [
-      place("d7-a1", "Canal boat ride & old bridges"),
-      place("d7-a2", "Kezhi Garden"),
-    ],
-    evening: [
-      place("d7-e1", "Back to the city, relaxed dinner"),
-    ],
-    restaurants: [
-      place("d7-r1", "Canal-side noodle house"),
-    ],
-    cafes: [
-      place("d7-c1", "Riverside teahouse"),
-    ],
-  },
+    {
+      id: "day-01", date: "2026-09-28", city: "shanghai",
+      focus: "Travel day · LHR → Shanghai",
+      photo: "assets/photos/shanghai.webp",
+      morning: [
+        place("d1-m1", "Fly London Heathrow (LHR) → Shanghai (PVG)", { open: "12:05", note: "Departs LHR 12:05pm. Arrives PVG 07:55 next morning." }),
+        place("d1-m2", "Grab a local SIM / eSIM + Alipay setup", { note: "Set up Alipay/WeChat Pay before you fly — you'll want it the moment you land." }),
+      ],
+      afternoon: [
+        place("d1-a1", "In the air ✈️"),
+      ],
+      evening: [
+        place("d1-e1", "Overnight flight — try to sleep to beat jet lag"),
+      ],
+      restaurants: [
+        place("d1-r1", "Airline dinner / airport bite before boarding"),
+      ],
+      cafes: [
+        place("d1-c1", "Heathrow lounge coffee"),
+      ],
+    },
+  
+    /* ── Day 2 in-file (new plan Day 1): Jing'an + French Concession ── */
+    {
+      id: "day-02", date: "2026-09-29", city: "shanghai",
+      focus: "Jing'an Temple & French Concession streets",
+      photo: "assets/photos/shanghai.webp",
+      morning: [
+        place("d2-m1", "Land at Pudong Intl (PVG) 07:55 & transfer in", { note: "Maglev + metro, or a Didi to the hotel." }),
+        place("d2-m2", "Jing'an Temple", { open: "07:30", close: "17:00", note: "5 min from most Jing'an hotels — good easy start." }),
+        place("d2-m3", "Jing'an Joy City", { note: "Mall right by the temple." }),
+      ],
+      afternoon: [
+        place("d2-a1", "Check into hotel", { open: "15:00", note: "Check-in from 3pm — drop bags & freshen up." }),
+        place("d2-a2", "Wukang Road stroll", { note: "Iconic tree-lined French Concession street, historic villas." }),
+        place("d2-a3", "Anfu Road", { note: "Boutiques & cafes — Harmay, GENZERO, ROCKFISH nearby." }),
+        place("d2-a4", "Wander Julu Road", { note: "Between Anfu and Wukang." }),
+      ],
+      evening: [
+        place("d2-e1", "The Bund promenade & night skyline (optional add-on)", { open: "24h", note: "Best light ~7pm when the Pudong towers switch on — only if energy allows after travel." }),
+      ],
+      restaurants: [
+        place("d2-r1", "Din Tai Fung (Jing'an branch)", { note: "Dinner, close to the temple." }),
+      ],
+      cafes: [
+        place("d2-c1", "Manner Coffee", { note: "Cheap, everywhere, genuinely good." }),
+      ],
+    },
+  
+    /* ── Day 3 in-file (new plan Day 2): Tianzifang + Xintiandi ── */
+    {
+      id: "day-03", date: "2026-09-30", city: "shanghai",
+      focus: "Tianzifang & Xintiandi shopping",
+      photo: "assets/photos/wukang.webp",
+      morning: [
+        place("d3-m1", "Tianzifang", { note: "Alleyway shops and food, best done in the morning." }),
+      ],
+      afternoon: [
+        place("d3-a1", "IAPM (上海环贸广场)", { note: "Gentle Monster, Songmont, high-end mall." }),
+        place("d3-a2", "Huaihai Road / Huaihai 755", { note: "Main shopping strip." }),
+        place("d3-a3", "Xintiandi Mall", { note: "Xintiandi Style Shopping Centre." }),
+      ],
+      evening: [
+        place("d3-e1", "Sinan Mansions area", { note: "Nice for an evening stroll, cafes." }),
+      ],
+      restaurants: [
+        place("d3-r1", "Zhuangshi Longxing (Xintiandi branch)", { note: "Dinner — xiaolongxia noodles." }),
+      ],
+      cafes: [
+        place("d3-c1", "Old Heaven / teahouse stop"),
+      ],
+    },
+  
+    /* ── Day 4 in-file (new plan Day 3): Nanjing Rd, Bund, Yu Garden ── */
+    {
+      id: "day-04", date: "2026-10-01", city: "shanghai",
+      focus: "Nanjing Road, The Bund & Yu Garden",
+      photo: "assets/photos/yugarden.webp",
+      morning: [
+        place("d4-m1", "Nanjing Road Pedestrian Street", { note: "Leads straight to the Bund." }),
+      ],
+      afternoon: [
+        place("d4-a1", "The Bund (Waitan)", { open: "24h", note: "Skyline views; Bund Sightseeing Tunnel to Pudong." }),
+        place("d4-a2", "Oriental Pearl TV Tower (optional)", { note: "Pudong side, only if you want the tower itself." }),
+        place("d4-a3", "Yu Garden + Yuyuan Old Street", { note: "Classical garden, Old City God Temple area." }),
+      ],
+      evening: [
+        place("d4-e1", "New World City / Super Brand Mall", { note: "Both have 3 Warehouse locations — closest branch slotted in to avoid backtracking." }),
+      ],
+      restaurants: [
+        place("d4-r1", "Lailai Snack Dumpling or 小杨生煎", { note: "Dinner near People's Square." }),
+      ],
+      cafes: [
+        place("d4-c1", "% Arabica — the Bund", { open: "08:00", close: "19:00" }),
+      ],
+    },
+  
+    /* ── Day 5 in-file (new plan Day 4): Suzhou day trip ── */
+    {
+      id: "day-05", date: "2026-10-02", city: "shanghai",
+      focus: "Suzhou Day Trip",
+      photo: "assets/photos/suzhou.webp",
+      morning: [
+        place("d5-m1", "Travel to Suzhou via Hongqiao station", { note: "~25 min high-speed train, hundreds of departures daily — no need to book far ahead." }),
+        place("d5-m2", "Suzhou Classical Gardens (Humble Administrator's Garden)", { open: "07:30", close: "17:30" }),
+        place("d5-m3", "Pingjiang Road stroll", { note: "Historic canal-side street with shops & tea houses." }),
+      ],
+      afternoon: [
+        place("d5-a1", "Shantang Street & canals"),
+      ],
+      evening: [
+        place("d5-e1", "Train back to Shanghai (~25m)"),
+      ],
+      restaurants: [
+        place("d5-r1", "Song He Lou (Suzhou)", { open: "11:00", close: "21:00" }),
+        place("d5-r2", "Li Bai Xie", { open: "11:00", close: "20:00" }),
+      ],
+      cafes: [
+        place("d5-c1", "Be Fine Cha", { open: "09:00", close: "18:00" }),
+      ],
+    },
+  
+    /* ── Day 6 in-file (new plan Day 5): Hangzhou day trip ── */
+    {
+      id: "day-06", date: "2026-10-03", city: "shanghai",
+      focus: "Hangzhou / West Lake Day Trip",
+      photo: "assets/photos/shanghai.webp",
+      morning: [
+        place("d6-m1", "Travel to Hangzhou via Hongqiao station", { note: "45min–1hr high-speed train each way — this eats a full day, so start early." }),
+        place("d6-m2", "West Lake loop", { note: "Walk or bike the lakeside path; boat crossing optional." }),
+      ],
+      afternoon: [
+        place("d6-a1", "Lingyin Temple (optional)", { note: "If time allows after the lake." }),
+      ],
+      evening: [
+        place("d6-e1", "Train back to Shanghai", { note: "TRIM OPTION: if the Suzhou+Hangzhou back-to-back feels exhausting, drop this day and swap in a slower Shanghai day instead — more time on Wukang/Anfu/Huaihai, a proper lunch, or a second visit to a mall you liked." }),
+      ],
+      restaurants: [
+        place("d6-r1", "West Lake lakeside restaurant"),
+      ],
+      cafes: [
+        place("d6-c1", "Lakeside teahouse"),
+      ],
+    },
+  
+    /* ── Day 7 in-file (new plan Day 6): Western Shanghai — Longemont, Longhua, West Bund ── */
+    {
+      id: "day-07", date: "2026-10-04", city: "shanghai",
+      focus: "Longemont, Longhua Temple & West Bund",
+      photo: "assets/photos/shanghai.webp",
+      morning: [
+        place("d7-m1", "Longemont Pokemon Store", { note: "Near Zhongshan Park metro." }),
+        place("d7-m2", "Metro City / LOFT", { note: "Same area, more shopping." }),
+      ],
+      afternoon: [
+        place("d7-a1", "Longhua Temple", { note: "Xuhui, short taxi from Longemont." }),
+        place("d7-a2", "West Bund Art Center", { note: "Riverside, galleries — Long Museum / West Bund Museum." }),
+        place("d7-a3", "Zhujiajiao (if time/energy)", { note: "Water town, ~45 min from center — swap in for the afternoon if you'd rather skip Longhua." }),
+      ],
+      evening: [
+        place("d7-e1", "Farewell dinner & relaxed evening"),
+      ],
+      restaurants: [
+        place("d7-r1", "Ye Shanghai (Xintiandi)", { open: "11:00", close: "22:00" }),
+      ],
+      cafes: [
+        place("d7-c1", "Blue Bottle Coffee", { open: "08:00", close: "19:00" }),
+      ],
+    },
   {
     id: "day-08", date: "2026-10-05", city: "osaka",
     focus: "Travel day to Osaka",
