@@ -23,6 +23,7 @@ const CITIES = {
   suzhou:   { name: "Suzhou",    code: "SZH", country: "China", flag: "🇨🇳", lat: 31.2989, lon: 120.5853 },
   nara:     { name: "Nara",      code: "NRA", country: "Japan", flag: "🇯🇵", lat: 34.6851, lon: 135.8048 },
   kamakura: { name: "Kamakura",  code: "KAM", country: "Japan", flag: "🇯🇵", lat: 35.3192, lon: 139.5468 },
+  hiroshima:  { name: "Hiroshima", code: "HIJ", country: "Japan", flag: "🇯🇵", lat: 34.3853, lon: 132.4553 },
 };
 
 /* Small helper so seed places get stable, readable ids. */
@@ -329,15 +330,16 @@ const DAYS = [
     ],
   },
   {
-    id: "day-12", date: "2026-10-09", city: "kyoto",
-    focus: "Kyoto - Arashiyama - Uji",
-    photo: "assets/photos/kyoto.webp",
+    id: "day-12", date: "2026-10-09", city: "hiroshima",
+    focus: "Hiroshima & Miyajima",
+    photo: "assets/photos/hiroshima.webp",
     morning: [
-      place("d13-m1", "Arashiyama bamboo grove", { note: "Go early for the quiet groves." }),
-      place("d13-m2", "Tenryū-ji & Togetsukyō bridge", { open: "08:30", close: "17:00" }),
+      place("d13-m1", "Take bullet train to hiroshima "),
+      place("d13-m2", "Visit the atomic bomb museum ", { open: "08:30", close: "17:00" }),
     ],
     afternoon: [
-      place("d13-a1", "Uji stop (optional) — matcha & Byōdō-in", { note: "Squeeze in if you skipped it earlier." }),
+      place("d13-a1", "Take Ferry to Miyajima Island"),
+      place("d13-a1", "Visit Izukushima Jinja shrine"),
     ],
     evening: [
       place("d12-e1", "Local Osaka dinner"),
