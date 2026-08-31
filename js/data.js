@@ -652,7 +652,7 @@ const DAYS = [
  */
 const HOTELS = [
   { id: "h-sha1", city: "shanghai", from: "2026-09-28", to: "2026-10-04",
-    name: "Home Stay (Shanghai Jing'an Temple Subway Station)",
+    name: "Home Stay (Shanghai Jing'an Temple Subway Station) 归宿民宿(上海静安寺地铁站)",
     area: "Jing'an District",
     address: "Lane 877, Yan'an Middle Road, Jing'an District, Shanghai",
     checkIn: "15:00", checkOut: "12:00" },
@@ -667,7 +667,7 @@ const HOTELS = [
     address: "1-chome-14-6 Ikebukuro, Toshima City, Tokyo 170-0014",
     checkIn: "15:00", checkOut: "11:00" },
   { id: "h-pek",  city: "beijing",  from: "2026-10-17", to: "2026-10-19",
-    name: "Chaoyang stay",
+    name: "Chaoyang stay 如宜FREEY酒店(北京潘家园劲松地铁站店)",
     area: "Chaoyang District",
     address: "Building 3, No. 16 Courtyard, Guanghe Nanli 2nd Alley, Chaoyang District, Beijing",
     checkIn: "14:00", checkOut: "12:00" },
