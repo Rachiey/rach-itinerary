@@ -719,17 +719,17 @@ const SHOPPING = [
 /* ───────────────────────── FLIGHTS ───────────────────────── */
 const FLIGHTS = [
   { id: "f1", label: "Outbound", from: "London", fromCode: "LHR", to: "Shanghai", toCode: "PVG",
-    date: "2026-09-28", dep: "12:05", arr: "07:55 (+1)", flightNo: "", seat: "", depTerm: "", arrTerm: "", conf: "" },
+    date: "2026-09-28", dep: "12:05", arr: "07:55 (+1)", flightNo: "BA0169", seat: "", depTerm: "", arrTerm: "", conf: "" },
   { id: "f2", label: "Shanghai → Osaka", from: "Shanghai", fromCode: "PVG", to: "Osaka", toCode: "KIX",
-    date: "2026-10-06", dep: "13:15", arr: "16:35", flightNo: "", seat: "", depTerm: "T1", arrTerm: "T1", conf: "" },
+    date: "2026-10-06", dep: "13:15", arr: "16:35", flightNo: "JL894", seat: "", depTerm: "T1", arrTerm: "T1", conf: "" },
   { id: "f3", label: "Osaka → Tokyo", mode: "train", from: "Osaka", fromCode: "OSA", to: "Tokyo", toCode: "TYO",
     date: "2026-10-10", dep: "", arr: "", flightNo: "Shinkansen (Nozomi)", seat: "", depTerm: "", arrTerm: "", conf: "" },
   { id: "f4", label: "Tokyo → Beijing", from: "Tokyo", fromCode: "HND", to: "Beijing", toCode: "PEK",
-    date: "2026-10-17", dep: "08:50", arr: "12:00", flightNo: "", seat: "", depTerm: "T3", arrTerm: "T3", conf: "" },
+    date: "2026-10-17", dep: "08:50", arr: "12:00", flightNo: "JL021", seat: "", depTerm: "T3", arrTerm: "T3", conf: "" },
   { id: "f5", label: "Beijing → Shanghai", from: "Beijing", fromCode: "PKS", to: "Shanghai", toCode: "PVG",
     date: "2026-10-19", dep: "22:00", arr: "00:05", flightNo: "MU5231", seat: "", depTerm: "", arrTerm: "", conf: "" },
   { id: "f6", label: "Return home", from: "Shanghai", fromCode: "PVG", to: "London", toCode: "LHR",
-    date: "2026-10-22", dep: "11:00", arr: "18:45", flightNo: "", seat: "", depTerm: "", arrTerm: "", conf: "" },
+    date: "2026-10-22", dep: "11:00", arr: "18:45", flightNo: "BA0168", seat: "", depTerm: "", arrTerm: "", conf: "" },
 ];
 
 /* ───────────────────────── THINGS TO BOOK ─────────────────────────
