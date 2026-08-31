@@ -672,9 +672,9 @@ const HOTELS = [
     address: "Building 3, No. 16 Courtyard, Guanghe Nanli 2nd Alley, Chaoyang District, Beijing",
     checkIn: "14:00", checkOut: "12:00" },
   { id: "h-sha2", city: "shanghai", from: "2026-10-19", to: "2026-10-22",
-    name: "Yishu Waterfront Hotel",
+    name: "Shanghai Yunhe Yebo Hotel 上海云和夜泊酒店",
     area: "Pudong New Area",
-    address: "Building 69, No. 179 Lianmin Village, Pudong New Area, Shanghai",
+    address: "Building 54, No. 179, Lianmin Village, Chuansha New Town, Pudong New Area, Shanghai, China",
     checkIn: "14:00", checkOut: "14:00" },
 ];
 
@@ -726,8 +726,8 @@ const FLIGHTS = [
     date: "2026-10-10", dep: "", arr: "", flightNo: "Shinkansen (Nozomi)", seat: "", depTerm: "", arrTerm: "", conf: "" },
   { id: "f4", label: "Tokyo → Beijing", from: "Tokyo", fromCode: "HND", to: "Beijing", toCode: "PEK",
     date: "2026-10-17", dep: "08:50", arr: "12:00", flightNo: "", seat: "", depTerm: "T3", arrTerm: "T3", conf: "" },
-  { id: "f5", label: "Beijing → Shanghai", mode: "train", from: "Beijing", fromCode: "BJS", to: "Shanghai", toCode: "SHA",
-    date: "2026-10-19", dep: "18:00", arr: "", flightNo: "High-speed rail", seat: "", depTerm: "", arrTerm: "", conf: "" },
+  { id: "f5", label: "Beijing → Shanghai", from: "Beijing", fromCode: "PKS", to: "Shanghai", toCode: "PVG",
+    date: "2026-10-19", dep: "22:00", arr: "00:05", flightNo: "MU5231", seat: "", depTerm: "", arrTerm: "", conf: "" },
   { id: "f6", label: "Return home", from: "Shanghai", fromCode: "PVG", to: "London", toCode: "LHR",
     date: "2026-10-22", dep: "11:00", arr: "18:45", flightNo: "", seat: "", depTerm: "", arrTerm: "", conf: "" },
 ];
