@@ -159,22 +159,39 @@ const DAYS = [
       id: "day-03", date: "2026-09-30", city: "shanghai",
       focus: "Tianzifang & Xintiandi shopping",
       photo: "assets/photos/wukang.webp",
+      areas: {
+        morning: "Longemont & Wujiang Road",
+        afternoon: "Xintiandi",
+        evening: "Tianzifang & French Concession",
+      },
       morning: [
-        place("d3-m1", "Tianzifang", { note: "Alleyway shops and food, best done in the morning." }),
+        place("d3-m1", "Longemont Pokemon Store"),
+        place("d3-m2", "Wujiang Road Leisure Street", { note: "NIKO AND location." }),
+        place("d3-m3", "HKRI Taikoo Hui"),
+        place("d3-m4", "Moody Lenses Flagship", { note: "M07, Basement 1, HKRI Taikoo Hui." }),
       ],
       afternoon: [
-        place("d3-a1", "IAPM (上海环贸广场)", { note: "Gentle Monster, Songmont, high-end mall." }),
-        place("d3-a2", "Huaihai Road / Huaihai 755", { note: "Main shopping strip." }),
-        place("d3-a3", "Xintiandi Mall", { note: "Xintiandi Style Shopping Centre." }),
+        place("d3-a1", "Xintiandi Style Shopping Centre"),
+        place("d3-a2", "SAGREEN 39", { note: "3rd floor, Xintiandi Style." }),
+        place("d3-a3", "Bottega Veneta", { note: "Xintiandi area." }),
+        place("d3-a4", "Taipingqiao Park", { note: "West Gate, beside Xintiandi." }),
       ],
       evening: [
-        place("d3-e1", "Sinan Mansions area", { note: "Nice for an evening stroll, cafes." }),
+        place("d3-e1", "TYAKASHA", { note: "Cute clothes." }),
+        place("d3-e2", "Tianzifang", { note: "Alleyway shops and food." }),
+        place("d3-e3", "French Concession stroll"),
+        place("d3-e4", "Meltseason Perfume"),
       ],
       restaurants: [
-        place("d3-r1", "Zhuangshi Longxing (Xintiandi branch)", { note: "Dinner — xiaolongxia noodles." }),
+        place("d3-r1", "Xie San Bao Crab Roe Noodles"),
       ],
       cafes: [
-        place("d3-c1", "Old Heaven / teahouse stop"),
+        place("d3-c1", "Butterful & Creamorous"),
+        place("d3-c2", "AMAM Lonbakery Town"),
+        place("d3-c3", "Heytea Lab 2.0"),
+        place("d3-c4", "Cubic 3 Coffee"),
+        place("d3-c5", "Bread New World"),
+        place("d3-c6", "A.Dot Coffee"),
       ],
     },
   
@@ -183,22 +200,39 @@ const DAYS = [
       id: "day-04", date: "2026-10-01", city: "shanghai",
       focus: "Nanjing Road, The Bund & Yu Garden",
       photo: "assets/photos/yugarden.webp",
+      holiday: { name: "China National Day Golden Week", note: "Public holiday period: expect very busy transport, attractions, and shopping areas. Pre-book timed tickets and leave extra travel time." },
+      areas: {
+        morning: "Wujiaochang",
+        afternoon: "North Bund, Pudong & Waitan",
+        evening: "Yu Garden & Old City",
+      },
       morning: [
-        place("d4-m1", "Nanjing Road Pedestrian Street", { note: "Leads straight to the Bund." }),
+        place("d4-m1", "Pokemon Shanghai Wujiaochang Wanda Plaza", { note: "B1 floor." }),
+        place("d4-m2", "Walmart", { note: "Wujiaochang Wanda Plaza area." }),
       ],
       afternoon: [
-        place("d4-a1", "The Bund (Waitan)", { open: "24h", note: "Skyline views; Bund Sightseeing Tunnel to Pudong." }),
-        place("d4-a2", "Oriental Pearl TV Tower (optional)", { note: "Pudong side, only if you want the tower itself." }),
-        place("d4-a3", "Yu Garden + Yuyuan Old Street", { note: "Classical garden, Old City God Temple area." }),
+        place("d4-a1", "North Bund Green Land"),
+        place("d4-a2", "Oriental Pearl TV Tower", { note: "Pudong side." }),
+        place("d4-a3", "Super Brand Mall"),
+        place("d4-a4", "3 Warehouse (Super Brand Mall)", { note: "Call to book before visiting." }),
+        place("d4-a5", "The Bund (Waitan)", { open: "24h", note: "Skyline views; Bund Sightseeing Tunnel to Pudong." }),
+        place("d4-a6", "Waitan Observatory"),
       ],
       evening: [
-        place("d4-e1", "New World City / Super Brand Mall", { note: "Both have 3 Warehouse locations — closest branch slotted in to avoid backtracking." }),
+        place("d4-e1", "Yu Garden"),
+        place("d4-e2", "Yuyuan Old Street"),
+        place("d4-e3", "Shanghai Old Street"),
+        place("d4-e4", "Shanghai City God Temple"),
       ],
       restaurants: [
-        place("d4-r1", "Lailai Snack Dumpling or 小杨生煎", { note: "Dinner near People's Square." }),
+        place("d4-r1", "Su XiaoLiu", { note: "B2, Super Brand Mall." }),
+        place("d4-r2", "1886 Automobile Theme German Restaurant"),
+        place("d4-r3", "Chili's Cafe & Bar"),
       ],
       cafes: [
-        place("d4-c1", "% Arabica — the Bund", { open: "08:00", close: "19:00" }),
+        place("d4-c1", "Line Friends Cafe"),
+        place("d4-c2", "HOLILAND Cafe", { note: "3F, Super Brand Mall." }),
+        place("d4-c3", "Manner Coffee"),
       ],
     },
   
@@ -207,6 +241,7 @@ const DAYS = [
       id: "day-05", date: "2026-10-02", city: "shanghai",
       focus: "Suzhou Day Trip",
       photo: "assets/photos/suzhou.webp",
+      holiday: { name: "China National Day Golden Week", note: "Public holiday period: trains and Suzhou attractions will be exceptionally busy. Reserve rail tickets and timed entry early." },
       morning: [
         place("d5-m1", "Travel to Suzhou via Hongqiao station", { note: "~25 min high-speed train, hundreds of departures daily — no need to book far ahead." }),
         place("d5-m2", "Suzhou Classical Gardens (Humble Administrator's Garden)", { open: "07:30", close: "17:30" }),
@@ -232,6 +267,7 @@ const DAYS = [
       id: "day-06", date: "2026-10-03", city: "shanghai",
       focus: "Hangzhou / West Lake Day Trip",
       photo: "assets/photos/shanghai.webp",
+      holiday: { name: "China National Day Golden Week", note: "Public holiday period: expect very heavy crowds around West Lake and on high-speed trains. Book transport and tickets ahead." },
       morning: [
         place("d6-m1", "Travel to Hangzhou via Hongqiao station", { note: "45min–1hr high-speed train each way — this eats a full day, so start early." }),
         place("d6-m2", "West Lake loop", { note: "Walk or bike the lakeside path; boat crossing optional." }),
@@ -255,6 +291,7 @@ const DAYS = [
       id: "day-07", date: "2026-10-04", city: "shanghai",
       focus: "Longemont, Longhua Temple & West Bund",
       photo: "assets/photos/shanghai.webp",
+      holiday: { name: "China National Day Golden Week", note: "Public holiday period: allow extra time for metro, taxis, temples, and popular riverside attractions." },
       morning: [
         place("d7-m1", "Longemont Pokemon Store", { note: "Near Zhongshan Park metro." }),
         place("d7-m2", "Metro City / LOFT", { note: "Same area, more shopping." }),
@@ -278,6 +315,7 @@ const DAYS = [
     id: "day-08", date: "2026-10-05", city: "osaka",
     focus: "Travel day to Osaka",
     photo: "assets/photos/osaka.webp",
+    holiday: { name: "China National Day Golden Week", note: "The holiday is still in effect in China today. Allow extra time for the journey to Pudong Airport and airport queues." },
     morning: [
       place("d8-m1", "Depart 1.15pm Shanghai Pudong (PVG) → Osaka Kansai (KIX)", { note: "Flight time ~2h30. Arrive 4.35pm local time." }),
     ],
@@ -457,6 +495,7 @@ const DAYS = [
     id: "day-15", date: "2026-10-12", city: "tokyo",
     focus: "Ikebukuro & Sunshine City",
     photo: "assets/photos/tokyo.webp",
+    holiday: { name: "Japan Sports Day", note: "Japanese national holiday. Expect busier trains, family attractions, shops, and restaurants; check any venue's holiday hours." },
     morning: [
       place("d15-m1", "Explore Ikebukuro — local morning"),
     ],

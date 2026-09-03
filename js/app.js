@@ -793,6 +793,10 @@
           '<button class="move-btn" type="button" data-act="movedown"' + (day._last ? ' disabled' : '') + ' aria-label="Swap with the day after">' + ICON.down + '</button>' +
         '</span>'
       : '';
+    const holidayBadge = day.holiday ? '<span class="holiday-badge">' + ICON.calendar + ' Holiday</span>' : '';
+    const holidayAlert = day.holiday
+      ? '<div class="holiday-alert"><strong>' + ICON.calendar + ' ' + esc(day.holiday.name) + '</strong><span>' + esc(day.holiday.note) + '</span></div>'
+      : '';
 
     const front =
       '<div class="day-face">' +
@@ -811,7 +815,7 @@
             '<button class="day-focus" data-act="daytoggle">' +
               '<span class="day-meta">' +
                 '<span class="day-date-mini">' + weatherChip(day.city, day.date) + ' ' + dt.dow + ' · ' + dt.big + '</span>' +
-                '<h3>' + esc(day.focus) + '</h3>' +
+                '<h3>' + esc(day.focus) + holidayBadge + '</h3>' +
               '</span>' +
               '<span class="city-tag">' + theme.emoji + ' ' + esc(city.code) + '</span>' +
               '<span class="day-chevron">' + ICON.chevron + '</span>' +
@@ -820,6 +824,7 @@
           '</div>' +
           '<div class="day-collapse">' +
             sunTimes(day.city, day.date) +
+            holidayAlert +
             renderHotelBar(day) +
             renderSlot(day, "morning", "Morning", "morning", seq) +
             renderSlot(day, "afternoon", "Afternoon", "afternoon", seq) +
