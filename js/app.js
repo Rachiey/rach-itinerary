@@ -2319,8 +2319,13 @@
     if (!todo) return;
     const id = todo.getAttribute("data-place");
     const containerKey = todo.getAttribute("data-container");
+    const day = todo.closest(".day");
+    const dayId = day ? day.getAttribute("data-day") : "";
+    const slot = todo.closest(".slot");
+    const slotKey = slot ? slot.getAttribute("data-container") : "";
+    const flipped = day && day.classList.contains("flipped");
+    const scrollY = window.scrollY;
     const mustDo = !todo.classList.contains("must-do");
-    todo.classList.toggle("must-do", mustDo);
 
     if (isAdded(containerKey, id)) {
       const place = state.added[containerKey].find(function (item) { return item.id === id; });
@@ -2333,13 +2338,23 @@
     }
     saveState();
 
-    const button = todo.querySelector('.must-do-toggle');
-    if (button) {
-      button.classList.toggle("active", mustDo);
-      const label = mustDo ? "Remove from must do" : "Mark as must do";
-      button.setAttribute("aria-label", label);
-      button.setAttribute("title", label);
-    }
+    if (!dayId) return;
+    renderItinerary();
+    requestAnimationFrame(function () {
+      const restoredDay = document.querySelector('.day[data-day="' + dayId + '"]');
+      if (!restoredDay) return;
+      restoredDay.classList.remove("collapsed");
+      restoredDay.classList.toggle("flipped", flipped);
+      if (slotKey) {
+        const restoredSlot = restoredDay.querySelector('.slot[data-container="' + cssEscape(slotKey) + '"]');
+        if (restoredSlot) {
+          restoredSlot.classList.add("is-open");
+          const toggle = restoredSlot.querySelector(".slot-toggle");
+          if (toggle) toggle.setAttribute("aria-expanded", "true");
+        }
+      }
+      window.scrollTo({ top: scrollY, behavior: "instant" });
+    });
   }
 
   /* Fade the card for a beat and show a "Day completed!" badge with a confetti
