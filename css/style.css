@@ -1094,6 +1094,37 @@ body.is-dragging-day {
 .chip-today {
   --cc: var(--seal);
 }
+.next-up {
+  margin: 0 2px 14px;
+  border: 1px solid color-mix(in srgb, var(--jade) 42%, var(--line));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--jade-soft) 62%, var(--card));
+}
+.next-up-label {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 11px 3px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--jade);
+}
+.next-up-label span { color: var(--ink-faint); }
+.next-up-main {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 11px 9px;
+  text-align: left;
+}
+.next-up-main strong, .next-up-main small { display: block; }
+.next-up-main strong { font-family: var(--f-display); font-size: 16px; font-weight: 600; }
+.next-up-main small { margin-top: 1px; color: var(--ink-soft); font-size: 12px; }
+.next-up-chevron { margin-left: auto; color: var(--jade); }
+.next-up-chevron svg { width: 17px; height: 17px; transform: rotate(-90deg); }
 .filtered-out {
   display: none !important;
 }
@@ -1130,6 +1161,21 @@ body.is-dragging-day {
   border-radius: 999px;
   padding: 2px 8px;
 }
+.slot-must {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex: none;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: #9b7215;
+}
+.slot-must svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
 .slot {
   border-left: 2px solid var(--line);
   padding-left: 12px;
@@ -1143,6 +1189,12 @@ body.is-dragging-day {
 }
 .slot[data-slot="evening"] {
   border-left-color: color-mix(in srgb, var(--jade) 45%, var(--line));
+}
+.slot-content {
+  display: none;
+}
+.slot.is-open .slot-content {
+  display: block;
 }
 
 .day:not(.collapsed):not(.flipped) .day-head {
@@ -1537,6 +1589,40 @@ body.is-dragging-day {
   gap: 8px;
   margin-bottom: 6px;
 }
+.slot-toggle {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+}
+.slot-label {
+  min-width: 0;
+}
+.slot-count {
+  display: block;
+  margin-top: 1px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+}
+.slot-chevron {
+  margin-left: auto;
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  color: var(--ink-faint);
+}
+.slot-chevron svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.18s ease;
+}
+.slot.is-open .slot-chevron svg {
+  transform: rotate(180deg);
+}
 .slot-head .dot {
   width: 9px;
   height: 9px;
@@ -1558,6 +1644,41 @@ body.is-dragging-day {
   text-transform: uppercase;
   color: var(--ink-soft);
 }
+.slot-area {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  margin-left: auto;
+  color: var(--ink-faint);
+  font-family: var(--f-mono);
+  font-size: 10px;
+}
+.slot-area span {
+  flex: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.slot-area input {
+  width: min(132px, 30vw);
+  min-width: 72px;
+  border: 0;
+  border-bottom: 1px dashed var(--line-strong);
+  border-radius: 0;
+  padding: 1px 0 2px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: right;
+}
+.slot-area input::placeholder {
+  color: var(--ink-faint);
+  opacity: 0.78;
+}
+.slot-area input:focus {
+  outline: none;
+  border-bottom-color: var(--jade);
+}
 
 .todo {
   border: 1px solid var(--line);
@@ -1565,6 +1686,10 @@ body.is-dragging-day {
   background: var(--paper-2);
   margin-bottom: 8px;
   overflow: hidden;
+}
+.todo.must-do {
+  border-color: var(--gold);
+  box-shadow: inset 0 0 0 1px var(--gold), 0 3px 10px color-mix(in srgb, var(--gold) 18%, transparent);
 }
 .todo-row {
   display: flex;
@@ -1599,13 +1724,84 @@ body.is-dragging-day {
   transform: scale(1);
   stroke: #fff;
 }
+.must-do-toggle {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: var(--line-strong);
+  transition: color 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
+}
+.must-do-toggle:hover {
+  color: var(--gold);
+  background: var(--gold-soft);
+}
+.must-do-toggle:active {
+  transform: scale(0.9);
+}
+.must-do-toggle svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+}
+.must-do-toggle.active {
+  color: var(--gold);
+}
+.must-do-toggle.active svg {
+  fill: currentColor;
+}
 .todo-name {
   flex: 1;
   font-size: 15px;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 7px;
 }
-.todo.done .todo-name {
+.todo.done .todo-title {
   text-decoration: line-through;
   color: var(--ink-faint);
+}
+.place-type {
+  flex: none;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 1px 6px;
+  font-family: var(--f-mono);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.place-type-mall {
+  color: var(--seal);
+  background: color-mix(in srgb, var(--seal) 11%, transparent);
+}
+.place-type-shop {
+  color: #9b7215;
+  background: color-mix(in srgb, var(--gold) 15%, transparent);
+}
+.place-type-sight {
+  color: var(--jade);
+  background: var(--jade-soft);
+}
+.place-type-travel {
+  color: #287d9d;
+  background: color-mix(in srgb, #56b7d1 14%, transparent);
+}
+.place-type-food {
+  color: #a55269;
+  background: color-mix(in srgb, #e56f9c 14%, transparent);
+}
+.place-type-place {
+  color: var(--ink-soft);
+  background: var(--card);
 }
 .todo-chips {
   flex: none;
@@ -1640,6 +1836,22 @@ body.is-dragging-day {
   color: var(--jade);
   white-space: nowrap;
 }
+.day-food-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  margin-top: 14px;
+  padding: 6px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+.day-food-action:hover { border-color: var(--jade); color: var(--jade); }
+.day-food-action svg { width: 15px; height: 15px; }
 .todo-expand {
   flex: none;
   width: 28px;
@@ -2240,6 +2452,37 @@ body.is-dragging-day {
   padding-left: 4px;
   border-left: 4px solid var(--line-strong);
 }
+.booking-section-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 18px 0 8px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.booking-section-head:first-of-type {
+  margin-top: 10px;
+}
+.booking-section-head strong {
+  display: grid;
+  min-width: 20px;
+  height: 20px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--line);
+  color: var(--ink);
+  font-size: 10px;
+}
+.booking-section-head.confirmed-head {
+  color: var(--jade);
+}
+.booking-section-head.confirmed-head strong {
+  background: var(--jade-soft);
+  color: var(--jade);
+}
 .booking .todo-row {
   align-items: flex-start;
 }
@@ -2284,21 +2527,6 @@ body.is-dragging-day {
   height: 12px;
   flex: none;
 }
-.booking-visit {
-  flex: none;
-  text-align: right;
-  font-family: var(--f-mono);
-  font-size: 13px;
-  color: var(--ink);
-  line-height: 1.1;
-}
-.booking-visit .lbl {
-  display: block;
-  font-size: 9px;
-  letter-spacing: 0.14em;
-  color: var(--ink-faint);
-}
-
 .booking-when {
   display: flex;
   align-items: center;
@@ -2334,6 +2562,52 @@ body.is-dragging-day {
   margin: 8px 12px 12px 44px;
   line-height: 1.45;
 }
+.booking-confirmed {
+  margin: 5px 12px 0 44px;
+  padding: 9px 10px;
+  border: 1px solid var(--jade);
+  border-radius: 10px;
+  background: var(--jade-soft);
+}
+.booking-confirmed-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.booking-status,
+.booking-visit-countdown {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.booking-status { color: var(--jade); }
+.booking-visit-countdown { color: var(--ink-soft); }
+.booking-confirmed-detail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink);
+}
+.booking-confirmed-detail + .booking-confirmed-detail { margin-top: 3px; }
+.booking-confirmed-detail svg {
+  width: 13px;
+  height: 13px;
+  flex: none;
+  color: var(--jade);
+}
+.booking-confirmed-ref {
+  margin-top: 6px;
+  padding-top: 5px;
+  border-top: 1px dashed color-mix(in srgb, var(--jade) 45%, transparent);
+  font-family: var(--f-mono);
+  font-size: 10px;
+  color: var(--ink-soft);
+}
 
 .booking.urg-now {
   border-left-color: var(--seal);
@@ -2368,7 +2642,11 @@ body.is-dragging-day {
 }
 .booking.done {
   border-left-color: var(--jade);
-  opacity: 0.72;
+  opacity: 1;
+}
+.booking.done .booking-name {
+  text-decoration: none;
+  color: var(--ink);
 }
 @keyframes pulse {
   0% {

@@ -32,13 +32,15 @@
   let dayFilter = "all"; // "all" | "todo" | "done" (list view, not persisted)
 
   function loadState() {
-    let s = { over: {}, added: {}, hidden: {}, flights: {}, photos: {}, hotels: {}, view: "list", theme: "light", order: {}, packing: {}, packingAdd: {}, packingHide: {}, expenses: [], docs: [], stamps: [], recipes: [] };
+    let s = { over: {}, added: {}, hidden: {}, flights: {}, photos: {}, hotels: {}, view: "list", theme: "light", order: {}, slotAreas: {}, slotOpen: {}, packing: {}, packingAdd: {}, packingHide: {}, expenses: [], docs: [], stamps: [], recipes: [] };
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) s = Object.assign(s, JSON.parse(raw));
     } catch (e) { /* ignore */ }
     if (!s.hotels) s.hotels = {};
     if (!s.order || typeof s.order !== "object") s.order = {};
+    if (!s.slotAreas || typeof s.slotAreas !== "object") s.slotAreas = {};
+    if (!s.slotOpen || typeof s.slotOpen !== "object") s.slotOpen = {};
     if (!s.packing || typeof s.packing !== "object") s.packing = {};
     if (!s.packingAdd || typeof s.packingAdd !== "object") s.packingAdd = {};
     if (!s.packingHide || typeof s.packingHide !== "object") s.packingHide = {};
@@ -485,6 +487,15 @@
     return "";
   }
 
+  function placeType(p, containerKey) {
+    const text = (p.name + " " + ((p.details || {}).note || "")).toLowerCase();
+    if (/\b(mall|shopping centre|shopping center|department store)\b/.test(text)) return { label: "Mall", key: "mall" };
+    if (/\b(shop|shops|store|boutique|market|arcade|loft)\b/.test(text)) return { label: "Shop", key: "shop" };
+    if (/\b(fly|flight|airport|train|shinkansen|metro|ferry|transfer|depart|arrive|travel to|travel day|in the air)\b/.test(text)) return { label: "Travel", key: "travel" };
+    if (/\b(temple|shrine|garden|museum|palace|castle|park|tower|wall|buddha|waterfall|aquarium|observatory|promenade|bund|lake|island|chinatown)\b/.test(text)) return { label: "Sight", key: "sight" };
+    return null;
+  }
+
   /* =====================================================================
      RENDER: a single to-do place row
      travelInfo (itinerary stops only): { first: bool } → shows a "X min from
@@ -496,7 +507,10 @@
     const hours = formatHours(d.open, d.close);
     const isItin = !!travelInfo;
     const isFood = /:(restaurants|cafes)$/.test(containerKey || "");
+    const mustDo = !!d.mustDo;
+    const type = placeType(p, containerKey);
     const travel = (d.travel == null ? "" : String(d.travel)).trim();
+    const typeChip = type ? '<span class="place-type place-type-' + type.key + '">' + type.label + '</span>' : '';
     const travelChip = (isItin && travel)
       ? '<div class="travel-chip">' + ICON.walk + ' ' + esc(travel) + ' min ' + travelLabel(travelInfo.first, d.travelFrom) + '</div>'
       : "";
@@ -505,13 +519,14 @@
       ? '<button class="link-maps" data-act="maps">' + ICON.directions + ' Directions</button>'
       : "";
     return (
-      '<div class="todo' + (p.done ? " done" : "") + '" data-place="' + p.id + '" data-container="' + esc(containerKey) + '"' +
+      '<div class="todo' + (p.done ? " done" : "") + (mustDo ? " must-do" : "") + '" data-place="' + p.id + '" data-container="' + esc(containerKey) + '"' +
         (cityName ? ' data-city="' + esc(cityName) + '"' : '') +
         (isItin ? ' data-itin="1" data-first="' + (travelInfo.first ? "1" : "0") + '"' : '') + '>' +
         '<div class="todo-row">' +
           '<button class="check" data-act="toggle" aria-label="Toggle done">' + ICON.check + '</button>' +
-          '<div class="todo-name">' + esc(p.name) + '</div>' +
+          '<div class="todo-name"><span class="todo-title">' + esc(p.name) + '</span>' + typeChip + '</div>' +
           '<div class="todo-chips">' + travelChip + hoursChip + '</div>' +
+          '<button class="must-do-toggle' + (mustDo ? " active" : "") + '" data-act="must-do" aria-label="' + (mustDo ? "Remove from must do" : "Mark as must do") + '" title="' + (mustDo ? "Remove from must do" : "Mark as must do") + '">' + ICON.star + '</button>' +
           '<button class="todo-expand" data-act="expand" aria-label="Details">' + ICON.chevron + '</button>' +
         '</div>' +
         (isFood ? renderRating(p) : "") +
@@ -579,20 +594,26 @@
   function renderSlot(day, slotKey, label, dotClass, seq) {
     const containerKey = day.id + ":" + slotKey;
     const cityName = (DATA.cities[day.city] || {}).name || "";
+    const seedArea = (day.areas || {})[slotKey] || "";
+    const area = state.slotAreas[containerKey] != null ? state.slotAreas[containerKey] : seedArea;
     const list = placesFor(day[slotKey], containerKey);
-    const rows = list.map(function (p) {
+    const ordered = list.filter(function (p) { return !!(p.details || {}).mustDo; })
+      .concat(list.filter(function (p) { return !(p.details || {}).mustDo; }));
+    const rows = ordered.map(function (p) {
       const info = { first: seq.n === 0 };
       seq.n++;
       return renderPlace(p, containerKey, info, cityName);
     }).join("");
     const doneCount = list.filter(function (p) { return p.done; }).length;
+    const mustDoCount = list.filter(function (p) { return !!(p.details || {}).mustDo; }).length;
+    const isOpen = state.slotOpen[containerKey] != null ? state.slotOpen[containerKey] : slotKey === "morning";
     const tally = list.length ? '<span class="slot-tally">' + doneCount + '/' + list.length + '</span>' : '';
+    const mustDo = mustDoCount ? '<span class="slot-must">' + ICON.star + ' ' + mustDoCount + '</span>' : '';
     return (
-      '<div class="slot" data-slot="' + dotClass + '">' +
-        '<div class="slot-head"><span class="slot-emoji ' + dotClass + '">' + (SLOT_EMOJI[slotKey] || "") + '</span><h4>' + label + '</h4>' + tally + '</div>' +
-        rows +
-        '<button class="add-place" data-act="add" data-container="' + containerKey + '">' + ICON.plus + ' Add a place</button>' +
-      '</div>'
+      '<section class="slot' + (isOpen ? " is-open" : "") + '" data-slot="' + dotClass + '" data-container="' + esc(containerKey) + '">' +
+        '<div class="slot-head"><button class="slot-toggle" data-act="slot-toggle" aria-expanded="' + isOpen + '"><span class="slot-emoji ' + dotClass + '">' + (SLOT_EMOJI[slotKey] || "") + '</span><span class="slot-label"><h4>' + label + '</h4><span class="slot-count">' + list.length + (list.length === 1 ? " stop" : " stops") + '</span></span><span class="slot-chevron">' + ICON.chevron + '</span></button><label class="slot-area"><span>Area</span><input data-slotarea="' + esc(containerKey) + '" value="' + esc(area) + '" placeholder="Add area" aria-label="' + esc(label) + ' area"></label>' + mustDo + tally + '</div>' +
+        '<div class="slot-content">' + rows + '<button class="add-place" data-act="add" data-container="' + containerKey + '">' + ICON.plus + ' Add a place</button></div>' +
+      '</section>'
     );
   }
 
@@ -798,13 +819,12 @@
             reorderMoves +
           '</div>' +
           '<div class="day-collapse">' +
-            '<div class="flip-hint">Tap the photo to flip for food &amp; cafés →</div>' +
             sunTimes(day.city, day.date) +
             renderHotelBar(day) +
             renderSlot(day, "morning", "Morning", "morning", seq) +
             renderSlot(day, "afternoon", "Afternoon", "afternoon", seq) +
             renderSlot(day, "evening", "Evening", "evening", seq) +
-            '<button class="flip-btn" data-act="flip">' + ICON.flip + ' Eat &amp; drink</button> ' +
+            '<button class="day-food-action" data-act="open-food">' + ICON.pin + ' Food &amp; drink</button> ' +
             '<button class="flip-btn" data-act="photo">' + ICON.camera + ' Photo</button>' +
           '</div>' +
         '</div>' +
@@ -996,6 +1016,7 @@
       '</div>';
     const html =
       '<div id="todayBanner">' + todayBannerHTML() + '</div>' +
+      nextUpHTML() +
       toolbar +
       '<div class="days-list"' + (view === "calendar" ? " hidden" : "") + '>' +
         filterChips +
@@ -1004,6 +1025,20 @@
       '<div class="days-calendar"' + (view === "list" ? " hidden" : "") + '>' + renderCalendar() + '</div>';
     document.getElementById("panel-days").innerHTML = html;
     applyDayFilter();
+  }
+
+  function nextUpHTML() {
+    const today = localISO(new Date());
+    const days = effectiveDays();
+    const day = days.find(function (item) { return item.date >= today; }) || days[days.length - 1];
+    if (!day) return "";
+    const city = DATA.cities[day.city] || {};
+    const stops = ["morning", "afternoon", "evening"].reduce(function (total, slot) {
+      return total + placesFor(day[slot], day.id + ":" + slot).length;
+    }, 0);
+    const when = Math.round((new Date(day.date + "T00:00:00") - new Date(today + "T00:00:00")) / 86400000);
+    const label = when === 0 ? "Today" : when === 1 ? "Tomorrow" : "In " + when + " days";
+    return '<section class="next-up"><div class="next-up-label">Next up <span>' + esc(label) + '</span></div><button class="next-up-main" data-act="open-day" data-day="' + esc(day.id) + '"><span>' + esc((CITY_THEME[day.city] || {}).emoji || city.flag || "") + '</span><span><strong>' + esc(day.focus) + '</strong><small>' + esc(fmtDate(day.date).dow + " · " + fmtDate(day.date).big + " · " + city.name + " · " + stops + " stops") + '</small></span><span class="next-up-chevron">' + ICON.chevron + '</span></button></section>';
   }
 
   /* Client-side day filtering (All / To-do / Done). Hides leg headings that
@@ -1266,13 +1301,38 @@
     return { text: "Opens " + dt.big + " · " + days + " days", level: "later" };
   }
 
+  function visitCountdown(iso) {
+    if (!iso) return "Date to add";
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const target = new Date(iso + "T00:00:00");
+    const days = Math.round((target - today) / 86400000);
+    if (days < 0) return "Completed";
+    if (days === 0) return "Today";
+    if (days === 1) return "Tomorrow";
+    return "In " + days + " days";
+  }
+
+  function bookingSummary(date, time, location, ref) {
+    const when = date ? fmtDate(date).big + (time ? " · " + time : "") : "Date to add";
+    return (
+      '<div class="booking-confirmed">' +
+        '<div class="booking-confirmed-top"><span class="booking-status">Booked</span><span class="booking-visit-countdown">' + esc(visitCountdown(date)) + '</span></div>' +
+        '<div class="booking-confirmed-detail booking-confirmed-date">' + ICON.calendar + '<span>' + esc(when) + '</span></div>' +
+        '<div class="booking-confirmed-detail booking-confirmed-location">' + ICON.pin + '<span>' + esc(location || "Location to add") + '</span></div>' +
+        (ref ? '<div class="booking-confirmed-ref">Ref: ' + esc(ref) + '</div>' : '') +
+      '</div>'
+    );
+  }
+
   function renderBooking(b, containerKey) {
     const booked = isBooked(b.id, containerKey);
     const cd = bookingCountdown(b.bookByDate);
-    const visit = b.visit ? fmtDate(b.visit).big : "Date flexible";
     let d;
     if (isAdded(containerKey, b.id)) d = b.details || {};
     else d = Object.assign({}, b.details || {}, (state.over[b.id] && state.over[b.id].details) || {});
+    const bookingDate = d.bookingDate || b.visit || "";
+    const bookingTime = d.bookingTime || "";
+    const bookingLocation = d.bookingLocation || b.where || "";
     return (
       '<div class="todo booking urg-' + cd.level + (booked ? " done" : "") + '" data-place="' + b.id + '" data-container="' + esc(containerKey) + '">' +
         '<div class="todo-row">' +
@@ -1281,13 +1341,15 @@
             '<div class="booking-name">' + esc(b.name) + (b.flexible ? ' <span class="flex-tag">flexible</span>' : '') + '</div>' +
             '<div class="booking-where">' + ICON.pin + ' ' + esc(b.where || "") + '</div>' +
           '</div>' +
-          '<div class="booking-visit"><span class="lbl">GO</span>' + esc(visit) + '</div>' +
           '<button class="todo-expand" data-act="expand" aria-label="Details">' + ICON.chevron + '</button>' +
         '</div>' +
-        '<div class="booking-when"><span class="pulse"></span><div><strong>' + esc(b.bookBy) + '</strong><span class="cd">' + esc(cd.text) + '</span></div></div>' +
+        (booked ? bookingSummary(bookingDate, bookingTime, bookingLocation, d.ref) : '<div class="booking-when"><span class="pulse"></span><div><strong>' + esc(b.bookBy) + '</strong><span class="cd">' + esc(cd.text) + '</span></div></div>') +
         (b.note ? '<div class="booking-note">' + esc(b.note) + '</div>' : '') +
         '<div class="todo-detail">' +
           '<div class="detail-grid">' +
+            '<div class="field"><label>Booked for</label><input type="date" data-field="bookingDate" value="' + esc(bookingDate) + '"></div>' +
+            '<div class="field"><label>Time</label><input type="time" data-field="bookingTime" value="' + esc(bookingTime) + '"></div>' +
+            field("Booking location", "bookingLocation", bookingLocation, "Venue / branch", true) +
             field("Booking ref", "ref", d.ref, "Confirmation #", true) +
             field("My notes", "note2", d.note2, "Anything to remember…", true, true) +
           '</div>' +
@@ -1301,22 +1363,37 @@
 
   function renderBookings() {
     const containerKey = "book";
-    let html = '<h2 class="section-title">Things to book</h2>' +
-      '<p class="empty" style="margin-bottom:14px">Time-sensitive reservations. Tick one once it\'s booked — the chip shows when each window opens.</p>';
+    let html = '<h2 class="section-title">Bookings</h2>';
 
     // Seed bookings (respecting deletions) + any you\'ve added, sorted by urgency.
     const seed = DATA.bookings.filter(function (b) { return !state.hidden[b.id]; });
     const added = (state.added[containerKey] || []).filter(function (b) { return !state.hidden[b.id]; });
     const all = seed.concat(added);
     const rank = { now: 0, soon: 1, later: 2, flex: 3 };
-    all.sort(function (a, b) {
+    const confirmed = all.filter(function (b) { return isBooked(b.id, containerKey); });
+    const outstanding = all.filter(function (b) { return !isBooked(b.id, containerKey); });
+    outstanding.sort(function (a, b) {
       const la = bookingCountdown(a.bookByDate).level, lb = bookingCountdown(b.bookByDate).level;
       return (rank[la] - rank[lb]);
     });
 
-    html += all.map(function (b) { return renderBooking(b, containerKey); }).join("");
+    confirmed.sort(function (a, b) {
+      const ad = readBookingDate(a, containerKey), bd = readBookingDate(b, containerKey);
+      return ad < bd ? -1 : ad > bd ? 1 : 0;
+    });
+    if (confirmed.length) {
+      html += '<div class="booking-section-head confirmed-head"><span>Confirmed</span><strong>' + confirmed.length + '</strong></div>' +
+        confirmed.map(function (b) { return renderBooking(b, containerKey); }).join("");
+    }
+    html += '<div class="booking-section-head"><span>Still to book</span><strong>' + outstanding.length + '</strong></div>' +
+      outstanding.map(function (b) { return renderBooking(b, containerKey); }).join("");
     html += '<button class="add-place" data-act="add" data-container="' + containerKey + '">' + ICON.plus + ' Add something to book</button>';
     document.getElementById("panel-book").innerHTML = html;
+  }
+
+  function readBookingDate(b, containerKey) {
+    if (isAdded(containerKey, b.id)) return (b.details || {}).bookingDate || b.visit || "";
+    return ((state.over[b.id] || {}).details || {}).bookingDate || b.visit || "";
   }
 
   /* =====================================================================
@@ -1951,6 +2028,15 @@
       }
       return;
     }
+    if (act === "open-day") {
+      openDayCard(actEl.getAttribute("data-day"));
+      return;
+    }
+    if (act === "open-food") {
+      const day = actEl.closest(".day");
+      if (day) { day.classList.remove("collapsed"); day.classList.add("flipped"); }
+      return;
+    }
     if (act === "flip") {
       const day = actEl.closest(".day");
       if (day) {
@@ -1963,6 +2049,15 @@
     if (act === "toggle") {
       const todo = actEl.closest(".todo");
       togglePlace(todo);
+      return;
+    }
+    if (act === "slot-toggle") {
+      const slot = actEl.closest(".slot");
+      if (slot) toggleSlot(slot);
+      return;
+    }
+    if (act === "must-do") {
+      toggleMustDo(actEl.closest(".todo"));
       return;
     }
     if (act === "rate") {
@@ -2133,6 +2228,12 @@
 
   /* Editing detail fields (place) */
   document.addEventListener("input", function (e) {
+    const areaEl = e.target.closest("[data-slotarea]");
+    if (areaEl) {
+      state.slotAreas[areaEl.getAttribute("data-slotarea")] = areaEl.value;
+      saveState();
+      return;
+    }
     const fEl = e.target.closest("[data-field]");
     if (fEl) {
       const todo = fEl.closest(".todo");
@@ -2185,12 +2286,53 @@
       ensureOver(id).done = nowDone;
     }
     saveState();
+    if (containerKey === "book") {
+      renderBookings();
+      return;
+    }
     updateProgress();
     updateDayRing(dayEl);
     updateSlotTally(todo.closest(".slot"));
     // Celebrate when a whole day just tipped over to 100%.
     if (nowDone && dayEl && !wasComplete && dayEl.querySelector(".day-ring.is-complete")) {
       celebrateDay(dayEl);
+    }
+  }
+
+  function toggleSlot(slot) {
+    const containerKey = slot.getAttribute("data-container");
+    const open = !slot.classList.contains("is-open");
+    slot.classList.toggle("is-open", open);
+    state.slotOpen[containerKey] = open;
+    saveState();
+    const button = slot.querySelector(".slot-toggle");
+    if (button) button.setAttribute("aria-expanded", String(open));
+  }
+
+  function toggleMustDo(todo) {
+    if (!todo) return;
+    const id = todo.getAttribute("data-place");
+    const containerKey = todo.getAttribute("data-container");
+    const mustDo = !todo.classList.contains("must-do");
+    todo.classList.toggle("must-do", mustDo);
+
+    if (isAdded(containerKey, id)) {
+      const place = state.added[containerKey].find(function (item) { return item.id === id; });
+      if (place) {
+        if (!place.details) place.details = {};
+        place.details.mustDo = mustDo;
+      }
+    } else {
+      ensureOver(id).details.mustDo = mustDo;
+    }
+    saveState();
+
+    const button = todo.querySelector('.must-do-toggle');
+    if (button) {
+      button.classList.toggle("active", mustDo);
+      const label = mustDo ? "Remove from must do" : "Mark as must do";
+      button.setAttribute("aria-label", label);
+      button.setAttribute("title", label);
     }
   }
 
@@ -2316,6 +2458,9 @@
       o.details[field] = value;
     }
     saveState();
+    if (todo.classList.contains("booking") && /^(bookingDate|bookingTime|bookingLocation|ref)$/.test(field)) {
+      syncBookingSummary(todo);
+    }
     // keep the hours chip in sync if open/close changed
     if (field === "open" || field === "close") {
       const chips = todo.querySelector(".todo-chips");
@@ -2349,6 +2494,15 @@
         chip.remove();
       }
     }
+  }
+
+  function syncBookingSummary(todo) {
+    const date = (todo.querySelector('[data-field="bookingDate"]') || {}).value || "";
+    const time = (todo.querySelector('[data-field="bookingTime"]') || {}).value || "";
+    const location = (todo.querySelector('[data-field="bookingLocation"]') || {}).value || "";
+    const ref = (todo.querySelector('[data-field="ref"]') || {}).value || "";
+    const summary = todo.querySelector(".booking-confirmed");
+    if (summary) summary.outerHTML = bookingSummary(date, time, location, ref);
   }
 
   function addPlace(containerKey) {

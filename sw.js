@@ -8,16 +8,16 @@
      get fresh numbers when online but still see the last values offline.
    Bump CACHE_VERSION whenever the shell files change to force an update.
    ===================================================================== */
-const CACHE_VERSION = "rach-itin-v44";
+const CACHE_VERSION = "rach-itin-v51";
 const SHELL_CACHE = CACHE_VERSION + "-shell";
 const RUNTIME_CACHE = CACHE_VERSION + "-runtime";
 
 const SHELL_ASSETS = [
   "./",
   "./index.html",
-  "./css/style.css?v=32",
-  "./js/data.js?v=13",
-  "./js/app.js?v=29",
+  "./css/style.css?v=38",
+  "./js/data.js?v=15",
+  "./js/app.js?v=35",
   "./manifest.webmanifest",
   "./assets/icons/icon-192.png",
   "./assets/icons/icon-512.png",
