@@ -1276,6 +1276,23 @@ body.is-dragging-day {
 .slot.is-open .slot-content {
   display: block;
 }
+.slot-priority {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 2px 0 6px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #9b7215;
+}
+.slot-priority svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
 
 .day:not(.collapsed):not(.flipped) .day-head {
   position: sticky;

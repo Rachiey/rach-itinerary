@@ -597,13 +597,14 @@
     const seedArea = (day.areas || {})[slotKey] || "";
     const area = state.slotAreas[containerKey] != null ? state.slotAreas[containerKey] : seedArea;
     const list = placesFor(day[slotKey], containerKey);
-    const ordered = list.filter(function (p) { return !!(p.details || {}).mustDo; })
-      .concat(list.filter(function (p) { return !(p.details || {}).mustDo; }));
-    const rows = ordered.map(function (p) {
+    const priority = list.filter(function (p) { return !!(p.details || {}).mustDo; });
+    const regular = list.filter(function (p) { return !(p.details || {}).mustDo; });
+    const renderRows = function (items) { return items.map(function (p) {
       const info = { first: seq.n === 0 };
       seq.n++;
       return renderPlace(p, containerKey, info, cityName);
-    }).join("");
+    }).join(""); };
+    const rows = (priority.length ? '<div class="slot-priority">' + ICON.star + ' Must do</div>' + renderRows(priority) : "") + renderRows(regular);
     const doneCount = list.filter(function (p) { return p.done; }).length;
     const mustDoCount = list.filter(function (p) { return !!(p.details || {}).mustDo; }).length;
     const isOpen = state.slotOpen[containerKey] != null ? state.slotOpen[containerKey] : slotKey === "morning";
