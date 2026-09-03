@@ -2063,6 +2063,28 @@ body.is-dragging-day {
   .booking .field input {
     min-width: 0;
   }
+  .booking input[type="date"],
+  .booking input[type="time"] {
+    display: block;
+    max-width: 100%;
+    min-height: 44px;
+    font-size: 16px;
+    line-height: 1.2;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .booking input[type="date"]::-webkit-datetime-edit,
+  .booking input[type="time"]::-webkit-datetime-edit {
+    padding: 0;
+  }
+  .booking input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+  .booking input[type="time"]::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
+  }
+  .booking input[type="date"]::-webkit-calendar-picker-indicator,
+  .booking input[type="time"]::-webkit-calendar-picker-indicator {
+    margin: 0;
+  }
 }
 .field {
   display: flex;
