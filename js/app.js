@@ -2800,9 +2800,51 @@
     });
     html += '</div>';
     html +=
-      '<div class="footer-note">Everything you tick or add is saved on this device.<br>' +
+      '<div class="data-tools"><button class="data-tool-btn" data-act="data-export">Download my trip data</button><button class="data-tool-btn" data-act="data-import">Restore trip data</button></div>' +
+      '<div class="footer-note">Everything you tick or add is saved on this device. Backups include your plans and settings, but not uploaded photos or documents.<br>' +
       '<button class="reset-btn" id="reset">Reset all my changes</button></div>';
     document.getElementById("panel-more").innerHTML = html;
+  }
+
+  function exportTripData() {
+    const payload = { app: "rach-itinerary", version: 1, exportedAt: new Date().toISOString(), state: state };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "china-japan-trip-backup-" + localISO(new Date()) + ".json";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  function ensureDataImportInput() {
+    let input = document.getElementById("data-import-input");
+    if (input) return input;
+    input = document.createElement("input");
+    input.id = "data-import-input";
+    input.type = "file";
+    input.accept = "application/json,.json";
+    input.hidden = true;
+    input.addEventListener("change", function () {
+      const file = input.files && input.files[0];
+      input.value = "";
+      if (!file) return;
+      file.text().then(function (text) {
+        const backup = JSON.parse(text);
+        if (!backup || backup.app !== "rach-itinerary" || !backup.state || typeof backup.state !== "object" || Array.isArray(backup.state)) throw new Error("Invalid backup");
+        if (!window.confirm("Restore this backup? It will replace the current changes saved on this device.")) return;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(backup.state));
+        state = loadState();
+        renderAll();
+        applyTheme();
+      }).catch(function () {
+        window.alert("That file is not a valid China-Japan trip backup.");
+      });
+    });
+    document.body.appendChild(input);
+    return input;
   }
 
   function moreHeader(title) {
@@ -3163,6 +3205,8 @@
     const actEl = e.target.closest("[data-act]");
     if (!actEl) return;
     const act = actEl.getAttribute("data-act");
+    if (act === "data-export") { exportTripData(); return; }
+    if (act === "data-import") { ensureDataImportInput().click(); return; }
     if (act === "more-open") { moreView = actEl.getAttribute("data-tool"); renderMore(); window.scrollTo({ top: 0 }); return; }
     if (act === "more-back") { moreView = null; renderMore(); window.scrollTo({ top: 0 }); return; }
     if (act === "pack-toggle") {
