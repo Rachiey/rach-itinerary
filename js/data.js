@@ -242,23 +242,31 @@ const DAYS = [
       focus: "Suzhou Day Trip",
       photo: "assets/photos/suzhou.webp",
       holiday: { name: "China National Day Golden Week", note: "Public holiday period: trains and Suzhou attractions will be exceptionally busy. Reserve rail tickets and timed entry early." },
+      areas: {
+        morning: "Suzhou - Gardens & Pingjiang Road",
+        afternoon: "Suzhou",
+        evening: "Hongquan Road Koreatown",
+      },
       morning: [
         place("d5-m1", "Travel to Suzhou via Hongqiao station", { note: "~25 min high-speed train, hundreds of departures daily — no need to book far ahead." }),
-        place("d5-m2", "Suzhou Classical Gardens (Humble Administrator's Garden)", { open: "07:30", close: "17:30" }),
+        place("d5-m2", "Humble Administrator's Garden", { open: "07:30", close: "17:30" }),
         place("d5-m3", "Pingjiang Road stroll", { note: "Historic canal-side street with shops & tea houses." }),
       ],
       afternoon: [
-        place("d5-a1", "Shantang Street & canals"),
+        place("d5-a1", "Suzhou", { note: "Continue exploring the city before travelling back to Shanghai." }),
       ],
       evening: [
         place("d5-e1", "Train back to Shanghai (~25m)"),
+        place("d5-e2", "Hongquan Road Koreatown"),
+        place("d5-e3", "Korean Street", { note: "Hongquan Road area." }),
       ],
       restaurants: [
-        place("d5-r1", "Song He Lou (Suzhou)", { open: "11:00", close: "21:00" }),
-        place("d5-r2", "Li Bai Xie", { open: "11:00", close: "20:00" }),
+        place("d5-r1", "Li Bai Xie", { open: "11:00", close: "20:00" }),
+        place("d5-r2", "Samddeok Korean Restaurant", { note: "Hongquan Road Koreatown." }),
       ],
       cafes: [
-        place("d5-c1", "Be Fine Cha", { open: "09:00", close: "18:00" }),
+        place("d5-c1", "BE FINE CHA - Pingjiang location"),
+        place("d5-c2", "BE FINE CHA"),
       ],
     },
   
