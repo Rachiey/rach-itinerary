@@ -565,12 +565,15 @@ select {
 }
 .day.flipped .day-inner > .day-face {
   opacity: 0;
+  pointer-events: none;
 }
 .day-back {
   opacity: 0;
+  pointer-events: none;
 }
 .day.flipped .day-back {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .day-photo {
@@ -757,7 +760,7 @@ select {
   height: 11px;
 }
 .holiday-alert {
-  margin: 8px 0 2px;
+  margin: 12px 0 14px;
   padding: 9px 10px;
   border: 1px solid color-mix(in srgb, var(--gold) 72%, var(--line));
   border-radius: 8px;
@@ -2032,6 +2035,11 @@ body.is-dragging-day {
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-top: 10px;
+}
+@media (max-width: 420px) {
+  .booking .detail-grid {
+    grid-template-columns: 1fr;
+  }
 }
 .field {
   display: flex;

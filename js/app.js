@@ -2542,7 +2542,27 @@
         details: { open: "", close: "", address: "", note: "" },
       });
       saveState();
+      const day = btn.closest(".day");
+      const dayId = day ? day.getAttribute("data-day") : "";
+      const slot = btn.closest(".slot");
+      const slotKey = slot ? slot.getAttribute("data-container") : "";
       rerenderForContainer(containerKey);
+      if (dayId) {
+        requestAnimationFrame(function () {
+          const restoredDay = document.querySelector('.day[data-day="' + dayId + '"]');
+          if (!restoredDay) return;
+          restoredDay.classList.remove("collapsed");
+          if (slotKey) {
+            const restoredSlot = restoredDay.querySelector('.slot[data-container="' + cssEscape(slotKey) + '"]');
+            if (restoredSlot) {
+              restoredSlot.classList.add("is-open");
+              const toggle = restoredSlot.querySelector(".slot-toggle");
+              if (toggle) toggle.setAttribute("aria-expanded", "true");
+            }
+          }
+          restoredDay.scrollIntoView({ block: "nearest" });
+        });
+      }
       updateProgress();
       // Re-open a fresh editor so it's easy to add several in a row.
       addPlace(containerKey);
