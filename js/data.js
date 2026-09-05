@@ -361,7 +361,7 @@ const DAYS = [
     photo: "assets/photos/osaka.webp",
     holiday: { name: "China National Day Golden Week", note: "The holiday is still in effect in China today. Allow extra time for the journey to Pudong Airport and airport queues." },
     morning: [
-      place("d8-m1", "Depart 1.15pm Shanghai Pudong (PVG) → Osaka Kansai (KIX)", { note: "Flight time ~2h30. Arrive 4.35pm local time." }),
+      place("d8-m1", "Depart 1.15pm Shanghai Pudong (PVG) → Osaka Kansai (KIX)", { note: "Lounge: Juneyao air lounge no. 72. Flight time ~2h30. Arrive 4.35pm local time." }),
     ],
     afternoon: [
       place("d8-a1", "Arrive 4.35pm Osaka Airport, check in Namba stay"),
@@ -516,23 +516,43 @@ const DAYS = [
   /* ───────────────────────── TOKYO ───────────────────────── */
   {
     id: "day-14", date: "2026-10-11", city: "tokyo",
-    focus: "Shibuya & Harajuku",
+    focus: "Shibuya, Harajuku & Omotesandō",
     photo: "assets/photos/shibuya.webp",
+    areas: {
+      morning: "Shibuya",
+      afternoon: "Harajuku & Omotesandō",
+      evening: "Harajuku / Shibuya",
+    },
     morning: [
-      place("d14-m1", "Meiji Jingū shrine", { open: "05:00", close: "17:30" }),
+      place("d14-m1", "Tower Records"),
+      place("d14-m2", "Miyashita Park"),
+      place("d14-m3", "soniandsmi"),
+      place("d14-m4", "Nanaya Aoyama", { note: "Choc matcha sticks." }),
     ],
     afternoon: [
-      place("d14-a1", "Harajuku — Takeshita St & Omotesandō"),
-      place("d14-a2", "Shibuya Crossing & Shibuya Sky", { open: "10:00", close: "22:30", note: "Book a Shibuya Sky sunset slot in advance." }),
+      place("d14-a1", "Tokyu Plaza", { note: "Standoil, One Piece store, Tamagotchi factory." }),
+      place("d14-a2", "MoMA Design Store Omotesandō"),
+      place("d14-a3", "Gentle Monster"),
+      place("d14-a4", "PAMM"),
+      place("d14-a5", "Moosh Squishy"),
     ],
     evening: [
-      place("d14-e1", "Dinner around Shibuya"),
+      place("d14-e1", "Lost Bar", { note: "Optional." }),
+      place("d14-e2", "Kumachan Onsen", { note: "Optional." }),
     ],
     restaurants: [
-      place("d14-r1", "Ichiran Ramen Shibuya", { open: "10:00", close: "23:00" }),
+      place("d14-r1", "Gyukatsu Motomura"),
+      place("d14-r2", "Good Cheese Good Pizza"),
+      place("d14-r3", "Menchirashi", { note: "Harajuku." }),
+      place("d14-r4", "Conveyor kaiten sushi", { note: "Harajuku." }),
+      place("d14-r5", "FOODIESKOREA", { note: "Harajuku." }),
+      place("d14-r6", "SPONTINI", { note: "Pizza." }),
     ],
     cafes: [
-      place("d14-c1", "About Life Coffee Brewers", { open: "09:00", close: "19:00" }),
+      place("d14-c1", "SACYA", { note: "Matcha." }),
+      place("d14-c2", "The Matcha Tokyo"),
+      place("d14-c3", "Iyoshi Cola"),
+      place("d14-c4", "Marion Crepes"),
     ],
   },
   {
