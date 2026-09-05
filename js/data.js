@@ -99,23 +99,22 @@ const DAYS = [
         place("d2-m2", "Airbnb - 877-62 Yan'an Middle Road", { note: "Leave bags or check in near Jing'an Temple." }),
         place("d2-m3", "Jing'an Temple", { open: "07:30", close: "17:00", note: "5 min from the Airbnb - good easy start." }),
         place("d2-m4", "Yuyuan Road", { note: "Cute shops around Jing'an Temple." }),
-        place("d2-m5", "REEL Mall", { note: "Near Huashan Road, Jing'an District." }),
-        place("d2-m6", "Jing'an Joy City", { note: "Mall right by the temple." }),
+        place("d2-m5", "REEL Mall", { note: "Near Huashan Road, Jing'an District. Has Day by Day restaurant on 4th floor" }),
+        place("d2-m6", "Melt Season store"),
       ],
       afternoon: [
         place("d2-a1", "Wukang Road stroll", { note: "Iconic tree-lined French Concession street, historic villas." }),
         place("d2-a2", "Anfu Road", { note: "Boutiques & cafes - Harmay, GENZERO, ROCKFISH nearby." }),
         place("d2-a3", "Wander Julu Road", { note: "Between Anfu and Wukang." }),
-        place("d2-a4", "IAPM Mall (Shanghai Huamao Plaza)", { note: "The two saved pins refer to this same mall." }),
+        place("d2-a4", "IAPM Mall (Shanghai Huamao Plaza)", { note: "Moosh squishy store here on B1F"}),
         place("d2-a5", "LOOKNOW"),
         place("d2-a6", "Basement FG", { note: "Clothing store, 82 Xinle Road." }),
-        place("d2-a7", "CHUU"),
+        place("d2-a7", "CHUU clothing store"),
         place("d2-a8", "Parkson / MUSINSA STANDARD", { note: "Department-store stop." }),
         place("d2-a9", "Songmont Store"),
         place("d2-a10", "Gentle Monster Shanghai Flagship Shop"),
         place("d2-a11", "NIKO AND", { note: "755 Huaihai Middle Road." }),
         place("d2-a12", "Huaihai 755", { note: "Shopping complex on Huaihai Middle Road." }),
-        place("d2-a13", "Mietal Hands Shanghai Branch"),
         place("d2-a14", "MASONPRINCE"),
         place("d2-a15", "MUVA"),
         place("d2-a16", "TX Huaihai Mall"),
@@ -142,6 +141,7 @@ const DAYS = [
         place("d2-r7", "Xiandelai (Pork Ribs)"),
         place("d2-r8", "Dahuchun"),
         place("d2-r9", "Yuxing Ji Noodle Restaurant (People's Square branch)"),
+        place("d2-r10", "ONIO ONIO Restaurant"),
       ],
       cafes: [
         place("d2-c1", "SHIKU Cookies"),
@@ -150,11 +150,12 @@ const DAYS = [
         place("d2-c4", "Matcha Wang"),
         place("d2-c5", "DAMAN Coffee (Frog Cafe)"),
         place("d2-c6", "Yee3 Matcha Tea"),
-        place("d2-c7", "Melt Season"),
+        place("d2-c7", "Joker&Joker Bar"),
+        place("d2-c8", "Mietel Hands Cafe"),
       ],
     },
   
-    /* ── Day 3 in-file (new plan Day 2): Tianzifang + Xintiandi ── */
+    /* ── Day 2: Tianzifang + Xintiandi ── */
     {
       id: "day-03", date: "2026-09-30", city: "shanghai",
       focus: "Tianzifang & Xintiandi shopping",
@@ -166,14 +167,15 @@ const DAYS = [
       },
       morning: [
         place("d3-m1", "Longemont Pokemon Store"),
+        place("d3-m2", "Global Harbour Mall", { note: "Weekend hub location (cute clothes)" }),
+        place("d3-m3", "Weekend Hub store"),
         place("d3-m2", "Wujiang Road Leisure Street", { note: "NIKO AND location." }),
         place("d3-m3", "HKRI Taikoo Hui"),
         place("d3-m4", "Moody Lenses Flagship", { note: "M07, Basement 1, HKRI Taikoo Hui." }),
       ],
       afternoon: [
         place("d3-a1", "Xintiandi Style Shopping Centre"),
-        place("d3-a2", "SAGREEN 39", { note: "3rd floor, Xintiandi Style." }),
-        place("d3-a3", "Bottega Veneta", { note: "Xintiandi area." }),
+
         place("d3-a4", "Taipingqiao Park", { note: "West Gate, beside Xintiandi." }),
       ],
       evening: [
@@ -184,6 +186,8 @@ const DAYS = [
       ],
       restaurants: [
         place("d3-r1", "Xie San Bao Crab Roe Noodles"),
+        place("d3-r2", "SAGREEN 39 (Xintiandi Style)", { note: "3rd floor, Xintiandi Style." }),
+        place("d3-a3", "Bottega Pizza Restaurant", { note: "Xintiandi area." }),
       ],
       cafes: [
         place("d3-c1", "Butterful & Creamorous"),
