@@ -280,24 +280,45 @@ const DAYS = [
     /* ── Day 6 in-file (new plan Day 5): Hangzhou day trip ── */
     {
       id: "day-06", date: "2026-10-03", city: "shanghai",
-      focus: "Hangzhou / West Lake Day Trip",
+      focus: "Wukang Rd & Xuhui District",
       photo: "assets/photos/shanghai.webp",
-      holiday: { name: "China National Day Golden Week", note: "Public holiday period: expect very heavy crowds around West Lake and on high-speed trains. Book transport and tickets ahead." },
+      holiday: { name: "China National Day Golden Week", note: "Public holiday period: Wukang Road and Anfu Road get very crowded on weekends/holidays, especially late afternoon — go early if you want fewer people for photos." },
+      areas: {
+        morning: "Wukang Road & Anfu Road",
+        afternoon: "Yanqing Road & Huaihai Road (M)",
+        evening: "Xuhui District & Zhaojiabang Rd",
+      },
       morning: [
-        place("d6-m1", "Travel to Hangzhou via Hongqiao station", { note: "45min–1hr high-speed train each way — this eats a full day, so start early." }),
-        place("d6-m2", "West Lake loop", { note: "Walk or bike the lakeside path; boat crossing optional." }),
+        place("d6-m1", "Wukang Building", { note: "Iconic flatiron-style historic building, best photographed from the Wukang/Huaihai/Anfu intersection." }),
+        place("d6-m2", "Anfu Road", { note: "Tree-lined street with boutiques, cafes and galleries." }),
+        place("d6-m3", "SOF GARDEN"),
+        place("d6-m4", "LOOKNOW", { note: "156 Anfu Road." }),
+        place("d6-m5", "ROCKFISH WEATHERWEAR"),
+        place("d6-m6", "13de marzo"),
+        place("d6-m7", "Harmay"),
       ],
       afternoon: [
-        place("d6-a1", "Lingyin Temple (optional)", { note: "If time allows after the lake." }),
+        place("d6-a1", "Yanqing Road"),
+        place("d6-a2", "GOODBAI", { note: "92 Yanqing Rd, Xuhui District." }),
+        place("d6-a3", "TAGI", { note: "247-5 Wulumuqi Middle Rd." }),
+        place("d6-a4", "GENZERO"),
+        place("d6-a5", "TO SUMMER PERFUME", { note: "111 Hu Nan Lu." }),
+        place("d6-a6", "Huaihai Road (M)", { note: "Major shopping thoroughfare." }),
       ],
       evening: [
-        place("d6-e1", "Train back to Shanghai", { note: "TRIM OPTION: if the Suzhou+Hangzhou back-to-back feels exhausting, drop this day and swap in a slower Shanghai day instead — more time on Wukang/Anfu/Huaihai, a proper lunch, or a second visit to a mall you liked." }),
+        place("d6-e1", "Xuhui District", { note: "Wander further south toward Zhaojiabang Rd." }),
+        place("d6-e2", "LOFT", { note: "1111 Zhaojiabang Rd, 2F." }),
+        place("d6-e3", "Metro-City MUST GO", { note: "Mall complex near Zhaojiabang Rd." }),
       ],
       restaurants: [
-        place("d6-r1", "West Lake lakeside restaurant"),
+        place("d6-r1", "New Sukiyaki"),
+        place("d6-r2", "ZHONG YAO TANG", { note: "Herbal cola bar." }),
       ],
       cafes: [
-        place("d6-c1", "Lakeside teahouse"),
+        place("d6-c1", "TEAHAUS MATCHA"),
+        place("d6-c2", "FLUFFY ICE CREAM"),
+        place("d6-c3", "PUJI PUJI Cafe"),
+        place("d6-c4", "SOF GARDEN"),
       ],
     },
   

@@ -1,33 +1,29 @@
 :root {
-  --paper: #f0f6e8;
-  --paper-2: #f8fcf1;
-  --card: #fdfff8;
-  --ink: #1a2417;
-  --ink-soft: #47523f;
-  --ink-faint: #7e8b72;
+  --paper: #fdf1ee;
+  --paper-2: #fff8f5;
+  --card: #fffdfb;
+  --ink: #2f2a24;
+  --ink-soft: #6b5f56;
+  --ink-faint: #a89a90;
 
-  --seal: #ec6f3a;
-  --seal-dark: #d1531f;
-  --jade: #2ba268;
-  --jade-soft: #d3efdb;
-  --gold: #e9b52b;
-  --gold-soft: #fbeec1;
+  --seal: #ef6f92;
+  --seal-dark: #d9527a;
+  --jade: #7fa563;
+  --jade-soft: #e2ecd6;
+  --pink: #ff3572;
+  --pink-soft: #fbcfd7;
 
-  --line: #dde8cf;
-  --line-strong: #c3d4b0;
+  --line: #f3ddd9;
+  --line-strong: #e3c4bd;
 
   --radius: 20px;
   --radius-lg: 26px;
-  --shadow: 0 8px 26px rgba(40, 92, 44, 0.14);
-  --shadow-soft: 0 3px 14px rgba(40, 92, 44, 0.1);
+  --shadow: 0 8px 26px rgba(160, 70, 90, 0.14);
+  --shadow-soft: 0 3px 14px rgba(160, 70, 90, 0.1);
 
   --nav-h: 68px;
   --max-w: 560px;
 
-  /* Top safe-area inset. Chrome (Android) reports 0 for
-     safe-area-inset-top even in standalone PWA mode, so the value is
-     clamped to a status-bar-sized minimum in the display-mode override
-     below to stop the masthead being cropped behind the status bar. */
   --safe-top: env(safe-area-inset-top, 0px);
 
   --f-display: "Fraunces", Georgia, serif;
@@ -35,44 +31,23 @@
   --f-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
-/* Installed / "Add to Home Screen" PWA: viewport-fit=cover makes the page
-   render under the system status bar, but Chrome on Android returns 0 for
-   safe-area-inset-top, so guarantee enough top room to clear it. */
-@media all and (display-mode: standalone) {
-  :root {
-    --safe-top: max(env(safe-area-inset-top, 0px), 28px);
-  }
-}
-
-/* Touch devices in a regular browser tab. Chrome's redesigned Android UI
-   renders web content edge-to-edge (address bar moved to the bottom) so the
-   page extends up under the status bar, yet Chrome reports 0 for
-   safe-area-inset-top in a normal tab. Guarantee a status-bar-sized minimum
-   so the top of the masthead isn't cropped. Desktop (fine pointer) is left
-   untouched. */
-@media (pointer: coarse) {
-  :root {
-    --safe-top: max(env(safe-area-inset-top, 0px), 28px);
-  }
-}
-
 [data-theme="dark"] {
-  --paper: #101710;
-  --paper-2: #172013;
-  --card: #1c2618;
-  --ink: #eaf3df;
-  --ink-soft: #bccbac;
-  --ink-faint: #859379;
+  --paper: #16201a;
+  --paper-2: #5f2532;
+  --card: #243527;
+  --ink: #f5e9ea;
+  --ink-soft: #c9b6ae;
+  --ink-faint: #8f9a86;
 
-  --seal: #ff9c5a;
-  --seal-dark: #e37e3d;
-  --jade: #5fd39a;
-  --jade-soft: #1e3a2b;
-  --gold: #f0cf5c;
-  --gold-soft: #33301a;
+  --seal: #ff8fac;
+  --seal-dark: #e56d92;
+  --jade: #8fd17a;
+  --jade-soft: #2c4014;
+  --gold: #f1bad7;
+  --gold-soft: #3a1f1f;
 
-  --line: #2b3623;
-  --line-strong: #41502f;
+  --line: #35402f;
+  --line-strong: #4a5540;
 
   --shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
   --shadow-soft: 0 3px 14px rgba(0, 0, 0, 0.4);
@@ -120,9 +95,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 12px);
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body::before {
@@ -131,8 +104,7 @@ body::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    radial-gradient(
+  background: radial-gradient(
       circle at 100% 0%,
       rgba(233, 181, 43, 0.18),
       transparent 42%
@@ -146,8 +118,7 @@ body::before {
 }
 
 [data-theme="dark"] body::before {
-  background:
-    radial-gradient(
+  background: radial-gradient(
       circle at 100% 0%,
       rgba(233, 181, 43, 0.14),
       transparent 42%
@@ -203,10 +174,7 @@ select {
   background: var(--paper-2);
   border: 1px solid var(--line-strong);
   box-shadow: var(--shadow-soft);
-  transition:
-    transform 0.15s ease,
-    color 0.2s ease,
-    background-color 0.2s ease;
+  transition: transform 0.15s ease, color 0.2s ease, background-color 0.2s ease;
   z-index: 3;
 }
 .theme-toggle:hover {
@@ -225,7 +193,7 @@ select {
   width: 64px;
   height: 10px;
   margin: 0 auto;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='10' viewBox='0 0 64 10'%3E%3Cpath d='M1 5.5 Q 5 1 9 5.5 T 17 5.5 T 25 5.5 T 33 5.5 T 41 5.5 T 49 5.5 T 57 5.5 T 63 5.5' fill='none' stroke='%23ec6f3a' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='10' viewBox='0 0 64 10'%3E%3Cpath d='M1 5.5 Q 5 1 9 5.5 T 17 5.5 T 25 5.5 T 33 5.5 T 41 5.5 T 49 5.5 T 57 5.5 T 63 5.5' fill='none' stroke='%23ff3572' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 64px 10px;
@@ -242,7 +210,7 @@ select {
     100deg,
     var(--jade) 0%,
     var(--seal) 52%,
-    var(--gold) 100%
+    var(--pink) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -419,9 +387,7 @@ select {
   border-color: transparent;
   background: var(--cc);
   box-shadow: var(--shadow);
-  transition:
-    transform 0.12s,
-    box-shadow 0.12s;
+  transition: transform 0.12s, box-shadow 0.12s;
 }
 .cal-cell.trip:hover {
   transform: translateY(-2px);
@@ -451,7 +417,7 @@ select {
   opacity: 0.85;
 }
 .cal-cell.is-today {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--pink);
   outline-offset: 2px;
   animation: today-glow 1.8s ease-in-out infinite;
   z-index: 1;
@@ -463,14 +429,10 @@ select {
 @keyframes today-glow {
   0%,
   100% {
-    box-shadow:
-      0 0 0 0 rgba(233, 181, 43, 0.55),
-      var(--shadow);
+    box-shadow: 0 0 0 0 rgba(233, 181, 43, 0.55), var(--shadow);
   }
   50% {
-    box-shadow:
-      0 0 16px 4px rgba(233, 181, 43, 0.78),
-      var(--shadow);
+    box-shadow: 0 0 16px 4px rgba(233, 181, 43, 0.78), var(--shadow);
   }
 }
 .cal-legend {
@@ -504,9 +466,7 @@ select {
 }
 @keyframes day-flash {
   0% {
-    box-shadow:
-      0 0 0 3px var(--gold),
-      var(--shadow);
+    box-shadow: 0 0 0 3px var(--pink), var(--shadow);
   }
   100% {
     box-shadow: var(--shadow);
@@ -541,14 +501,12 @@ select {
   overflow: hidden;
   border: 1.5px solid var(--line);
   border-top: 5px solid var(--cc, var(--line-strong));
-  transition:
-    transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1),
+  transition: transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1),
     box-shadow 0.18s ease;
 }
 .day:not(.flipped):hover > .day-inner > .day-face {
   transform: translateY(-3px);
-  box-shadow:
-    0 12px 30px rgba(40, 92, 44, 0.16),
+  box-shadow: 0 12px 30px rgba(40, 92, 44, 0.16),
     0 0 0 1px color-mix(in srgb, var(--cc) 22%, transparent);
 }
 .day-back {
@@ -743,7 +701,7 @@ select {
   gap: 3px;
   margin-left: 7px;
   vertical-align: middle;
-  border: 1px solid var(--gold);
+  border: 1px solid #8c6914;
   border-radius: 999px;
   padding: 1px 6px;
   background: var(--gold-soft);
@@ -762,7 +720,7 @@ select {
 .holiday-alert {
   margin: 12px 0 14px;
   padding: 9px 10px;
-  border: 1px solid color-mix(in srgb, var(--gold) 72%, var(--line));
+  border: 1px solid color-mix(in srgb, #8c6914 72%, var(--line));
   border-radius: 8px;
   background: var(--gold-soft);
   color: var(--ink-soft);
@@ -914,9 +872,7 @@ select {
   opacity: 0;
   transform: translateY(4px) scale(0.96);
   transform-origin: bottom right;
-  transition:
-    opacity 0.14s ease,
-    transform 0.14s ease;
+  transition: opacity 0.14s ease, transform 0.14s ease;
   pointer-events: none;
 }
 .day-move[data-pop]::before {
@@ -960,9 +916,7 @@ select {
   color: var(--ink-soft);
   background: transparent;
   border: none;
-  transition:
-    color 0.12s,
-    background-color 0.12s;
+  transition: color 0.12s, background-color 0.12s;
 }
 .move-btn + .move-btn {
   border-left: 1px solid var(--line);
@@ -1141,9 +1095,7 @@ body.is-dragging-day {
   font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
-  transition:
-    transform 0.12s ease,
-    background-color 0.15s ease;
+  transition: transform 0.12s ease, background-color 0.15s ease;
 }
 .chip-jump:hover {
   background: color-mix(in srgb, var(--cc) 20%, var(--card));
@@ -1221,7 +1173,7 @@ body.is-dragging-day {
   background: var(--gold-soft);
 }
 .slot-emoji.morning {
-  background: color-mix(in srgb, var(--gold) 22%, transparent);
+  background: color-mix(in srgb, var(--pink) 22%, transparent);
 }
 .slot-emoji.afternoon {
   background: color-mix(in srgb, var(--seal) 18%, transparent);
@@ -1262,7 +1214,7 @@ body.is-dragging-day {
   margin-left: 2px;
 }
 .slot[data-slot="morning"] {
-  border-left-color: color-mix(in srgb, var(--gold) 45%, var(--line));
+  border-left-color: color-mix(in srgb, var(--pink) 45%, var(--line));
 }
 .slot[data-slot="afternoon"] {
   border-left-color: color-mix(in srgb, var(--seal) 40%, var(--line));
@@ -1726,7 +1678,7 @@ body.is-dragging-day {
   border-radius: 50%;
 }
 .slot-head .morning {
-  background: var(--gold);
+  background: var(--pink);
 }
 .slot-head .afternoon {
   background: var(--seal);
@@ -1785,10 +1737,9 @@ body.is-dragging-day {
   overflow: hidden;
 }
 .todo.must-do {
-  border-color: var(--gold);
-  box-shadow:
-    inset 0 0 0 1px var(--gold),
-    0 3px 10px color-mix(in srgb, var(--gold) 18%, transparent);
+  border-color: var(--pink);
+  box-shadow: inset 0 0 0 1px var(--pink),
+    0 3px 10px color-mix(in srgb, var(--pink) 18%, transparent);
 }
 .todo-row {
   display: flex;
@@ -1831,13 +1782,11 @@ body.is-dragging-day {
   place-items: center;
   border-radius: 8px;
   color: var(--line-strong);
-  transition:
-    color 0.15s ease,
-    transform 0.15s ease,
+  transition: color 0.15s ease, transform 0.15s ease,
     background-color 0.15s ease;
 }
 .must-do-toggle:hover {
-  color: var(--gold);
+  color: var(--pink);
   background: var(--gold-soft);
 }
 .must-do-toggle:active {
@@ -1850,7 +1799,7 @@ body.is-dragging-day {
   stroke: currentColor;
 }
 .must-do-toggle.active {
-  color: var(--gold);
+  color: var(--pink);
 }
 .must-do-toggle.active svg {
   fill: currentColor;
@@ -1887,7 +1836,7 @@ body.is-dragging-day {
 }
 .place-type-shop {
   color: #9b7215;
-  background: color-mix(in srgb, var(--gold) 15%, transparent);
+  background: color-mix(in srgb, var(--pink) 15%, transparent);
 }
 .place-type-sight {
   color: var(--jade);
@@ -2002,9 +1951,7 @@ body.is-dragging-day {
   background: none;
   cursor: pointer;
   color: var(--line-strong);
-  transition:
-    transform 0.12s ease,
-    color 0.12s ease;
+  transition: transform 0.12s ease, color 0.12s ease;
 }
 .star svg {
   width: 23px;
@@ -2013,14 +1960,14 @@ body.is-dragging-day {
   stroke: currentColor;
 }
 .star.filled {
-  color: var(--gold);
+  color: var(--pink);
 }
 .star.filled svg {
   fill: currentColor;
 }
 .star:hover {
   transform: scale(1.15);
-  color: var(--gold);
+  color: var(--pink);
 }
 .rating-note {
   width: 100%;
@@ -2416,10 +2363,7 @@ body.is-dragging-day {
   background: var(--paper-2);
   color: var(--ink);
   cursor: pointer;
-  transition:
-    background 0.12s,
-    border-color 0.12s,
-    color 0.12s;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
 }
 .cat-opt.on {
   border-color: var(--cc);
@@ -2571,10 +2515,7 @@ body.is-dragging-day {
   background: var(--paper-2);
   padding: 5px 12px;
   border-radius: 999px;
-  transition:
-    color 0.15s ease,
-    border-color 0.15s ease,
-    transform 0.1s ease;
+  transition: color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 }
 .tip-link::after {
   content: "↗";
@@ -2769,14 +2710,14 @@ body.is-dragging-day {
   animation: pulse 1.8s infinite;
 }
 .booking.urg-soon {
-  border-left-color: var(--gold);
+  border-left-color: var(--pink);
 }
 .booking.urg-soon .booking-when {
   background: #f6ecd6;
   border-color: #e6d3a6;
 }
 .booking.urg-soon .pulse {
-  background: var(--gold);
+  background: var(--pink);
 }
 .booking.urg-later {
   border-left-color: var(--jade);
@@ -2871,7 +2812,7 @@ body.is-dragging-day {
   width: 26px;
   height: 6px;
   transform: translateX(-50%);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='6' viewBox='0 0 28 6'%3E%3Cpath d='M1 3.5 Q 4.25 0.5 7.5 3.5 T 14 3.5 T 20.5 3.5 T 27 3.5' fill='none' stroke='%23ec6f3a' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='6' viewBox='0 0 28 6'%3E%3Cpath d='M1 3.5 Q 4.25 0.5 7.5 3.5 T 14 3.5 T 20.5 3.5 T 27 3.5' fill='none' stroke='%23ff3572' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 26px 6px;
@@ -2911,7 +2852,7 @@ body.is-dragging-day {
   }
 }
 [data-theme="dark"] .tab.active::after {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='6' viewBox='0 0 28 6'%3E%3Cpath d='M1 3.5 Q 4.25 0.5 7.5 3.5 T 14 3.5 T 20.5 3.5 T 27 3.5' fill='none' stroke='%23ff9c5a' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='6' viewBox='0 0 28 6'%3E%3Cpath d='M1 3.5 Q 4.25 0.5 7.5 3.5 T 14 3.5 T 20.5 3.5 T 27 3.5' fill='none' stroke='%23ff3572' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 .footer-note {
@@ -2979,9 +2920,7 @@ body.is-dragging-day {
   border-radius: var(--radius);
   box-shadow: var(--shadow-soft);
   padding: 16px 16px;
-  transition:
-    transform 0.12s ease,
-    box-shadow 0.15s ease;
+  transition: transform 0.12s ease, box-shadow 0.15s ease;
 }
 .tool-card:active {
   transform: scale(0.98);
@@ -3057,7 +2996,7 @@ body.is-dragging-day {
 }
 .pack-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--jade), var(--gold));
+  background: linear-gradient(90deg, var(--jade), var(--pink));
   border-radius: 999px;
   transition: width 0.35s ease;
 }
@@ -3462,9 +3401,7 @@ body.is-dragging-day {
   display: grid;
   place-items: center;
   cursor: pointer;
-  transition:
-    transform 0.12s ease,
-    background 0.15s ease;
+  transition: transform 0.12s ease, background 0.15s ease;
 }
 .phrase-speak svg {
   width: 20px;
@@ -3615,9 +3552,7 @@ body.is-dragging-day {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin-bottom: 18px;
-  transition:
-    border-color 0.15s ease,
-    background-color 0.15s ease,
+  transition: border-color 0.15s ease, background-color 0.15s ease,
     transform 0.12s ease;
 }
 .stamp-add-btn svg {
@@ -3696,9 +3631,7 @@ body.is-dragging-day {
   color: var(--ink-faint);
   box-shadow: var(--shadow-soft);
   opacity: 0.9;
-  transition:
-    color 0.15s ease,
-    transform 0.12s ease;
+  transition: color 0.15s ease, transform 0.12s ease;
 }
 .stamp-del svg {
   width: 14px;
@@ -3855,9 +3788,7 @@ body.is-dragging-day {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ink-soft);
-  transition:
-    background 0.15s ease,
-    color 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 .cam-seg-btn.on {
   background: var(--seal);
@@ -3883,10 +3814,7 @@ body.is-dragging-day {
   color: var(--ink-soft);
   font-size: 13.5px;
   font-weight: 500;
-  transition:
-    transform 0.12s ease,
-    background 0.15s ease,
-    color 0.15s ease,
+  transition: transform 0.12s ease, background 0.15s ease, color 0.15s ease,
     border-color 0.15s ease;
 }
 .cam-chip:active {
