@@ -15,17 +15,17 @@
      palette family (tangerine → mango → lime → leaf → teal → lagoon → grape →
      guava) and each gradient resolves toward a sunny light so they read as one
      set rather than a random rainbow. */
-  const CITY_THEME = {
-    shanghai: { g: "linear-gradient(135deg,#c14a24,#ec6f3a 55%,#f4c65a)", emoji: "🏮", c: "#ec6f3a" },
-    suzhou:   { g: "linear-gradient(135deg,#c14a2e,#e0563f 55%,#f0b45a)", emoji: "🏞️", c: "#e0563f" },
-    beijing:  { g: "linear-gradient(135deg,#c47d1c,#eaa72c 55%,#f6d873)", emoji: "🏯", c: "#eaa72c" },
-    nara:     { g: "linear-gradient(135deg,#5e8a24,#8fbf3f 55%,#d6e88a)", emoji: "🦌", c: "#8fbf3f" },
-    kyoto:    { g: "linear-gradient(135deg,#1c7a4c,#2ba268 55%,#9ad07a)", emoji: "⛩️", c: "#2ba268" },
-    osaka:    { g: "linear-gradient(135deg,#0c7d6e,#16a58f 55%,#8fd9b0)", emoji: "🐙", c: "#16a58f" },
-    yokohama: { g: "linear-gradient(135deg,#1c7a8c,#2f9fb0 55%,#9ad9d0)", emoji: "🌉", c: "#2f9fb0" },
-    tokyo:    { g: "linear-gradient(135deg,#7a4a94,#b06fc0 55%,#e6c07a)", emoji: "🗼", c: "#b06fc0" },
-    kamakura: { g: "linear-gradient(135deg,#b84a78,#e56f9c 55%,#f4c07a)", emoji: "🪷", c: "#e56f9c" },
-  };
+     const CITY_THEME = {
+      shanghai: { g: "linear-gradient(135deg,#c9506f,#ef6f92 55%,#f8c9b5)", emoji: "🏮", c: "#ef6f92" },
+      suzhou:   { g: "linear-gradient(135deg,#4f7a4a,#7fa563 55%,#dbe8c4)", emoji: "🏞️", c: "#7fa563" },
+      beijing:  { g: "linear-gradient(135deg,#b87a3a,#e0a659 55%,#f8ddaa)", emoji: "🏯", c: "#e0a659" },
+      nara:     { g: "linear-gradient(135deg,#7a8f4a,#a3c16f 55%,#e6efc8)", emoji: "🦌", c: "#a3c16f" },
+      kyoto:    { g: "linear-gradient(135deg,#3d6b45,#5f9468 55%,#bcdaac)", emoji: "⛩️", c: "#5f9468" },
+      osaka:    { g: "linear-gradient(135deg,#2f6b5f,#4a9488 55%,#a8d9cc)", emoji: "🐙", c: "#4a9488" },
+      yokohama: { g: "linear-gradient(135deg,#3d7a72,#6fab9a 55%,#c0e0d4)", emoji: "🌉", c: "#6fab9a" },
+      tokyo:    { g: "linear-gradient(135deg,#8a4a72,#b06f9a 55%,#e8bcd8)", emoji: "🗼", c: "#b06f9a" },
+      kamakura: { g: "linear-gradient(135deg,#c1685a,#e2917d 55%,#f8d8bc)", emoji: "🪷", c: "#e2917d" },
+    };
 
   /* ---------- State ---------- */
   let state = loadState();

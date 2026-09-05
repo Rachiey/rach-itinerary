@@ -10,8 +10,8 @@
   --seal-dark: #d9527a;
   --jade: #7fa563;
   --jade-soft: #e2ecd6;
-  --pink: #ff3572;
-  --pink-soft: #fbcfd7;
+  --gold: #d9a441;
+  --gold-soft: #faedd2;
 
   --line: #f3ddd9;
   --line-strong: #e3c4bd;
@@ -33,7 +33,7 @@
 
 [data-theme="dark"] {
   --paper: #16201a;
-  --paper-2: #5f2532;
+  --paper-2: #1c2a1f;
   --card: #243527;
   --ink: #f5e9ea;
   --ink-soft: #c9b6ae;
@@ -43,8 +43,8 @@
   --seal-dark: #e56d92;
   --jade: #8fd17a;
   --jade-soft: #2c4014;
-  --gold: #f1bad7;
-  --gold-soft: #3a1f1f;
+  --gold: #e0b168;
+  --gold-soft: #3d2f16;
 
   --line: #35402f;
   --line-strong: #4a5540;
@@ -53,12 +53,12 @@
   --shadow-soft: 0 3px 14px rgba(0, 0, 0, 0.4);
 }
 [data-theme="dark"] .booking.urg-now .booking-when {
-  background: #3a201d;
-  border-color: #5c322d;
+  background: #3a1f26;
+  border-color: #5c3444;
 }
 [data-theme="dark"] .booking.urg-soon .booking-when {
-  background: #362c1a;
-  border-color: #544427;
+  background: #332a17;
+  border-color: #5c4a28;
 }
 
 *,
@@ -210,7 +210,7 @@ select {
     100deg,
     var(--jade) 0%,
     var(--seal) 52%,
-    var(--pink) 100%
+    var(--gold) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -417,7 +417,7 @@ select {
   opacity: 0.85;
 }
 .cal-cell.is-today {
-  outline: 2px solid var(--pink);
+  outline: 2px solid var(--gold);
   outline-offset: 2px;
   animation: today-glow 1.8s ease-in-out infinite;
   z-index: 1;
@@ -466,7 +466,7 @@ select {
 }
 @keyframes day-flash {
   0% {
-    box-shadow: 0 0 0 3px var(--pink), var(--shadow);
+    box-shadow: 0 0 0 3px var(--gold), var(--shadow);
   }
   100% {
     box-shadow: var(--shadow);
@@ -701,11 +701,11 @@ select {
   gap: 3px;
   margin-left: 7px;
   vertical-align: middle;
-  border: 1px solid #8c6914;
+  border: 1px solid #9b6b1f;
   border-radius: 999px;
   padding: 1px 6px;
   background: var(--gold-soft);
-  color: #8c6914;
+  color: #9b6b1f;
   font-family: var(--f-mono);
   font-size: 9px;
   font-weight: 600;
@@ -720,7 +720,7 @@ select {
 .holiday-alert {
   margin: 12px 0 14px;
   padding: 9px 10px;
-  border: 1px solid color-mix(in srgb, #8c6914 72%, var(--line));
+  border: 1px solid color-mix(in srgb, #9b6b1f 72%, var(--line));
   border-radius: 8px;
   background: var(--gold-soft);
   color: var(--ink-soft);
@@ -732,7 +732,7 @@ select {
   display: block;
 }
 .holiday-alert strong {
-  color: #8c6914;
+  color: #9b6b1f;
   font-size: 12px;
   font-weight: 600;
 }
@@ -1173,7 +1173,7 @@ body.is-dragging-day {
   background: var(--gold-soft);
 }
 .slot-emoji.morning {
-  background: color-mix(in srgb, var(--pink) 22%, transparent);
+  background: color-mix(in srgb, var(--gold) 22%, transparent);
 }
 .slot-emoji.afternoon {
   background: color-mix(in srgb, var(--seal) 18%, transparent);
@@ -1201,7 +1201,7 @@ body.is-dragging-day {
   font-family: var(--f-mono);
   font-size: 10px;
   font-weight: 600;
-  color: #9b7215;
+  color: #9b6b1f;
 }
 .slot-must svg {
   width: 12px;
@@ -1214,7 +1214,7 @@ body.is-dragging-day {
   margin-left: 2px;
 }
 .slot[data-slot="morning"] {
-  border-left-color: color-mix(in srgb, var(--pink) 45%, var(--line));
+  border-left-color: color-mix(in srgb, var(--gold) 45%, var(--line));
 }
 .slot[data-slot="afternoon"] {
   border-left-color: color-mix(in srgb, var(--seal) 40%, var(--line));
@@ -1238,7 +1238,7 @@ body.is-dragging-day {
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: #9b7215;
+  color: #9b6b1f;
 }
 .slot-priority svg {
   width: 12px;
@@ -1678,7 +1678,7 @@ body.is-dragging-day {
   border-radius: 50%;
 }
 .slot-head .morning {
-  background: var(--pink);
+  background: var(--gold);
 }
 .slot-head .afternoon {
   background: var(--seal);
@@ -1737,9 +1737,9 @@ body.is-dragging-day {
   overflow: hidden;
 }
 .todo.must-do {
-  border-color: var(--pink);
-  box-shadow: inset 0 0 0 1px var(--pink),
-    0 3px 10px color-mix(in srgb, var(--pink) 18%, transparent);
+  border-color: var(--gold);
+  box-shadow: inset 0 0 0 1px var(--gold),
+    0 3px 10px color-mix(in srgb, var(--gold) 18%, transparent);
 }
 .todo-row {
   display: flex;
@@ -1786,7 +1786,7 @@ body.is-dragging-day {
     background-color 0.15s ease;
 }
 .must-do-toggle:hover {
-  color: var(--pink);
+  color: var(--gold);
   background: var(--gold-soft);
 }
 .must-do-toggle:active {
@@ -1799,7 +1799,7 @@ body.is-dragging-day {
   stroke: currentColor;
 }
 .must-do-toggle.active {
-  color: var(--pink);
+  color: var(--gold);
 }
 .must-do-toggle.active svg {
   fill: currentColor;
@@ -1835,20 +1835,20 @@ body.is-dragging-day {
   background: color-mix(in srgb, var(--seal) 11%, transparent);
 }
 .place-type-shop {
-  color: #9b7215;
-  background: color-mix(in srgb, var(--pink) 15%, transparent);
+  color: #9b6b1f;
+  background: color-mix(in srgb, var(--gold) 15%, transparent);
 }
 .place-type-sight {
   color: var(--jade);
   background: var(--jade-soft);
 }
 .place-type-travel {
-  color: #287d9d;
-  background: color-mix(in srgb, #56b7d1 14%, transparent);
+  color: #4f7d78;
+  background: color-mix(in srgb, #4f7d78 14%, transparent);
 }
 .place-type-food {
-  color: #a55269;
-  background: color-mix(in srgb, #e56f9c 14%, transparent);
+  color: var(--seal-dark);
+  background: color-mix(in srgb, var(--seal) 14%, transparent);
 }
 .place-type-place {
   color: var(--ink-soft);
@@ -1960,14 +1960,14 @@ body.is-dragging-day {
   stroke: currentColor;
 }
 .star.filled {
-  color: var(--pink);
+  color: var(--gold);
 }
 .star.filled svg {
   fill: currentColor;
 }
 .star:hover {
   transform: scale(1.15);
-  color: var(--pink);
+  color: var(--gold);
 }
 .rating-note {
   width: 100%;
@@ -2701,8 +2701,8 @@ body.is-dragging-day {
   border-left-color: var(--seal);
 }
 .booking.urg-now .booking-when {
-  background: #f8e6e3;
-  border-color: #e6bdb8;
+  background: #fbe7e9;
+  border-color: #eac2c8;
 }
 .booking.urg-now .pulse {
   background: var(--seal);
@@ -2710,14 +2710,14 @@ body.is-dragging-day {
   animation: pulse 1.8s infinite;
 }
 .booking.urg-soon {
-  border-left-color: var(--pink);
+  border-left-color: var(--gold);
 }
 .booking.urg-soon .booking-when {
-  background: #f6ecd6;
-  border-color: #e6d3a6;
+  background: #faf0d9;
+  border-color: #e9d6a8;
 }
 .booking.urg-soon .pulse {
-  background: var(--pink);
+  background: var(--gold);
 }
 .booking.urg-later {
   border-left-color: var(--jade);
@@ -2996,7 +2996,7 @@ body.is-dragging-day {
 }
 .pack-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--jade), var(--pink));
+  background: linear-gradient(90deg, var(--jade), var(--gold));
   border-radius: 999px;
   transition: width 0.35s ease;
 }
@@ -4071,8 +4071,8 @@ body.is-dragging-day {
   height: 15px;
 }
 .crx-photo-btn.danger {
-  color: #d1531f;
-  border-color: color-mix(in srgb, #d1531f 30%, var(--line));
+  color: #c1524f;
+  border-color: color-mix(in srgb, #c1524f 30%, var(--line));
 }
 
 /* Example photo on a saved recipe card */
@@ -4145,7 +4145,7 @@ body.is-dragging-day {
   height: 16px;
 }
 .cam-recipe-del:active {
-  color: #d1531f;
+  color: #c1524f;
 }
 .cam-recipe-body {
   display: flex;
