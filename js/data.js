@@ -159,7 +159,7 @@ const DAYS = [
     {
       id: "day-03", date: "2026-09-30", city: "shanghai",
       focus: "Tianzifang & Xintiandi shopping",
-      photo: "assets/photos/wukang.webp",
+      photo: "assets/photos/shanghai.webp",
       areas: {
         morning: "Longemont & Wujiang Road",
         afternoon: "Xintiandi",
@@ -281,7 +281,7 @@ const DAYS = [
     {
       id: "day-06", date: "2026-10-03", city: "shanghai",
       focus: "Wukang Rd & Xuhui District",
-      photo: "assets/photos/shanghai.webp",
+      photo: "assets/photos/wukang.webp",
       holiday: { name: "China National Day Golden Week", note: "Public holiday period: Wukang Road and Anfu Road get very crowded on weekends/holidays, especially late afternoon — go early if you want fewer people for photos." },
       areas: {
         morning: "Wukang Road & Anfu Road",
@@ -641,23 +641,28 @@ const DAYS = [
     ],
   },
 
-  /* ───────────────────────── BEIJING ───────────────────────── */
-  {
+   /* ───────────────────────── BEIJING ───────────────────────── */
+   {
     id: "day-20", date: "2026-10-17", city: "beijing",
-    focus: "Arrive Beijing · Shopping & food",
+    focus: "Arrive Beijing · Tiananmen & Forbidden City",
     photo: "assets/photos/beijing.webp",
+    areas: {
+      morning: "Beijing Capital Airport → Chaoyang",
+      afternoon: "Tiananmen Square & Forbidden City",
+      evening: "Qianmen Street",
+    },
     morning: [
-      place("d20-m1", "Fly Tokyo → Beijing (PEK)", { note: "Haneda (HND) Terminal 3 08:50 → 12:00 Beijing Capital (PEK) Terminal 3." }),
+      place("d20-m1", "Land at Beijing Capital (PEK), transfer to hotel", { note: "Chaoyang." }),
     ],
     afternoon: [
-      place("d20-a1", "Check in, then Wangfujing shopping street"),
-      place("d20-a2", "Qianmen & Dashilar old shops"),
+      place("d20-a1", "Tiananmen Square", { note: "Open until 10pm so timing is flexible. Book timed entry 1–2 days ahead via WeChat/official site; passport needed for security check." }),
+      place("d20-a2", "Forbidden City", { note: "Enter via the Meridian (Wumen) Gate." }),
     ],
     evening: [
-      place("d20-e1", "Peking duck welcome dinner"),
+      place("d20-e1", "Qianmen Street", { note: "Food & shopping." }),
     ],
     restaurants: [
-      place("d20-r1", "Siji Minfu (Peking duck)", { open: "11:00", close: "22:00" }),
+      place("d20-r1", "Qianmen Street food stalls"),
     ],
     cafes: [
       place("d20-c1", "Café near Wangfujing"),
@@ -665,37 +670,48 @@ const DAYS = [
   },
   {
     id: "day-21", date: "2026-10-18", city: "beijing",
-    focus: "Forbidden City & Tiananmen",
-    photo: "assets/photos/beijing.webp",
+    focus: "Mutianyu Great Wall",
+    photo: "assets/photos/greatwall.webp",
+    areas: {
+      morning: "Mutianyu Great Wall",
+      afternoon: "Return to Beijing",
+      evening: "Near hotel",
+    },
     morning: [
-      place("d21-m1", "Tiananmen Square", { open: "05:00", close: "22:00", note: "Free, but reserve a timed slot on the official WeChat mini-program; passport needed for the security check." }),
+      place("d21-m1", "Depart for Mutianyu Great Wall", { note: "~1.5–2hr drive." }),
+      place("d21-m2", "Explore the wall", { note: "Cable car up, toboggan down — it's fun." }),
     ],
     afternoon: [
-      place("d21-a1", "Forbidden City (Palace Museum)", { open: "08:30", close: "17:00", note: "Closed Mondays. Book online ~7 days ahead with your passport — sells out; enter via the Meridian (Wumen) Gate." }),
-      place("d21-a2", "Jingshan Park — sunset view over the palace", { open: "06:30", close: "21:00" }),
+      place("d21-a1", "Head back to Beijing"),
     ],
     evening: [
-      place("d21-e1", "Hutong dinner near Nanluoguxiang"),
+      place("d21-e1", "Rest, dinner near hotel", { note: "Try Peking duck!" }),
     ],
     restaurants: [
-      place("d21-r1", "Siji Minfu or local hutong spot", { open: "11:00", close: "22:00" }),
+      place("d21-r1", "Siji Minfu (Peking duck)", { open: "11:00", close: "22:00" }),
     ],
     cafes: [
-      place("d21-c1", "Nanluoguxiang courtyard café"),
+      place("d21-c1", "Café near hotel"),
     ],
   },
   {
     id: "day-22", date: "2026-10-19", city: "beijing",
-    focus: "Great Wall → train to Shanghai",
-    photo: "assets/photos/greatwall.webp",
+    focus: "Temple of Heaven → train to Shanghai",
+    photo: "assets/photos/beijing.webp",
+    areas: {
+      morning: "Temple of Heaven",
+      afternoon: "Pack up & check out",
+      evening: "Beijing South Railway Station",
+    },
     morning: [
-      place("d22-m1", "Dawn drive to Mutianyu Great Wall", { open: "07:30", close: "17:30", note: "Leave early to beat crowds — cable car up, toboggan down." }),
+      place("d22-m1", "Temple of Heaven", { note: "Close to hotel — go early to catch the tai chi crowds." }),
     ],
     afternoon: [
-      place("d22-a1", "Back to Beijing, collect luggage & check out"),
+      place("d22-a1", "Pack up, check out"),
+      place("d22-a2", "Head to Beijing South Railway Station"),
     ],
     evening: [
-      place("d22-e1", "High-speed train Beijing → Shanghai (~18:00)", { note: "~4.5h on the G-series train; arrive Shanghai late evening." }),
+      place("d22-e1", "High-speed train Beijing → Shanghai", { note: "~4.5h on the G-series train; arrive Shanghai late evening." }),
     ],
     restaurants: [
       place("d22-r1", "Quick bite at Beijing South station"),
@@ -891,6 +907,20 @@ const BOOKINGS = [
     flexible: false,
     note: "Pre-book a car from the hotel so you arrive for park opening.",
   },
+  { 
+    id: "bk-forbidden-city", name: "Forbidden City",
+    where: "Beijing", visit: "2026-10-17",
+    bookBy: "Book ~7 days ahead", bookByDate: "2026-10-10",
+    flexible: false,
+    note: "Timed tickets only — book online with your passport. Enter via the Meridian (Wumen) Gate.",
+  },
+  {
+    id: "bk-temple-of-heaven", name: "Temple of Heaven",
+    where: "Beijing", visit: "2026-10-19",
+    bookBy: "Book ~7 days ahead", bookByDate: "2026-10-12",
+    flexible: false,
+    note: "Timed tickets only — book online with your passport. Go early to see locals doing tai chi.",
+  }
 ];
 
 /* ───────────────────────── TIPS / SUGGESTIONS ───────────────────────── */
