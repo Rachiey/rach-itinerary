@@ -212,13 +212,11 @@ const DAYS = [
       },
       morning: [
         place("d4-m1", "Pokemon Shanghai Wujiaochang Wanda Plaza", { note: "B1 floor." }),
-        place("d4-m2", "Walmart", { note: "Wujiaochang Wanda Plaza area." }),
       ],
       afternoon: [
         place("d4-a1", "North Bund Green Land"),
         place("d4-a2", "Oriental Pearl TV Tower", { note: "Pudong side." }),
         place("d4-a3", "Super Brand Mall"),
-        place("d4-a4", "3 Warehouse (Super Brand Mall)", { note: "Call to book before visiting." }),
         place("d4-a5", "The Bund (Waitan)", { open: "24h", note: "Skyline views; Bund Sightseeing Tunnel to Pudong." }),
         place("d4-a6", "Waitan Observatory"),
       ],
@@ -232,11 +230,12 @@ const DAYS = [
         place("d4-r1", "Su XiaoLiu", { note: "B2, Super Brand Mall." }),
         place("d4-r2", "1886 Automobile Theme German Restaurant"),
         place("d4-r3", "Chili's Cafe & Bar"),
+        place("d4-r4", "3 WAREHOUSE Restaurant"),
       ],
       cafes: [
         place("d4-c1", "Line Friends Cafe"),
         place("d4-c2", "HOLILAND Cafe", { note: "3F, Super Brand Mall." }),
-        place("d4-c3", "Manner Coffee"),
+        place("d4-c3", "Manner Coffee", { note: "Views of the bund" }),
       ],
     },
   
