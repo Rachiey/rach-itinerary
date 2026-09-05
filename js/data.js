@@ -262,14 +262,18 @@ const DAYS = [
         place("d5-e1", "Train back to Shanghai (~25m)"),
         place("d5-e2", "Hongquan Road Koreatown"),
         place("d5-e3", "Korean Street", { note: "Hongquan Road area." }),
+        place("d5-e4", "Jingting Seoul Plaza")     
       ],
       restaurants: [
         place("d5-r1", "Li Bai Xie", { open: "11:00", close: "20:00" }),
         place("d5-r2", "Samddeok Korean Restaurant", { note: "Hongquan Road Koreatown." }),
+        place("d5-r3", "Mugunghwa BBQ Restaurant", { note: "Hongquan Road Koreatown." }),
       ],
       cafes: [
         place("d5-c1", "BE FINE CHA - Pingjiang location"),
-        place("d5-c2", "BE FINE CHA"),
+        place("d5-c3", "Brown Sixty Bakery"),
+        place("d5-c4", "Hong Ji Pastry"),
+        place("d5-c5", "One Mart Korean Supermarket"),
       ],
     },
   
