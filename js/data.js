@@ -312,39 +312,47 @@ const DAYS = [
       ],
       restaurants: [
         place("d6-r1", "New Sukiyaki"),
-        place("d6-r2", "ZHONG YAO TANG", { note: "Herbal cola bar." }),
+        place("d6-r2", "Sof Garden")
+
       ],
       cafes: [
         place("d6-c1", "TEAHAUS MATCHA"),
         place("d6-c2", "FLUFFY ICE CREAM"),
         place("d6-c3", "PUJI PUJI Cafe"),
-        place("d6-c4", "SOF GARDEN"),
+        place("d6-c5", "ZHONG YAO TANG", { note: "Herbal cola bar." }),
       ],
     },
   
     /* ── Day 7 in-file (new plan Day 6): Western Shanghai — Longemont, Longhua, West Bund ── */
     {
       id: "day-07", date: "2026-10-04", city: "shanghai",
-      focus: "Longemont, Longhua Temple & West Bund",
+      focus: "Nanjing Road West & Jing'an",
       photo: "assets/photos/shanghai.webp",
-      holiday: { name: "China National Day Golden Week", note: "Public holiday period: allow extra time for metro, taxis, temples, and popular riverside attractions." },
+      holiday: { name: "China National Day Golden Week", note: "Public holiday period: malls and popular restaurants along Nanjing Road get very busy — expect queues at peak lunch/dinner hours." },
+      areas: {
+        morning: "Nanjing Road West",
+        afternoon: "Jing'an",
+        evening: "Jing'an / Nanjing Road West",
+      },
       morning: [
-        place("d7-m1", "Longemont Pokemon Store", { note: "Near Zhongshan Park metro." }),
-        place("d7-m2", "Metro City / LOFT", { note: "Same area, more shopping." }),
+        place("d7-m1", "Raffles City Shanghai", { note: "Mall on Nanjing Road West / Xizang Road." }),
+        place("d7-m2", "New World City", { note: "3 Warehouse store." }),
       ],
       afternoon: [
-        place("d7-a1", "Longhua Temple", { note: "Xuhui, short taxi from Longemont." }),
-        place("d7-a2", "West Bund Art Center", { note: "Riverside, galleries — Long Museum / West Bund Museum." }),
-        place("d7-a3", "Zhujiajiao (if time/energy)", { note: "Water town, ~45 min from center — swap in for the afternoon if you'd rather skip Longhua." }),
+        place("d7-a1", "W Management"),
+        place("d7-a2", "Shanghai Jing'an Joy City", { note: "Matcha Island cafe/store inside." }),
       ],
       evening: [
-        place("d7-e1", "Farewell dinner & relaxed evening"),
+        place("d7-e1", "Free evening — explore Jing'an or Nanjing Road West"),
       ],
       restaurants: [
-        place("d7-r1", "Ye Shanghai (Xintiandi)", { open: "11:00", close: "22:00" }),
+        place("d7-r1", "Yunannan Hot Pot"),
+        place("d7-r2", "Lailai Snack Dumpling", { note: "Truffle dumpling." }),
+        place("d7-r3", "Zhuangshi Longxing Xiaolongxia Noodle Restaurant"),
       ],
       cafes: [
-        place("d7-c1", "Blue Bottle Coffee", { open: "08:00", close: "19:00" }),
+        place("d7-c1", "Cookies of SHIKU"),
+        place("d7-c2", "Matcha Island", { note: "Inside Shanghai Jing'an Joy City." }),
       ],
     },
   {
