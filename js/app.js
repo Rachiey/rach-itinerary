@@ -771,6 +771,56 @@
     }
   }
 
+  function bookingsForDay(day) {
+    const containerKey = "book";
+  
+    const seed = DATA.bookings.filter(function (b) {
+      return !state.hidden[b.id];
+    });
+  
+    const added = (state.added[containerKey] || []).filter(function (b) {
+      return !state.hidden[b.id];
+    });
+  
+    return seed.concat(added).filter(function (b) {
+      if (!isBooked(b.id, containerKey)) return false;
+  
+      const date = readBookingDate(b, containerKey);
+      return date === day.date;
+    });
+  }
+  
+  function dayBookingBanner(day) {
+    const bookings = bookingsForDay(day);
+    if (!bookings.length) return "";
+  
+    return (
+      '<div class="day-booking-banner">' +
+        '<div class="day-booking-icon">📌</div>' +
+        '<div class="day-booking-content">' +
+          '<strong>Booking today</strong>' +
+          '<div>' +
+            bookings.map(function (b) {
+              const d = isAdded("book", b.id)
+                ? (b.details || {})
+                : Object.assign(
+                    {},
+                    b.details || {},
+                    (state.over[b.id] || {}).details || {}
+                  );
+  
+              const time = d.bookingTime ? " · " + d.bookingTime : "";
+  
+              return '<span class="day-booking-item">' +
+                esc(b.name) + esc(time) +
+              '</span>';
+            }).join("") +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
   function renderDay(day) {
     const city = DATA.cities[day.city];
     const theme = CITY_THEME[day.city] || { g: "var(--line-strong)", emoji: "📍", c: "var(--line-strong)" };
@@ -826,6 +876,7 @@
           '<div class="day-collapse">' +
             sunTimes(day.city, day.date) +
             holidayAlert +
+            dayBookingBanner(day) +
             renderHotelBar(day) +
             renderSlot(day, "morning", "Morning", "morning", seq) +
             renderSlot(day, "afternoon", "Afternoon", "afternoon", seq) +

@@ -557,24 +557,28 @@ const DAYS = [
   },
   {
     id: "day-15", date: "2026-10-12", city: "tokyo",
-    focus: "Ikebukuro & Sunshine City",
+    focus: "Gotokuji, Shimokitazawa & Kichijoji",
     photo: "assets/photos/tokyo.webp",
     holiday: { name: "Japan Sports Day", note: "Japanese national holiday. Expect busier trains, family attractions, shops, and restaurants; check any venue's holiday hours." },
+    areas: {
+      morning: "Gotokuji",
+      afternoon: "Shimokitazawa",
+      evening: "Kichijoji",
+    },
     morning: [
-      place("d15-m1", "Explore Ikebukuro — local morning"),
+      place("d15-m1", "Gotokuji Temple", { note: "The 'lucky cat' (maneki-neko) temple." }),
     ],
     afternoon: [
-      place("d15-a1", "Sunshine City — aquarium, shops & observatory", { open: "10:00", close: "20:00" }),
-      place("d15-a2", "Pokémon Café / Pokémon Center", { note: "Pokémon Café needs a reservation ~31 days ahead." }),
+      place("d15-a1", "Shimokitazawa", { note: "Vintage shops, cafes & backstreets." }),
     ],
     evening: [
-      place("d15-e1", "Ramen street dinner in Ikebukuro"),
+      place("d15-e1", "Kichijoji"),
     ],
     restaurants: [
-      place("d15-r1", "Mutekiya Ramen, Ikebukuro", { open: "10:30", close: "04:00" }),
+      place("d15-r1", "Hikiniku to Come", { note: "Reservation 7:30pm." }),
     ],
     cafes: [
-      place("d15-c1", "Local Ikebukuro café"),
+      place("d15-c1", "Local Kichijoji café"),
     ],
   },
   {

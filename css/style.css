@@ -744,6 +744,41 @@ select {
 .holiday-alert span {
   margin-top: 2px;
 }
+
+.day-booking-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 14px 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--gold) 8%, white);
+  border: 1px solid color-mix(in srgb, var(--gold) 20%, transparent);
+  color: var(--text);
+}
+
+.day-booking-icon {
+  font-size: 18px;
+  flex: 0 0 auto;
+}
+
+.day-booking-content {
+  min-width: 0;
+}
+
+.day-booking-content strong {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 2px;
+}
+
+.day-booking-item {
+  display: block;
+  font-size: 13px;
+}
+
 .day-focus .city-tag {
   font-family: var(--f-mono);
   font-size: 11px;
