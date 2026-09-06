@@ -464,6 +464,9 @@ select {
 .day.just-opened .day-face {
   animation: day-flash 1.6s ease-out;
 }
+.todo.just-opened {
+  animation: day-flash 1.6s ease-out;
+}
 @keyframes day-flash {
   0% {
     box-shadow: 0 0 0 3px var(--gold), var(--shadow);
@@ -747,36 +750,71 @@ select {
 
 .day-booking-banner {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
-  margin: 10px 14px 0;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--gold) 8%, white);
-  border: 1px solid color-mix(in srgb, var(--gold) 20%, transparent);
-  color: var(--text);
+  margin: 14px 0;
+  padding: 9px 10px;
+  border: 1px solid color-mix(in srgb, var(--gold) 72%, var(--line));
+  border-radius: 8px;
+  background: var(--gold-soft);
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .day-booking-icon {
   font-size: 18px;
   flex: 0 0 auto;
+  line-height: 1;
 }
 
 .day-booking-content {
   min-width: 0;
+  flex: 1;
 }
 
 .day-booking-content strong {
   display: block;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  color: #9b6b1f;
+  font-size: 12px;
+  font-weight: 600;
   margin-bottom: 2px;
 }
 
 .day-booking-item {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  margin-top: 2px;
+  padding: 4px 0;
+  border: none;
+  border-top: 1px solid color-mix(in srgb, #9b6b1f 18%, transparent);
+  background: none;
+  text-align: left;
+  font: inherit;
   font-size: 13px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.day-booking-item:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+.day-booking-item:hover {
+  color: #9b6b1f;
+}
+.day-booking-go {
+  flex: none;
+  display: flex;
+  color: #9b6b1f;
+  opacity: 0.7;
+}
+.day-booking-go svg {
+  width: 15px;
+  height: 15px;
+  transform: rotate(-90deg);
 }
 
 .day-focus .city-tag {

@@ -799,26 +799,40 @@
         '<div class="day-booking-icon">📌</div>' +
         '<div class="day-booking-content">' +
           '<strong>Booking today</strong>' +
-          '<div>' +
-            bookings.map(function (b) {
-              const d = isAdded("book", b.id)
-                ? (b.details || {})
-                : Object.assign(
-                    {},
-                    b.details || {},
-                    (state.over[b.id] || {}).details || {}
-                  );
+          bookings.map(function (b) {
+            const d = isAdded("book", b.id)
+              ? (b.details || {})
+              : Object.assign(
+                  {},
+                  b.details || {},
+                  (state.over[b.id] || {}).details || {}
+                );
   
-              const time = d.bookingTime ? " · " + d.bookingTime : "";
+            const time = d.bookingTime ? " · " + d.bookingTime : "";
   
-              return '<span class="day-booking-item">' +
-                esc(b.name) + esc(time) +
-              '</span>';
-            }).join("") +
-          '</div>' +
+            return '<button type="button" class="day-booking-item" data-act="open-booking" data-place="' + esc(b.id) + '">' +
+              '<span>' + esc(b.name) + esc(time) + '</span>' +
+              '<span class="day-booking-go">' + ICON.chevron + '</span>' +
+            '</button>';
+          }).join("") +
         '</div>' +
       '</div>'
     );
+  }
+
+  /* Switch to the Bookings tab, expand the matching entry and scroll to it —
+     used by the "Booking today" banner on each day card. */
+  function openBookingItem(id) {
+    const bookTab = document.querySelector('.tab[data-target="book"]');
+    if (bookTab && !bookTab.classList.contains("active")) bookTab.click();
+    requestAnimationFrame(function () {
+      const el = document.querySelector('.todo.booking[data-place="' + cssEscape(id) + '"][data-container="book"]');
+      if (!el) return;
+      el.classList.add("open");
+      el.classList.add("just-opened");
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(function () { el.classList.remove("just-opened"); }, 1600);
+    });
   }
 
   function renderDay(day) {
@@ -2087,6 +2101,10 @@
     }
     if (act === "open-day") {
       openDayCard(actEl.getAttribute("data-day"));
+      return;
+    }
+    if (act === "open-booking") {
+      openBookingItem(actEl.getAttribute("data-place"));
       return;
     }
     if (act === "open-food") {
