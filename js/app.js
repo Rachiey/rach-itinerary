@@ -622,8 +622,13 @@
     const containerKey = day.id + ":" + slotKey;
     const cityName = (DATA.cities[day.city] || {}).name || "";
     const list = placesFor(day[slotKey], containerKey);
+    const priority = list.filter(function (p) { return !!(p.details || {}).mustDo; });
+    const regular = list.filter(function (p) { return !(p.details || {}).mustDo; });
+    const renderRows = function (items) {
+      return items.map(function (p) { return renderPlace(p, containerKey, null, cityName); }).join("");
+    };
     const rows = list.length
-      ? list.map(function (p) { return renderPlace(p, containerKey, null, cityName); }).join("")
+      ? (priority.length ? '<div class="slot-priority">' + ICON.star + ' Must do</div>' + renderRows(priority) : "") + renderRows(regular)
       : '<p class="empty">Nothing yet — add a spot.</p>';
     const slotClass = slotKey === "restaurants" ? "afternoon" : "evening";
     return (
@@ -2408,6 +2413,12 @@
     saveState();
 
     if (!dayId) return;
+    if (/:(restaurants|cafes)$/.test(containerKey)) {
+      const dayData = DATA.days.find(function (item) { return item.id === dayId; });
+      const foodSlot = containerKey.split(":")[1];
+      if (slot && dayData) slot.outerHTML = renderBackList(dayData, foodSlot, foodSlot === "restaurants" ? "Restaurants" : "Cafés");
+      return;
+    }
     renderItinerary();
     requestAnimationFrame(function () {
       const restoredDay = document.querySelector('.day[data-day="' + dayId + '"]');
