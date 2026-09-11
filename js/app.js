@@ -1,8 +1,3 @@
-/* =====================================================================
-   app.js — rendering, interaction & persistence
-   Vanilla JS. State is saved to localStorage so ticks / added places /
-   flight info / photos all persist between visits.
-   ===================================================================== */
 
 (function () {
   "use strict";
@@ -10,11 +5,6 @@
   const DATA = window.TRIP_DATA;
   const STORAGE_KEY = "rach-itinerary-v1";
 
-  /* ---------- City theming (used for default header gradients) ----------
-     A cohesive "summer fruit garden" sweep — every accent sits in the citrus
-     palette family (tangerine → mango → lime → leaf → teal → lagoon → grape →
-     guava) and each gradient resolves toward a sunny light so they read as one
-     set rather than a random rainbow. */
      const CITY_THEME = {
       shanghai: { g: "linear-gradient(135deg,#c9506f,#ef6f92 55%,#f8c9b5)", emoji: "🏮", c: "#ef6f92" },
       suzhou:   { g: "linear-gradient(135deg,#4f7a4a,#7fa563 55%,#dbe8c4)", emoji: "🏞️", c: "#7fa563" },
@@ -27,9 +17,8 @@
       kamakura: { g: "linear-gradient(135deg,#c1685a,#e2917d 55%,#f8d8bc)", emoji: "🪷", c: "#e2917d" },
     };
 
-  /* ---------- State ---------- */
   let state = loadState();
-  let dayFilter = "all"; // "all" | "todo" | "done" (list view, not persisted)
+  let dayFilter = "all"; 
 
   function loadState() {
     let s = { over: {}, added: {}, hidden: {}, flights: {}, photos: {}, hotels: {}, view: "list", theme: "light", order: {}, slotAreas: {}, slotOpen: {}, packing: {}, packingAdd: {}, packingHide: {}, expenses: [], docs: [], stamps: [], recipes: [] };
@@ -56,22 +45,8 @@
   }
   function genId() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 
-  /* =====================================================================
-     WEATHER (Open-Meteo, no API key required)
-     ---------------------------------------------------------------------
-     Trip is in the future, so real forecasts only exist within ~16 days.
-     Outside that window we look up the SAME dates last year via the
-     archive API — a solid "here's what it was like this time last year"
-     indicator for packing / planning. Once we're inside 16 days it
-     switches to the actual forecast automatically.
-     Results are cached in localStorage keyed by "city|YYYY-MM-DD" so
-     we don't hammer the API on every render.
-     ===================================================================== */
   const WEATHER_CACHE_KEY = "rach-weather-v2";
   const WEATHER = { data: {}, kind: {}, ttl: 6 * 60 * 60 * 1000 /* 6h */ };
-  // Sub-cities without their own weather query — fall back to the nearest
-  // "primary" city so we only fire 4 requests total and everything renders
-  // even when the sub-city fetch would have been slow / rate-limited.
   const WEATHER_ALIAS = {
     kyoto: "osaka",
     nara: "osaka",
@@ -95,7 +70,6 @@
     } catch (e) { /* ignore */ }
   }
 
-  // WMO weather code → { emoji, label }
   function wxIcon(code) {
     if (code == null) return { emoji: "", label: "" };
     if (code === 0) return { emoji: "☀️", label: "Clear" };
@@ -115,8 +89,6 @@
 
   function wxKey(cityKey, isoDate) { return wxCity(cityKey) + "|" + isoDate; }
 
-  // Render the little chip. Always returns a span so we can update it in
-  // place when the async fetch resolves.
   function weatherChip(cityKey, isoDate) {
     const key = wxKey(cityKey, isoDate);
     const w = WEATHER.data[key];
@@ -129,7 +101,6 @@
     return '<span ' + attrs + ' title="' + esc(title) + '"><span class="wx-ic">' + ic.emoji + '</span>' + (t ? '<span class="wx-t">' + t + '</span>' : '') + '</span>';
   }
 
-  // Sunrise/sunset row (shown on the expanded day). Refreshed in place.
   function sunTimes(cityKey, isoDate) {
     const key = wxKey(cityKey, isoDate);
     const w = WEATHER.data[key];
@@ -143,8 +114,6 @@
     return rise + set;
   }
 
-  // After WEATHER.data updates, refresh any chips currently in the DOM
-  // without re-rendering the whole card (keeps flip / open state).
   function refreshWeatherChips() {
     const chips = document.querySelectorAll('.wx[data-wx-key]');
     chips.forEach(function (el) {
@@ -169,7 +138,6 @@
   }
 
   function fetchWeatherAll() {
-    // Build one request per city covering all its trip dates.
     const byCity = {};
     DATA.days.forEach(function (d) {
       const ck = wxCity(d.city);
@@ -183,7 +151,6 @@
       const city = DATA.cities[cityKey];
       if (!city || city.lat == null) return;
       const dates = byCity[cityKey].sort();
-      // Skip if every trip date for this city is already cached (& cache is fresh).
       const allCached = fresh && dates.every(function (d) { return WEATHER.data[wxKey(cityKey, d)]; });
       if (allCached) return;
       fetchWeatherForCity(cityKey, dates).catch(function () { /* silent */ });
@@ -215,9 +182,6 @@
     }
 
     if (archiveDates.length) {
-      // Look up SAME dates one year earlier from the archive.
-      // Use pure string arithmetic — parsing via Date() then toISOString()
-      // shifts by the browser's TZ offset and chops days off the range.
       const shifted = archiveDates.map(function (iso) {
         return shiftIsoYears(iso, -1);
       }).sort();
@@ -235,15 +199,12 @@
     refreshWeatherChips();
   }
 
-  // Add N years to an ISO "YYYY-MM-DD" string without any timezone conversion.
   function shiftIsoYears(iso, delta) {
     const parts = iso.split("-");
     const y = parseInt(parts[0], 10) + delta;
     return String(y).padStart(4, "0") + "-" + parts[1] + "-" + parts[2];
   }
 
-  // yearOffset: if the response dates are N years BEHIND the trip dates
-  // (archive case), add N years back so we key by the trip date.
   function ingestOpenMeteo(cityKey, json, kind, yearOffset) {
     if (!json || !json.daily || !json.daily.time) return;
     const t = json.daily.time;
@@ -264,17 +225,12 @@
     }
   }
 
-  // "2025-10-06T06:12" -> "06:12"
   function hhmm(isoDateTime) {
     if (!isoDateTime || typeof isoDateTime !== "string") return "";
     const t = isoDateTime.split("T")[1];
     return t ? t.slice(0, 5) : "";
   }
 
-  /* =====================================================================
-     CURRENCY (open.er-api.com — free, no API key)
-     Shows GBP → CNY / JPY in the masthead. Cached daily in localStorage.
-     ===================================================================== */
   const FX_CACHE_KEY = "rach-fx-v1";
   let FX = null;
   try { const raw = localStorage.getItem(FX_CACHE_KEY); if (raw) FX = JSON.parse(raw); } catch (e) { /* ignore */ }
@@ -294,7 +250,6 @@
   }
 
   function fetchCurrency() {
-    // Only refetch once a day.
     const today = localISO(new Date());
     if (FX && FX.fetchedOn === today && FX.rates) { renderFxChip(); return; }
     fetch("https://open.er-api.com/v6/latest/GBP")
@@ -312,11 +267,6 @@
       .catch(function () { /* keep any cached value */ });
   }
 
-  /* =====================================================================
-     TODAY banner — an always-visible strip at the top of the Days tab.
-     Before the trip: countdown. During: today's city + weather + focus
-     (tap to jump to the card). After: a friendly "welcome home".
-     ===================================================================== */
   function daysBetween(isoA, isoB) {
     const a = new Date(isoA + "T00:00:00"), b = new Date(isoB + "T00:00:00");
     return Math.round((b - a) / 86400000);
@@ -360,14 +310,12 @@
     return "";
   }
 
-  // Refresh just the banner's contents in place (called when weather lands).
   function updateTodayBanner() {
     const host = document.getElementById("todayBanner");
     if (!host) return;
     host.innerHTML = todayBannerHTML();
   }
 
-  /* ---------- SVG icon helpers ---------- */
   const ICON = {
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
     chevron: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
@@ -416,7 +364,6 @@
     more: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>',
   };
 
-  /* ---------- Utilities ---------- */
   function esc(s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -430,12 +377,9 @@
     return { dow, big: day + " " + mon };
   }
 
-  /* Build a universal maps search URL (opens Google Maps / native maps app
-     on mobile, browser on desktop). */
   function mapsUrl(query) {
     return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(query);
   }
-  /* Open directions for a place: prefer a full address, else name + city. */
   function openMaps(name, address, cityName) {
     const a = (address || "").trim();
     const parts = [];
@@ -447,7 +391,6 @@
     window.open(mapsUrl(q), "_blank", "noopener");
   }
 
-  /* Merge a seed place with any saved override. */
   function resolvePlace(seed) {
     const o = state.over[seed.id];
     if (!o) return seed;
@@ -463,7 +406,6 @@
     return state.over[id];
   }
 
-  /* Get every place (seed + added, minus hidden) for a container. */
   function placesFor(seedList, containerKey) {
     const out = [];
     (seedList || []).forEach(function (p) {
@@ -477,7 +419,6 @@
     return out;
   }
 
-  /* Nicely format an opening/closing pair: single time shows on its own. */
   function formatHours(open, close) {
     open = (open || "").trim();
     close = (close || "").trim();
@@ -496,12 +437,6 @@
     return null;
   }
 
-  /* =====================================================================
-     RENDER: a single to-do place row
-     travelInfo (itinerary stops only): { first: bool } → shows a "X min from
-     hotel / away" chip and adds a Travel-time field to the editor.
-     cityName (day places only): enables a "Directions" button → maps.
-     ===================================================================== */
   function renderPlace(p, containerKey, travelInfo, cityName) {
     const d = p.details || {};
     const hours = formatHours(d.open, d.close);
@@ -547,8 +482,7 @@
       '</div>'
     );
   }
-  // Wording for the travel chip: use the custom "from" label if the user set
-  // one, otherwise fall back to the sensible default for this stop's position.
+
   function travelLabel(first, from) {
     const f = (from == null ? "" : String(from)).trim();
     if (f) return "from " + esc(f);
@@ -562,11 +496,6 @@
     return '<div class="' + cls + '"><label>' + label + '</label>' + input + '</div>';
   }
 
-  /* =====================================================================
-     RENDER: star rating + memory note for a restaurant / cafe.
-     Only meaningful once the place is ticked off (CSS hides it until then),
-     so tapping a star or jotting a note recalls whether it was any good.
-     ===================================================================== */
   function renderRating(p) {
     const d = p.details || {};
     const rating = Math.max(0, Math.min(5, parseInt(d.rating, 10) || 0));
@@ -640,9 +569,6 @@
     );
   }
 
-  /* =====================================================================
-     RENDER: a full day card (front + back)
-     ===================================================================== */
   function hotelForDay(day) {
     return DATA.hotels.find(function (h) {
       return day.date >= h.from && day.date <= h.to;
@@ -703,7 +629,6 @@
     );
   }
 
-  /* How much of a single day is ticked off (all slots incl. eat & drink). */
   function dayProgress(day) {
     let total = 0, done = 0;
     ["morning", "afternoon", "evening", "restaurants", "cafes"].forEach(function (slot) {
@@ -713,7 +638,6 @@
     return { total: total, done: done, pct: total ? Math.round((done / total) * 100) : 0 };
   }
 
-  /* Small SVG progress donut shown on each day card. */
   function ringInner(pct) {
     const r = 9;
     const c = 2 * Math.PI * r;
@@ -754,9 +678,6 @@
     ring.setAttribute("title", p.done + " of " + p.total + " done");
     ring.setAttribute("aria-label", p.pct + "% of this day done");
 
-    // Update the existing circle's offset in place so the CSS transition can
-    // animate from the old value to the new one. Replacing the SVG (innerHTML)
-    // would insert a fresh circle already at its target, so it would snap.
     const fg = ring.querySelector(".ring-fg");
     const num = ring.querySelector(".ring-num");
     if (fg && num) {
@@ -825,8 +746,6 @@
     );
   }
 
-  /* Switch to the Bookings tab, expand the matching entry and scroll to it —
-     used by the "Booking today" banner on each day card. */
   function openBookingItem(id) {
     const bookTab = document.querySelector('.tab[data-target="book"]');
     if (bookTab && !bookTab.classList.contains("active")) bookTab.click();
@@ -849,8 +768,6 @@
   ? "background-image:url(" + photo + ");"
   : "background-image:" + theme.g + ";";
 
-    // Running counter across the day so travel chips read "from hotel" for the
-    // first stop and "away" (from the previous stop) for the rest.
     const seq = { n: 0 };
 
     const canReorder = !day._single && !day._pinned;
@@ -929,15 +846,6 @@
     );
   }
 
-  /* =====================================================================
-     RENDER: panels
-     ===================================================================== */
-  /* =====================================================================
-     Reorderable legs — shuffle day PLANS within a leg while the dates
-     (and therefore flights & hotels, which are pinned to dates) stay put.
-     A "leg" is one hotel stay: a block bounded by fixed flights / transfers,
-     so plans never jump across a flight or into the wrong hotel/city.
-     ===================================================================== */
   function legKeyForDay(day) {
     const h = hotelForDay(day);
     if (h) return "h:" + h.id;
@@ -945,8 +853,6 @@
     return "c:" + (c ? c.country : day.city);
   }
 
-  // Dates whose PLAN is pinned to that specific date and can't be shuffled
-  // (travel/transfer days — flights & the shinkansen mean these are fixed).
   const PINNED_DATES = {
     "2026-09-28": true, // LHR → Shanghai
     "2026-10-05": true, // Shanghai → Osaka
@@ -956,10 +862,6 @@
     "2026-10-22": true, // Shanghai → LHR (fly home)
   };
 
-  // Returns the trip days with any user reordering applied. Each day keeps its
-  // own id + plan, but its DATE is reassigned from the leg's fixed date slots
-  // in the chosen order. Pinned days stay on their original date and are
-  // excluded from reordering. Annotates _leg / _first / _last / _single / _pinned.
   function effectiveDays() {
     const groups = {};
     const keyOrder = [];
@@ -1511,22 +1413,6 @@
     return '<div class="field"><label>' + label + '</label><input data-fflight="' + key + '" value="' + esc(val) + '" placeholder="—"></div>';
   }
 
-  function renderTips() {
-    let html = moreHeader("Good to know");
-    html += '<p class="empty" style="margin-bottom:14px">Bits worth sorting before you go — apps to install, entry admin and other things that are much easier done from home.</p>';
-    DATA.tips.forEach(function (t) {
-      const link = t.link
-        ? '<a class="tip-link" href="' + esc(t.link.url) + '" target="_blank" rel="noopener noreferrer">' + esc(t.link.label || t.link.url) + '</a>'
-        : "";
-      html +=
-        '<div class="tip">' +
-          '<div class="tip-icon">' + t.icon + '</div>' +
-          '<div><h3>' + esc(t.title) + '</h3><p>' + esc(t.body) + '</p>' + link + '</div>' +
-        '</div>';
-    });
-    document.getElementById("panel-more").innerHTML = html;
-  }
-
   function hotelsMarkup() {
     let html = '<h2 class="section-title" style="margin-top:22px">Where you\'re staying</h2>' +
       '<p class="empty" style="margin-bottom:14px">Every stay on the trip. Tap a card to edit the name, address or check-in / check-out — it saves automatically and syncs to the day cards.</p>';
@@ -1599,7 +1485,6 @@
 
   function renderCamera() {
     let html = '<h2 class="section-title">Camera</h2>' +
-      '<p class="empty" style="margin-bottom:14px">Quick settings for your Fujifilm X100VI. Pick a scene for a starting point, or keep your favourite film recipes to hand.</p>' +
       '<div class="cam-seg">' +
         '<button class="cam-seg-btn' + (cameraView === "scenes" ? " on" : "") + '" data-act="cam-view" data-view="scenes">Scene settings</button>' +
         '<button class="cam-seg-btn' + (cameraView === "recipes" ? " on" : "") + '" data-act="cam-view" data-view="recipes">Film recipes</button>' +
@@ -1817,19 +1702,12 @@
     }).catch(function () { /* ignore */ });
   }
 
-  /* =====================================================================
-     STAMPS — a virtual stamp book. Users photograph the stamps / seals
-     they collect on the trip; each photo is downscaled + re-encoded to
-     WebP and kept in IndexedDB (same store as documents), so only the
-     blob id + title / place / date live in localStorage.
-     ===================================================================== */
   const stampPhotoUrls = {}; // photoId -> object URL (session cache)
 
   function renderStamps() {
     // Newest first, so a freshly-pressed stamp lands at the top.
     const stamps = state.stamps.slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });
     let html = '<h2 class="section-title">Stamp book</h2>' +
-      '<p class="empty" style="margin-bottom:14px">Collect the stamps and seals you pick up along the way — temples, stations, museums, konbini. Snap a photo and it\u2019s pressed into your book.</p>' +
       '<button class="stamp-add-btn" data-act="stamp-add">' + ICON.stamp + ' Add a stamp</button>';
 
     if (!stamps.length) {
@@ -2892,7 +2770,6 @@
   let phraseLang = 0;  // index into DATA.phrasebook
 
   const MORE_TOOLS = [
-    { key: "tips", icon: ICON.lightbulb, title: "Good to know", sub: "Trip tips & things to sort before you fly" },
     { key: "packing", icon: ICON.suitcase, title: "Packing list", sub: "Tick things off as you pack" },
     { key: "budget", icon: ICON.wallet, title: "Budget tracker", sub: "Log spend in ¥ / £, auto-converted" },
     { key: "emergency", icon: ICON.phone, title: "Emergency & essentials", sub: "Numbers, embassies, hotel addresses" },
@@ -2909,7 +2786,6 @@
     if (moreView === "docs") return renderDocs();
     // Hub
     let html = '<h2 class="section-title">Trip tools</h2>' +
-      '<p class="empty" style="margin-bottom:14px">Handy extras for the trip — everything saves on this device and works offline.</p>' +
       '<div class="tool-grid">';
     MORE_TOOLS.forEach(function (t) {
       html += '<button class="tool-card" data-act="more-open" data-tool="' + t.key + '">' +

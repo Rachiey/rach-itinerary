@@ -947,7 +947,6 @@ const BOOKINGS = [
   }
 ];
 
-/* ───────────────────────── TIPS / SUGGESTIONS ───────────────────────── */
 const TIPS = [
   { icon: "🛂", title: "Visit Japan Web QR", body: "Before you land in Japan, register on Visit Japan Web and complete immigration & customs. It generates QR codes — screenshot them or save offline. You scan the QR at the airport kiosks for immigration and customs, which skips the paper forms. Do this a few days before flying, not in the queue.", link: { url: "https://www.vjw.digital.go.jp/", label: "Open Visit Japan Web" } },
   { icon: "📱", title: "China apps to install before you fly", body: "Download and set these up on UK Wi-Fi before landing in Shanghai — the app stores can be a pain once you're in China: Didi (taxis / ride-hail), WeChat Pay and Alipay (link a foreign card in each — you'll pay for almost everything with these), and Amap / 高德地图 (maps & navigation, way better than Google Maps in China, which is blocked)." },
@@ -961,9 +960,6 @@ const TRIP_META = {
   end: "2026-10-22",
 };
 
-/* ───────────────────────── PACKING CHECKLIST ─────────────────────────
-   Seed items grouped by category. Tick state, custom additions and
-   removals all persist per-device in localStorage (handled in app.js). */
 const PACKING = [
   {
     category: "Documents & money",
@@ -1025,9 +1021,6 @@ const PACKING = [
   },
 ];
 
-/* ───────────────────────── EMERGENCY & ESSENTIALS ─────────────────────
-   Hotel addresses are pulled live from HOTELS in app.js, so they never
-   drift out of sync. Numbers below are the official published lines. */
 const EMERGENCY = {
   numbers: [
     {

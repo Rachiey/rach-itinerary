@@ -57,9 +57,46 @@
 
   --safe-top: env(safe-area-inset-top, 0px);
 
-  --f-display: "Fraunces", Georgia, serif;
-  --f-body: "Inter", system-ui, -apple-system, sans-serif;
-  --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --f-title: "Daydream", var(--f-display);
+  --f-display: "ARI-W9500 Display", var(--f-mono);
+  --f-body: "Perfect DOS VGA 437 Win", var(--f-mono);
+  --f-mono: "Perfect DOS VGA 437 Win", ui-monospace, "IBM Plex Mono", monospace;
+}
+
+/* =====================================================================
+   Retro pixel type — Daydream (title), ARI-W9500 Display (headings),
+   Perfect DOS VGA 437 Win (body/UI text).
+
+   These are the actual font FILES, not just names — drop them in a
+   /fonts folder next to this stylesheet (or update the src paths) for
+   this to take effect. Get them from dafont.com and check each font's
+   license there before shipping this publicly: most dafont uploads are
+   free for personal use but ask for a license/donation for commercial
+   or public projects.
+   ===================================================================== */
+@font-face {
+  font-family: "Daydream";
+  src: url("./fonts/Daydream.woff2") format("woff2"),
+    url("./fonts/daydream-3.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "ARI-W9500 Display";
+  src: url("./fonts/ari-w9500-display.woff2") format("woff2"),
+    url("./fonts/ari-w9500-display.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Perfect DOS VGA 437 Win";
+  src: url("./fonts/PerfectDOSVGA437Win.woff2") format("woff2"),
+    url("./fonts/Perfect DOS VGA 437 Win.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 [data-theme="dark"] {
@@ -374,10 +411,10 @@ select {
   background-size: 64px 10px;
 }
 .masthead h1 {
-  font-family: var(--f-display);
-  font-weight: 600;
-  font-size: clamp(40px, 13vw, 62px);
-  line-height: 1.02;
+  font-family: var(--f-title);
+  font-weight: normal;
+  font-size: 45px;
+  line-height: 1.5;
   margin-top: var(--space-14);
   letter-spacing: -0.015em;
   color: var(--seal);
@@ -855,7 +892,7 @@ select {
 .day-focus h3,
 .back-header h3 {
   font-family: var(--f-display);
-  font-size: 19px;
+  font-size: 15px;
   font-weight: 600;
 }
 .holiday-badge {
@@ -1025,7 +1062,7 @@ select {
   margin-bottom: var(--space-2);
 }
 .day.collapsed .day-focus h3 {
-  font-size: 17px;
+  font-size: 12px;
   line-height: 1.2;
 }
 .day.collapsed .holiday-badge {
@@ -3906,7 +3943,7 @@ body.is-dragging-day {
   color: var(--ink);
   text-align: right;
   text-align-last: right;
-}/* Example-photo slot in the add form */
+} /* Example-photo slot in the add form */
 .crx-photo {
   display: block;
 }

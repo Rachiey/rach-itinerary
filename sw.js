@@ -25,8 +25,6 @@ const SHELL_ASSETS = [
   "./assets/icons/favicon.ico",
   "./assets/icons/favicon-16.png",
   "./assets/icons/favicon-32.png",
-  // City header photos (small WebP ~2.6MB total) — precached so every day
-  // card shows its image offline, on the plane or a dodgy eSIM.
   "./assets/photos/beijing.webp",
   "./assets/photos/disneyland.webp",
   "./assets/photos/gotokujitemple.webp",
@@ -50,7 +48,6 @@ const SHELL_ASSETS = [
 self.addEventListener("install", function (event) {
   event.waitUntil(
     caches.open(SHELL_CACHE).then(function (cache) {
-      // Add individually so one missing asset doesn't abort the whole install.
       return Promise.all(
         SHELL_ASSETS.map(function (url) {
           return cache.add(url).catch(function () { /* ignore */ });
@@ -76,7 +73,6 @@ self.addEventListener("fetch", function (event) {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
 
-  // Weather & currency APIs → network-first, fall back to cached response.
   const isApi =
     url.hostname.indexOf("open-meteo.com") !== -1 ||
     url.hostname.indexOf("er-api.com") !== -1;
@@ -90,8 +86,7 @@ self.addEventListener("fetch", function (event) {
     );
     return;
   }
-
-  // Same-origin shell/assets → cache-first, update in the background.
+  
   if (url.origin === self.location.origin) {
     event.respondWith(
       caches.match(req).then(function (cached) {
