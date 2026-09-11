@@ -890,13 +890,6 @@ const BOOKINGS = [
     note: "Prefer the Shibuya location. Extremely popular — book right when the window opens. Kyoto branch is a backup if Shibuya is full.",
   },
   {
-    id: "bk-ghibli", name: "Ghibli Museum",
-    where: "Mitaka, Tokyo", visit: "2026-10-14",
-    bookBy: "Tickets drop 10 Sept, 10:00 JST", bookByDate: "2026-09-10",
-    flexible: false,
-    note: "October dates are released on 10 Sept and sell out within minutes. Be logged in and ready at 10:00 JST sharp.",
-  },
-  {
     id: "bk-pokemon", name: "Pokémon Café",
     where: "Osaka or Tokyo (flexible)", visit: "",
     bookBy: "Opens exactly 31 days before your chosen date", bookByDate: "",

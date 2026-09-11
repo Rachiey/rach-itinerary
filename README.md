@@ -47,7 +47,7 @@ active tab and a subtle haptic tap on supported devices).
   - Switch between **List** and **Calendar** views, and **reorder** days by
     dragging the handle or tapping ▲▼ (dates stay fixed; your plans move).
 - **To Book** — time-sensitive reservations (Shanghai Disneyland, Wild Animal
-  Park, Ghibli Museum, Pokémon Café, Hikiniku to Come, hotel transfers…). Each
+  Park, Pokémon Café, Hikiniku to Come, hotel transfers…). Each
   card shows where you're going, the visit date, and a **when-to-book** strip
   with a live countdown, colour-coded by urgency. Tick one once it's booked.
 - **To Buy** — shopping checklist grouped by China / Japan / Gifts.
