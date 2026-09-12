@@ -71,7 +71,7 @@ const DAYS = [
         place("d1-m2", "Grab a local SIM / eSIM + Alipay setup", { note: "Set up Alipay/WeChat Pay before you fly — you'll want it the moment you land." }),
       ],
       afternoon: [
-        place("d1-a1", "In the air ✈️"),
+        place("d1-a1", "In the air ⌯✈︎"),
       ],
       evening: [
         place("d1-e1", "Overnight flight — try to sleep to beat jet lag"),

@@ -294,7 +294,7 @@
       const n = daysBetween(todayISO, first);
       const when = n === 0 ? "<strong>today</strong>" : n === 1 ? "<strong>tomorrow</strong>" : "in&nbsp;<strong>" + n + " days</strong>";
       return '<div class="today-banner is-before">' +
-        '<span class="today-tag">✈️</span>' +
+        '<span class="today-tag">. ݁₊ ⊹ . ݁  ✈︎</span>' +
         '<span class="today-main">' +
           '<span class="today-line">Trip starts ' + when + '</span>' +
         '</span>' +

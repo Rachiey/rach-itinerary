@@ -1718,7 +1718,7 @@ body.is-dragging-day {
   font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 0.14em;
-  color: var(--on-accent);
+  color: var(--jade);
   background: var(--jade);
   padding: var(--space-5) var(--space-9);
   border-radius: var(--radius-xs);
