@@ -1008,7 +1008,12 @@
   function nextUpHTML() {
     const today = localISO(new Date());
     const days = effectiveDays();
-    const day = days.find(function (item) { return item.date >= today; }) || days[days.length - 1];
+    // When today itself is a trip day, the Today banner already covers it,
+    // so Next up should point to whatever comes after — not repeat it.
+    const liveToday = days.some(function (item) { return item.date === today; });
+    const day = liveToday
+      ? days.find(function (item) { return item.date > today; })
+      : (days.find(function (item) { return item.date >= today; }) || days[days.length - 1]);
     if (!day) return "";
     const city = DATA.cities[day.city] || {};
     const stops = ["morning", "afternoon", "evening"].reduce(function (total, slot) {
@@ -1016,6 +1021,8 @@
     }, 0);
     const when = Math.round((new Date(day.date + "T00:00:00") - new Date(today + "T00:00:00")) / 86400000);
     const label = when === 0 ? "Today" : when === 1 ? "Tomorrow" : "In " + when + " days";
+    const code = city.code || (city.name || "").slice(0, 3).toUpperCase();
+    const flag = (CITY_THEME[day.city] || {}).emoji || city.flag || "";
     return '<section class="next-up"><div class="next-up-label">Next up <span>' + esc(label) + '</span></div><button class="next-up-main" data-act="open-day" data-day="' + esc(day.id) + '"><span>' + esc((CITY_THEME[day.city] || {}).emoji || city.flag || "") + '</span><span><strong>' + esc(day.focus) + '</strong><small>' + esc(fmtDate(day.date).dow + " · " + fmtDate(day.date).big + " · " + city.name + " · " + stops + " stops") + '</small></span><span class="next-up-chevron">' + ICON.chevron + '</span></button></section>';
   }
 

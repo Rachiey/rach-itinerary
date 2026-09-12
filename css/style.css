@@ -5,17 +5,14 @@
   --ink: #2f2a24;
   --ink-soft: #6b5f56;
   --ink-faint: #a89a90;
-
   --seal: #ef6f92;
   --seal-dark: #d9527a;
   --jade: #7fa563;
   --jade-soft: #e2ecd6;
   --gold: #d9a441;
   --gold-soft: #faedd2;
-
   --line: #f3ddd9;
   --line-strong: #e3c4bd;
-
   --space-1: 1px;
   --space-2: 2px;
   --space-3: 3px;
@@ -39,7 +36,6 @@
   --space-26: 26px;
   --space-34: 34px;
   --space-44: 44px;
-
   --radius-3xs: 6px;
   --radius-xs: 8px;
   --radius-sm: 10px;
@@ -51,29 +47,27 @@
   --radius-pill: 999px;
   --shadow: 0 8px 26px rgba(160, 70, 90, 0.14);
   --shadow-soft: 0 3px 14px rgba(160, 70, 90, 0.1);
-
   --nav-h: 68px;
   --max-w: 560px;
-
   --safe-top: env(safe-area-inset-top, 0px);
-
   --f-title: "Daydream", var(--f-display);
   --f-display: "ARI-W9500 Display", var(--f-mono);
   --f-body: "Perfect DOS VGA 437 Win", var(--f-mono);
   --f-mono: "Perfect DOS VGA 437 Win", ui-monospace, "IBM Plex Mono", monospace;
+  --on-accent: #fff;
+  --ink-gold: #9b6b1f;
+  --danger: #c1524f;
+  --ink-teal: #4f7d78;
+  --fs-2xs: 9px;
+  --fs-xs: 10px;
+  --fs-sm: 11px;
+  --fs-md: 12px;
+  --fs-lg: 13px;
+  --fs-xl: 14px;
+  --fs-2xl: 15px;
+  --fs-3xl: 16px;
+  --fs-4xl: 17px;
 }
-
-/* =====================================================================
-   Retro pixel type — Daydream (title), ARI-W9500 Display (headings),
-   Perfect DOS VGA 437 Win (body/UI text).
-
-   These are the actual font FILES, not just names — drop them in a
-   /fonts folder next to this stylesheet (or update the src paths) for
-   this to take effect. Get them from dafont.com and check each font's
-   license there before shipping this publicly: most dafont uploads are
-   free for personal use but ask for a license/donation for commercial
-   or public projects.
-   ===================================================================== */
 @font-face {
   font-family: "Daydream";
   src: url("./fonts/Daydream.woff2") format("woff2"),
@@ -98,7 +92,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 [data-theme="dark"] {
   --paper: #16201a;
   --paper-2: #1e1c2a;
@@ -106,17 +99,14 @@
   --ink: #f5e9ea;
   --ink-soft: #c9b6ae;
   --ink-faint: #8f9a86;
-
   --seal: #ff8fac;
   --seal-dark: #e56d92;
   --jade: #8fd17a;
   --jade-soft: #2c4014;
   --gold: #e0b168;
   --gold-soft: #3d2f16;
-
   --line: #35402f;
   --line-strong: #4a5540;
-
   --shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
   --shadow-soft: 0 3px 14px rgba(0, 0, 0, 0.4);
 }
@@ -128,7 +118,6 @@
   background: #332a17;
   border-color: #5c4a28;
 }
-
 *,
 *::before,
 *::after {
@@ -136,7 +125,6 @@
   margin: 0;
   padding: 0;
 }
-
 html {
   -webkit-text-size-adjust: 100%;
   overscroll-behavior: none;
@@ -152,7 +140,6 @@ html {
   background-size: cover;
   background-attachment: fixed;
 }
-
 body {
   font-family: var(--f-body);
   color: var(--ink);
@@ -165,7 +152,6 @@ body {
   padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 12px);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
-
 body::before {
   content: "";
   position: fixed;
@@ -184,7 +170,6 @@ body::before {
     ),
     radial-gradient(circle at 12% 6%, rgba(86, 197, 205, 0.1), transparent 38%);
 }
-
 [data-theme="dark"] body::before {
   background: radial-gradient(
       circle at 100% 0%,
@@ -198,7 +183,6 @@ body::before {
     ),
     radial-gradient(circle at 12% 6%, rgba(86, 197, 205, 0.08), transparent 38%);
 }
-
 img {
   display: block;
   max-width: 100%;
@@ -214,14 +198,8 @@ input,
 textarea,
 select {
   font-family: inherit;
-  font-size: 16px;
+  font-size: var(--fs-3xl);
 }
-
-/* =====================================================================
-   Shared component base classes — extracted from repeated patterns.
-   Individual selectors below add only what differs (padding, color, etc).
-   ===================================================================== */
-/* .card */
 .shop-city,
 .flight,
 .tip,
@@ -234,8 +212,6 @@ select {
   border-radius: var(--radius);
   box-shadow: var(--shadow-soft);
 }
-
-/* .card-row */
 .pack-item,
 .exp-item,
 .doc-item,
@@ -246,8 +222,6 @@ select {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
 }
-
-/* .control-xs */
 .day-food-action,
 .rating-note,
 .field input,
@@ -257,8 +231,6 @@ select {
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-xs);
 }
-
-/* .control-sm */
 .exp-add input,
 .exp-add select,
 .cam-recipe-add input,
@@ -268,8 +240,6 @@ select {
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-sm);
 }
-
-/* .label-mono */
 .day-date-mini,
 .flip-btn,
 .booking-section-head,
@@ -303,20 +273,15 @@ select {
   font-family: var(--f-mono);
   text-transform: uppercase;
 }
-
-/* Micro-label size tiers (badge / compact / standard / eyebrow / button) */
-/* .label-badge */
 .holiday-badge,
 .place-type,
 .tab span,
 .flex-tag,
 .cal-cell .cal-month,
 .cam-recipe-sim {
-  font-size: 9px;
+  font-size: var(--fs-2xs);
   letter-spacing: 0.04em;
 }
-
-/* .label-compact */
 .cal-weekdays span,
 .emg-num-lbl,
 .view-btn,
@@ -324,46 +289,38 @@ select {
 .chip-filter,
 .booking-status,
 .booking-visit-countdown {
-  font-size: 10px;
+  font-size: var(--fs-xs);
   letter-spacing: 0.08em;
 }
-
-/* .label-standard */
 .next-up-label,
 .field label,
 .flight-label {
-  font-size: 10px;
+  font-size: var(--fs-xs);
   letter-spacing: 0.1em;
 }
-
-/* .label-eyebrow */
 .slot-head h4,
 .budget-total-lead,
 .pack-group h3,
 .emg-sub,
 .leg-heading span,
 .day-photo .day-caption .dow {
-  font-size: 11px;
+  font-size: var(--fs-sm);
   letter-spacing: 0.14em;
 }
-
-/* .label-button */
 .exp-submit,
 .cam-recipe-submit,
 .doc-add-btn,
 .stamp-add-btn,
 .cam-seg-btn {
-  font-size: 12px;
+  font-size: var(--fs-md);
   letter-spacing: 0.05em;
 }
-
 .app {
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 calc(16px + env(safe-area-inset-right, 0px)) 0
     calc(16px + env(safe-area-inset-left, 0px));
 }
-
 .masthead {
   padding: calc(26px + var(--safe-top)) 4px 14px;
   text-align: center;
@@ -430,7 +387,7 @@ select {
 }
 .masthead .daterange {
   margin-top: var(--space-10);
-  font-size: 13px;
+  font-size: var(--fs-lg);
   color: var(--ink-faint);
 }
 .masthead .fx {
@@ -443,7 +400,7 @@ select {
   background: var(--paper-2);
   border: 1px solid var(--line);
   font-family: var(--f-mono);
-  font-size: 12px;
+  font-size: var(--fs-md);
   color: var(--ink-soft);
   letter-spacing: 0.02em;
 }
@@ -457,7 +414,6 @@ select {
 .masthead .fx .fx-item {
   white-space: nowrap;
 }
-
 .panel {
   display: none;
   padding-top: var(--space-6);
@@ -476,14 +432,12 @@ select {
     transform: none;
   }
 }
-
 .section-title {
   font-family: var(--f-display);
   font-size: 22px;
   font-weight: 600;
   margin: var(--space-18) var(--space-4) var(--space-12);
 }
-
 .leg-heading {
   display: flex;
   align-items: center;
@@ -505,7 +459,6 @@ select {
   color: var(--jade);
   white-space: nowrap;
 }
-
 .days-toolbar {
   display: flex;
   gap: var(--space-6);
@@ -548,7 +501,6 @@ select {
 [hidden] {
   display: none !important;
 }
-
 .cal-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -592,7 +544,7 @@ select {
 }
 .cal-cell.trip {
   cursor: pointer;
-  color: #fff;
+  color: var(--on-accent);
   border-color: transparent;
   background: var(--cc);
   box-shadow: var(--shadow);
@@ -603,13 +555,13 @@ select {
 }
 .cal-cell .cal-num {
   font-family: var(--f-display);
-  font-size: 16px;
+  font-size: var(--fs-3xl);
   font-weight: 600;
   line-height: 1;
 }
 .cal-cell .cal-code {
   font-family: var(--f-mono);
-  font-size: 9px;
+  font-size: var(--fs-2xs);
   letter-spacing: 0.08em;
   opacity: 0.95;
 }
@@ -651,7 +603,7 @@ select {
   align-items: center;
   gap: var(--space-6);
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--ink-soft);
 }
 .cal-key .dot {
@@ -663,7 +615,7 @@ select {
 .cal-hint {
   margin: var(--space-12) var(--space-4) 0;
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--ink-faint);
 }
 .day.just-opened .day-face {
@@ -680,7 +632,6 @@ select {
     box-shadow: var(--shadow);
   }
 }
-
 .day {
   perspective: 1600px;
   margin-bottom: var(--space-18);
@@ -698,7 +649,6 @@ select {
 .day.flipped .day-inner {
   transform: rotateY(180deg);
 }
-
 .day-face {
   position: relative;
   backface-visibility: hidden;
@@ -724,7 +674,6 @@ select {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
-
 .day-inner > .day-face,
 .day-back {
   transition: opacity 0s linear 0.3s;
@@ -738,7 +687,6 @@ select {
   opacity: 1;
   pointer-events: auto;
 }
-
 .day-photo {
   position: relative;
   height: 148px;
@@ -762,9 +710,9 @@ select {
   right: 14px;
   font-family: var(--f-mono);
   font-weight: 600;
-  font-size: 13px;
+  font-size: var(--fs-lg);
   letter-spacing: 0.15em;
-  color: #fff;
+  color: var(--on-accent);
   background: rgba(28, 26, 23, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.35);
   padding: var(--space-4) var(--space-10);
@@ -776,7 +724,7 @@ select {
   left: 16px;
   bottom: 12px;
   z-index: 2;
-  color: #fff;
+  color: var(--on-accent);
 }
 .day-photo .day-caption .dow {
   opacity: 0.9;
@@ -787,7 +735,6 @@ select {
   font-weight: 600;
   line-height: 1;
 }
-
 .wx {
   display: inline-flex;
   align-items: center;
@@ -797,9 +744,9 @@ select {
   border-radius: var(--radius-pill);
   background: rgba(255, 255, 255, 0.22);
   border: 1px solid rgba(255, 255, 255, 0.35);
-  color: #fff;
+  color: var(--on-accent);
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   letter-spacing: 0.02em;
   vertical-align: middle;
   backdrop-filter: blur(4px);
@@ -810,14 +757,13 @@ select {
   display: none;
 }
 .wx .wx-ic {
-  font-size: 13px;
+  font-size: var(--fs-lg);
   line-height: 1;
 }
 .wx .wx-t {
   font-weight: 600;
   letter-spacing: 0;
 }
-
 .day-head .wx {
   background: var(--paper-2);
   border-color: var(--line);
@@ -828,13 +774,11 @@ select {
   font-size: 10.5px;
 }
 .day-head .wx .wx-ic {
-  font-size: 12px;
+  font-size: var(--fs-md);
 }
-
 .wx[data-wx-kind="avg"] .wx-t::after {
   content: "";
 }
-
 .perf {
   position: relative;
   height: 0;
@@ -858,7 +802,6 @@ select {
 .perf::after {
   right: -24px;
 }
-
 .day-body {
   padding: var(--space-16) var(--space-16) var(--space-18);
 }
@@ -885,14 +828,14 @@ select {
 }
 .day-date-mini {
   display: none;
-  font-size: 11px;
+  font-size: var(--fs-sm);
   letter-spacing: 0.12em;
   color: var(--jade);
 }
 .day-focus h3,
 .back-header h3 {
   font-family: var(--f-display);
-  font-size: 15px;
+  font-size: var(--fs-2xl);
   font-weight: 600;
 }
 .holiday-badge {
@@ -901,11 +844,11 @@ select {
   gap: var(--space-3);
   margin-left: var(--space-7);
   vertical-align: middle;
-  border: 1px solid #9b6b1f;
+  border: 1px solid var(--ink-gold);
   border-radius: var(--radius-pill);
   padding: var(--space-1) var(--space-6);
   background: var(--gold-soft);
-  color: #9b6b1f;
+  color: var(--ink-gold);
   font-weight: 600;
   white-space: nowrap;
 }
@@ -916,11 +859,11 @@ select {
 .holiday-alert {
   margin: var(--space-12) 0 var(--space-14);
   padding: var(--space-9) var(--space-10);
-  border: 1px solid color-mix(in srgb, #9b6b1f 72%, var(--line));
+  border: 1px solid color-mix(in srgb, var(--ink-gold) 72%, var(--line));
   border-radius: var(--radius-xs);
   background: var(--gold-soft);
   color: var(--ink-soft);
-  font-size: 12px;
+  font-size: var(--fs-md);
   line-height: 1.4;
 }
 .holiday-alert strong,
@@ -928,8 +871,8 @@ select {
   display: block;
 }
 .holiday-alert strong {
-  color: #9b6b1f;
-  font-size: 12px;
+  color: var(--ink-gold);
+  font-size: var(--fs-md);
   font-weight: 600;
 }
 .holiday-alert strong svg {
@@ -940,7 +883,6 @@ select {
 .holiday-alert span {
   margin-top: var(--space-2);
 }
-
 .day-booking-banner {
   display: flex;
   align-items: flex-start;
@@ -951,10 +893,9 @@ select {
   border-radius: var(--radius-xs);
   background: var(--gold-soft);
   color: var(--ink-soft);
-  font-size: 12px;
+  font-size: var(--fs-md);
   line-height: 1.4;
 }
-
 .day-booking-icon {
   font-size: 18px;
   flex: 0 0 auto;
@@ -970,15 +911,13 @@ select {
   min-width: 0;
   flex: 1;
 }
-
 .day-booking-content strong {
   display: block;
-  color: #9b6b1f;
-  font-size: 12px;
+  color: var(--ink-gold);
+  font-size: var(--fs-md);
   font-weight: 600;
   margin-bottom: var(--space-2);
 }
-
 .day-booking-item {
   display: flex;
   align-items: center;
@@ -988,11 +927,11 @@ select {
   margin-top: var(--space-2);
   padding: var(--space-4) 0;
   border: none;
-  border-top: 1px solid color-mix(in srgb, #9b6b1f 18%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--ink-gold) 18%, transparent);
   background: none;
   text-align: left;
   font: inherit;
-  font-size: 13px;
+  font-size: var(--fs-lg);
   color: var(--ink);
   cursor: pointer;
 }
@@ -1001,12 +940,12 @@ select {
   padding-top: 0;
 }
 .day-booking-item:hover {
-  color: #9b6b1f;
+  color: var(--ink-gold);
 }
 .day-booking-go {
   flex: none;
   display: flex;
-  color: #9b6b1f;
+  color: var(--ink-gold);
   opacity: 0.7;
 }
 .day-booking-go svg {
@@ -1014,10 +953,9 @@ select {
   height: 15px;
   transform: rotate(-90deg);
 }
-
 .day-focus .city-tag {
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--jade);
   letter-spacing: 0.1em;
   white-space: nowrap;
@@ -1062,7 +1000,7 @@ select {
   margin-bottom: var(--space-2);
 }
 .day.collapsed .day-focus h3 {
-  font-size: 12px;
+  font-size: var(--fs-md);
   line-height: 1.2;
 }
 .day.collapsed .holiday-badge {
@@ -1233,18 +1171,17 @@ body.is-dragging-day {
 }
 .days-reorder-hint {
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--ink-faint);
   margin: var(--space-2) var(--space-4) var(--space-14);
   line-height: 1.4;
 }
 .flip-hint {
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--ink-faint);
   margin-bottom: var(--space-12);
 }
-
 .day-ring {
   flex: none;
   position: relative;
@@ -1282,12 +1219,12 @@ body.is-dragging-day {
   display: grid;
   place-items: center;
   font-family: var(--f-mono);
-  font-size: 10px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   color: var(--ink-soft);
 }
 .day-ring.is-complete .ring-num {
-  color: #fff;
+  color: var(--on-accent);
 }
 .day-ring.is-complete {
   background: var(--cc);
@@ -1304,7 +1241,7 @@ body.is-dragging-day {
   width: 15px;
   height: 15px;
   transform: none;
-  stroke: #fff;
+  stroke: var(--on-accent);
 }
 @keyframes ring-pop {
   0% {
@@ -1317,7 +1254,6 @@ body.is-dragging-day {
     transform: scale(1);
   }
 }
-
 .day-filters {
   display: flex;
   flex-direction: column;
@@ -1344,7 +1280,7 @@ body.is-dragging-day {
 }
 .chip-filter.active {
   background: var(--jade);
-  color: #fff;
+  color: var(--on-accent);
   box-shadow: var(--shadow-soft);
 }
 .jump-set {
@@ -1365,7 +1301,7 @@ body.is-dragging-day {
   cursor: pointer;
   padding: var(--space-6) var(--space-12);
   border-radius: var(--radius-pill);
-  font-size: 12px;
+  font-size: var(--fs-md);
   font-weight: 500;
   white-space: nowrap;
   transition: transform 0.12s ease, background-color 0.15s ease;
@@ -1380,28 +1316,92 @@ body.is-dragging-day {
   --cc: var(--seal);
 }
 .next-up {
-  margin: 0 var(--space-2) var(--space-14);
-  border: 1px solid color-mix(in srgb, var(--jade) 42%, var(--line));
-  border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--jade-soft) 62%, var(--card));
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: calc(100% - var(--space-24));
+  margin: var(--space-8) var(--space-8) var(--space-20) var(--space-20);
+  padding: var(--space-12) var(--space-16);
+  background: var(--card);
+  color: var(--ink);
+  border: 0;
+  border-radius: 0;
+  clip-path: none;
+  box-shadow: 0 calc(var(--space-4) * -1) var(--card),
+    0 calc(var(--space-8) * -1) var(--seal), var(--space-4) 0 var(--card),
+    var(--space-4) calc(var(--space-4) * -1) var(--seal),
+    var(--space-8) 0 var(--seal), 0 var(--space-4) var(--card),
+    0 var(--space-8) var(--seal), calc(var(--space-4) * -1) 0 var(--card),
+    calc(var(--space-4) * -1) var(--space-4) var(--seal),
+    calc(var(--space-8) * -1) 0 var(--seal),
+    calc(var(--space-4) * -1) calc(var(--space-4) * -1) var(--seal),
+    var(--space-4) var(--space-4) var(--seal);
+  font-family: var(--f-mono);
+}
+.next-up::after {
+  content: "";
+  display: block;
+  position: absolute;
+  box-sizing: border-box;
+  width: var(--space-4);
+  height: var(--space-4);
+  top: 40px;
+  left: calc(var(--space-8) * -1);
+  background: var(--card);
+  box-shadow: calc(var(--space-4) * -1) calc(var(--space-4) * -1) var(--card),
+    calc(var(--space-4) * -1) 0 var(--card),
+    calc(var(--space-8) * -1) 0 var(--card),
+    0 calc(var(--space-8) * -1) var(--card),
+    calc(var(--space-4) * -1) var(--space-4) var(--seal),
+    calc(var(--space-8) * -1) var(--space-4) var(--seal),
+    calc(var(--space-12) * -1) var(--space-4) var(--seal),
+    calc(var(--space-12) * -1) 0 var(--seal),
+    calc(var(--space-8) * -1) calc(var(--space-4) * -1) var(--seal),
+    calc(var(--space-4) * -1) calc(var(--space-8) * -1) var(--seal),
+    0 calc(var(--space-4) * -1) var(--card);
+}
+.next-up::before {
+  content: none;
 }
 .next-up-label {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  padding: var(--space-8) var(--space-11) var(--space-3);
-  font-weight: 600;
-  color: var(--jade);
+  padding: var(--space-2) var(--space-4) var(--space-8);
+  font-family: var(--f-mono);
+  font-weight: 800;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--ink);
 }
 .next-up-label span {
-  color: var(--ink-faint);
+  color: var(--seal);
 }
 .next-up-main {
   display: flex;
-  width: 100%;
   align-items: center;
-  gap: var(--space-9);
-  padding: var(--space-4) var(--space-11) var(--space-9);
+  width: 100%;
+  gap: var(--space-12);
+  padding: 0 var(--space-4) var(--space-4);
   text-align: left;
+  color: var(--ink);
+  transition: transform 100ms ease;
+}
+.next-up-main > span:first-child {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  font-size: 24px;
+  line-height: 1;
+}
+.next-up-main > span:nth-child(2) {
+  min-width: 0;
 }
 .next-up-main strong,
 .next-up-main small {
@@ -1409,34 +1409,85 @@ body.is-dragging-day {
 }
 .next-up-main strong {
   font-family: var(--f-display);
-  font-size: 16px;
-  font-weight: 600;
+  font-size: var(--fs-4xl);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--ink);
 }
 .next-up-main small {
-  margin-top: var(--space-1);
+  margin-top: var(--space-4);
+  font-family: var(--f-mono);
+  font-size: var(--fs-sm);
+  line-height: 1.3;
   color: var(--ink-soft);
-  font-size: 12px;
 }
 .next-up-chevron {
+  display: grid;
+  place-items: center;
+  flex: none;
   margin-left: auto;
-  color: var(--jade);
+  color: var(--seal);
 }
 .next-up-chevron svg {
   width: 17px;
   height: 17px;
   transform: rotate(-90deg);
 }
+.next-up-main:hover {
+  transform: translateY(-1px);
+}
+.next-up-main:active {
+  transform: translateY(1px);
+}
+@media (max-width: 600px) {
+  .next-up {
+    width: calc(100% - var(--space-20));
+    margin-left: var(--space-18);
+    padding: var(--space-9) var(--space-12);
+  }
+  .next-up::after {
+    width: var(--space-3);
+    height: var(--space-3);
+    top: 33px;
+    left: calc(var(--space-6) * -1);
+    background: var(--card);
+    box-shadow: calc(var(--space-3) * -1) calc(var(--space-3) * -1) var(--card),
+      calc(var(--space-3) * -1) 0 var(--card),
+      calc(var(--space-6) * -1) 0 var(--card),
+      0 calc(var(--space-6) * -1) var(--card),
+      calc(var(--space-3) * -1) var(--space-3) var(--seal),
+      calc(var(--space-6) * -1) var(--space-3) var(--seal),
+      calc(var(--space-9) * -1) var(--space-3) var(--seal),
+      calc(var(--space-9) * -1) 0 var(--seal),
+      calc(var(--space-6) * -1) calc(var(--space-3) * -1) var(--seal),
+      calc(var(--space-3) * -1) calc(var(--space-6) * -1) var(--seal),
+      0 calc(var(--space-3) * -1) var(--card);
+  }
+  .next-up-main {
+    gap: var(--space-9);
+  }
+  .next-up-main > span:first-child {
+    width: 30px;
+    height: 30px;
+    font-size: 21px;
+  }
+  .next-up-main strong {
+    font-size: var(--fs-2xl);
+  }
+  .next-up-main small {
+    font-size: var(--fs-xs);
+  }
+}
 .filtered-out {
   display: none !important;
 }
-
 .slot-emoji {
   width: 24px;
   height: 24px;
   flex: none;
   display: grid;
   place-items: center;
-  font-size: 13px;
+  font-size: var(--fs-lg);
   line-height: 1;
   border-radius: var(--radius-xs);
   background: var(--gold-soft);
@@ -1453,7 +1504,7 @@ body.is-dragging-day {
 .slot-tally {
   margin-left: auto;
   font-family: var(--f-mono);
-  font-size: 10px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--ink-faint);
@@ -1468,9 +1519,9 @@ body.is-dragging-day {
   gap: var(--space-3);
   flex: none;
   font-family: var(--f-mono);
-  font-size: 10px;
+  font-size: var(--fs-xs);
   font-weight: 600;
-  color: #9b6b1f;
+  color: var(--ink-gold);
 }
 .slot-must svg,
 .slot-priority svg {
@@ -1504,7 +1555,7 @@ body.is-dragging-day {
   gap: var(--space-5);
   margin: var(--space-2) 0 var(--space-6);
   font-weight: 600;
-  color: #9b6b1f;
+  color: var(--ink-gold);
 }
 .day:not(.collapsed):not(.flipped) .day-head {
   position: sticky;
@@ -1516,7 +1567,6 @@ body.is-dragging-day {
   padding: var(--space-6);
   border-radius: var(--radius-ml);
 }
-
 .todo.just-checked .check {
   animation: check-pop 0.45s cubic-bezier(0.2, 1.5, 0.4, 1);
 }
@@ -1542,7 +1592,6 @@ body.is-dragging-day {
     opacity: 1;
   }
 }
-
 .confetti-layer {
   position: fixed;
   inset: 0;
@@ -1557,7 +1606,6 @@ body.is-dragging-day {
   border-radius: 2px;
   will-change: transform, opacity;
 }
-
 .day-complete-flash {
   position: absolute;
   inset: 0;
@@ -1580,7 +1628,7 @@ body.is-dragging-day {
   padding: var(--space-12) var(--space-22);
   border-radius: var(--radius-pill);
   background: linear-gradient(135deg, var(--jade), var(--seal));
-  color: #fff;
+  color: var(--on-accent);
   font-family: var(--f-display);
   font-weight: 600;
   font-size: 19px;
@@ -1625,7 +1673,6 @@ body.is-dragging-day {
     animation: none;
   }
 }
-
 .sun-times {
   display: flex;
   gap: var(--space-14);
@@ -1643,7 +1690,6 @@ body.is-dragging-day {
   align-items: center;
   gap: var(--space-5);
 }
-
 .today-banner {
   display: flex;
   align-items: center;
@@ -1669,10 +1715,10 @@ body.is-dragging-day {
 .today-tag {
   flex-shrink: 0;
   font-family: var(--f-mono);
-  font-size: 10px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 0.14em;
-  color: #fff;
+  color: var(--on-accent);
   background: var(--jade);
   padding: var(--space-5) var(--space-9);
   border-radius: var(--radius-xs);
@@ -1694,7 +1740,7 @@ body.is-dragging-day {
 }
 .today-banner.is-before .today-tag,
 .today-banner.is-after .today-tag {
-  font-size: 16px;
+  font-size: var(--fs-3xl);
 }
 .today-banner.is-before .today-main,
 .today-banner.is-after .today-main {
@@ -1704,7 +1750,7 @@ body.is-dragging-day {
 }
 .today-banner.is-before .today-line,
 .today-banner.is-after .today-line {
-  font-size: 13px;
+  font-size: var(--fs-lg);
   letter-spacing: 0.02em;
   color: var(--ink-soft);
   text-transform: none;
@@ -1715,7 +1761,7 @@ body.is-dragging-day {
 }
 .today-banner.is-before .today-focus,
 .today-banner.is-after .today-focus {
-  font-size: 12px;
+  font-size: var(--fs-md);
   font-weight: 500;
   color: var(--ink-faint);
   letter-spacing: 0.01em;
@@ -1729,7 +1775,7 @@ body.is-dragging-day {
 }
 .today-line {
   font-family: var(--f-mono);
-  font-size: 12px;
+  font-size: var(--fs-md);
   letter-spacing: 0.04em;
   color: var(--ink);
   display: inline-flex;
@@ -1737,7 +1783,7 @@ body.is-dragging-day {
   gap: var(--space-2);
 }
 .today-focus {
-  font-size: 14px;
+  font-size: var(--fs-xl);
   font-weight: 600;
   color: var(--ink);
   white-space: nowrap;
@@ -1753,7 +1799,6 @@ body.is-dragging-day {
   border-color: var(--line);
   color: var(--ink);
 }
-
 .hotel-bar {
   display: flex;
   align-items: center;
@@ -1782,7 +1827,7 @@ body.is-dragging-day {
   place-items: center;
   border-radius: var(--radius-sm);
   background: var(--jade);
-  color: #fff;
+  color: var(--on-accent);
 }
 .hotel-bar.is-empty .hotel-icon {
   background: var(--line-strong);
@@ -1792,7 +1837,7 @@ body.is-dragging-day {
   height: 17px;
 }
 .hotel-name {
-  font-size: 14px;
+  font-size: var(--fs-xl);
   font-weight: 600;
   line-height: 1.2;
   color: var(--ink);
@@ -1817,7 +1862,7 @@ body.is-dragging-day {
   align-items: center;
   gap: var(--space-4);
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--ink-soft);
   margin-top: var(--space-3);
 }
@@ -1849,7 +1894,6 @@ body.is-dragging-day {
 .hotel.open .hotel-bar {
   border-radius: 12px 12px 0 0;
 }
-
 .hotel-card {
   margin-bottom: var(--space-16);
 }
@@ -1863,18 +1907,17 @@ body.is-dragging-day {
 .hc-city,
 .tool-title {
   font-family: var(--f-display);
-  font-size: 17px;
+  font-size: var(--fs-4xl);
   font-weight: 600;
   color: var(--ink);
 }
 .hc-dates {
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   letter-spacing: 0.06em;
   color: var(--jade);
   white-space: nowrap;
 }
-
 .slot {
   margin-top: var(--space-14);
 }
@@ -1899,7 +1942,7 @@ body.is-dragging-day {
   display: block;
   margin-top: var(--space-1);
   font-family: var(--f-mono);
-  font-size: 10px;
+  font-size: var(--fs-xs);
   color: var(--ink-faint);
 }
 .slot-chevron {
@@ -1943,7 +1986,7 @@ body.is-dragging-day {
   margin-left: auto;
   color: var(--ink-faint);
   font-family: var(--f-mono);
-  font-size: 10px;
+  font-size: var(--fs-xs);
 }
 .slot-area span {
   flex: none;
@@ -1970,7 +2013,6 @@ body.is-dragging-day {
   outline: none;
   border-bottom-color: var(--jade);
 }
-
 .todo {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
@@ -2014,7 +2056,7 @@ body.is-dragging-day {
 .todo.done .check svg {
   opacity: 1;
   transform: scale(1);
-  stroke: #fff;
+  stroke: var(--on-accent);
 }
 .must-do-toggle {
   flex: none;
@@ -2048,7 +2090,7 @@ body.is-dragging-day {
 }
 .todo-name {
   flex: 1;
-  font-size: 15px;
+  font-size: var(--fs-2xl);
   min-width: 0;
   display: flex;
   flex-wrap: wrap;
@@ -2075,7 +2117,7 @@ body.is-dragging-day {
   background: color-mix(in srgb, var(--seal) 11%, transparent);
 }
 .place-type-shop {
-  color: #9b6b1f;
+  color: var(--ink-gold);
   background: color-mix(in srgb, var(--gold) 15%, transparent);
 }
 .place-type-sight,
@@ -2084,8 +2126,8 @@ body.is-dragging-day {
   background: var(--jade-soft);
 }
 .place-type-travel {
-  color: #4f7d78;
-  background: color-mix(in srgb, #4f7d78 14%, transparent);
+  color: var(--ink-teal);
+  background: color-mix(in srgb, var(--ink-teal) 14%, transparent);
 }
 .place-type-food {
   color: var(--seal-dark);
@@ -2119,7 +2161,7 @@ body.is-dragging-day {
 }
 .todo-meta {
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--jade);
   white-space: nowrap;
 }
@@ -2131,7 +2173,7 @@ body.is-dragging-day {
   margin-top: var(--space-14);
   padding: var(--space-6) var(--space-10);
   color: var(--ink-soft);
-  font-size: 12px;
+  font-size: var(--fs-md);
   font-weight: 600;
 }
 .day-food-action:hover,
@@ -2159,7 +2201,6 @@ body.is-dragging-day {
 .todo.open .todo-expand svg {
   transform: rotate(180deg);
 }
-
 .todo-rating {
   display: none;
   padding: var(--space-2) var(--space-12) var(--space-10) var(--space-44);
@@ -2215,7 +2256,6 @@ body.is-dragging-day {
   outline: none;
   border-color: var(--jade);
 }
-
 .todo-detail {
   display: none;
   padding: var(--space-4) var(--space-12) var(--space-12) var(--space-44);
@@ -2245,7 +2285,7 @@ body.is-dragging-day {
     display: block;
     max-width: 100%;
     min-height: 44px;
-    font-size: 16px;
+    font-size: var(--fs-3xl);
     line-height: 1.2;
     -webkit-appearance: none;
     appearance: none;
@@ -2296,7 +2336,7 @@ body.is-dragging-day {
 }
 .link-danger {
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--seal);
   letter-spacing: 0.05em;
 }
@@ -2305,7 +2345,7 @@ body.is-dragging-day {
   align-items: center;
   gap: var(--space-6);
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   letter-spacing: 0.05em;
   color: var(--jade);
   padding: var(--space-6) var(--space-10);
@@ -2323,7 +2363,6 @@ body.is-dragging-day {
   border-color: var(--jade);
   background: var(--paper-2);
 }
-
 .add-place {
   display: flex;
   align-items: center;
@@ -2333,7 +2372,7 @@ body.is-dragging-day {
   border: 1px dashed var(--line-strong);
   border-radius: var(--radius-md);
   color: var(--ink-soft);
-  font-size: 14px;
+  font-size: var(--fs-xl);
   background: transparent;
   transition: 0.15s;
 }
@@ -2361,7 +2400,7 @@ body.is-dragging-day {
   background: var(--paper);
   color: var(--ink);
   font: inherit;
-  font-size: 14px;
+  font-size: var(--fs-xl);
 }
 .add-editor-save,
 .add-editor-cancel {
@@ -2371,12 +2410,12 @@ body.is-dragging-day {
   background: var(--paper);
   color: var(--ink);
   font: inherit;
-  font-size: 13px;
+  font-size: var(--fs-lg);
   cursor: pointer;
 }
 .add-editor-save {
   background: var(--jade);
-  color: #fff;
+  color: var(--on-accent);
   border-color: var(--jade);
   font-weight: 600;
 }
@@ -2394,7 +2433,6 @@ body.is-dragging-day {
   color: var(--seal);
   border-color: var(--seal);
 }
-
 .day-back .day-face {
   height: 100%;
   display: flex;
@@ -2409,7 +2447,7 @@ body.is-dragging-day {
 }
 .back-header .city-tag {
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--seal);
   letter-spacing: 0.1em;
 }
@@ -2418,12 +2456,11 @@ body.is-dragging-day {
   overflow-y: auto;
   flex: 1;
 }
-
 .flip-btn {
   display: inline-flex;
   align-items: center;
   gap: var(--space-6);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   letter-spacing: 0.12em;
   color: var(--seal);
   border: 1px solid var(--line-strong);
@@ -2435,7 +2472,6 @@ body.is-dragging-day {
 .shop-group {
   margin-bottom: var(--space-22);
 }
-
 .shop-city {
   margin-bottom: var(--space-22);
   padding: var(--space-4) var(--space-12) var(--space-12);
@@ -2452,11 +2488,11 @@ body.is-dragging-day {
   color: var(--cc);
 }
 .shop-city-name .shop-flag {
-  font-size: 16px;
+  font-size: var(--fs-3xl);
 }
 .shop-empty {
   color: var(--ink-faint);
-  font-size: 13px;
+  font-size: var(--fs-lg);
   margin: var(--space-4) var(--space-2) var(--space-10);
 }
 .shop-cat {
@@ -2466,7 +2502,7 @@ body.is-dragging-day {
   display: flex;
   align-items: center;
   gap: var(--space-6);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -2474,13 +2510,13 @@ body.is-dragging-day {
   margin: 0 var(--space-2) var(--space-6);
 }
 .shop-cat-emoji {
-  font-size: 14px;
+  font-size: var(--fs-xl);
 }
 .shop-chip {
   display: inline-flex;
   align-items: center;
   gap: var(--space-3);
-  font-size: 10px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 0.02em;
   padding: var(--space-3) var(--space-7);
@@ -2538,7 +2574,7 @@ body.is-dragging-day {
 }
 .shop-cat-picker > label {
   display: block;
-  font-size: 11px;
+  font-size: var(--fs-sm);
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -2552,7 +2588,7 @@ body.is-dragging-day {
   gap: var(--space-6);
 }
 .cat-opt {
-  font-size: 12px;
+  font-size: var(--fs-md);
   padding: var(--space-5) var(--space-9);
   border-radius: var(--radius-pill);
   border: 1px solid var(--line);
@@ -2567,7 +2603,6 @@ body.is-dragging-day {
   background: color-mix(in srgb, var(--cc) 12%, transparent);
   font-weight: 600;
 }
-
 .flight {
   margin-bottom: var(--space-14);
   overflow: hidden;
@@ -2588,7 +2623,7 @@ body.is-dragging-day {
   letter-spacing: 0.04em;
 }
 .flight-city .name {
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--ink-faint);
   letter-spacing: 0.05em;
 }
@@ -2655,9 +2690,8 @@ body.is-dragging-day {
   padding: var(--space-6) var(--space-8);
   background: var(--paper-2);
   font-family: var(--f-mono);
-  font-size: 13px;
+  font-size: var(--fs-lg);
 }
-
 .tip {
   display: flex;
   gap: var(--space-12);
@@ -2676,12 +2710,12 @@ body.is-dragging-day {
 }
 .tip h3 {
   font-family: var(--f-display);
-  font-size: 16px;
+  font-size: var(--fs-3xl);
   font-weight: 600;
   margin-bottom: var(--space-3);
 }
 .tip p {
-  font-size: 14px;
+  font-size: var(--fs-xl);
   color: var(--ink-soft);
 }
 .tip-link {
@@ -2690,7 +2724,7 @@ body.is-dragging-day {
   gap: var(--space-6);
   margin-top: var(--space-8);
   font-family: var(--f-mono);
-  font-size: 12px;
+  font-size: var(--fs-md);
   font-weight: 500;
   letter-spacing: 0.02em;
   color: var(--seal);
@@ -2703,7 +2737,7 @@ body.is-dragging-day {
 }
 .tip-link::after {
   content: "↗";
-  font-size: 13px;
+  font-size: var(--fs-lg);
 }
 .tip-link:hover {
   color: var(--seal-dark);
@@ -2712,7 +2746,6 @@ body.is-dragging-day {
 .tip-link:active {
   transform: scale(0.97);
 }
-
 .booking {
   position: relative;
   padding-left: var(--space-4);
@@ -2723,7 +2756,7 @@ body.is-dragging-day {
   align-items: center;
   gap: var(--space-8);
   margin: var(--space-18) 0 var(--space-8);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   letter-spacing: 0.12em;
   color: var(--ink-soft);
 }
@@ -2738,7 +2771,7 @@ body.is-dragging-day {
   border-radius: var(--radius-circle);
   background: var(--line);
   color: var(--ink);
-  font-size: 10px;
+  font-size: var(--fs-xs);
 }
 .booking-section-head.confirmed-head {
   color: var(--jade);
@@ -2750,7 +2783,7 @@ body.is-dragging-day {
   margin-top: var(--space-2);
 }
 .booking-name {
-  font-size: 15px;
+  font-size: var(--fs-2xl);
   font-weight: 600;
   line-height: 1.25;
 }
@@ -2766,7 +2799,7 @@ body.is-dragging-day {
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  font-size: 12px;
+  font-size: var(--fs-md);
   color: var(--ink-faint);
   margin-top: var(--space-3);
 }
@@ -2787,13 +2820,13 @@ body.is-dragging-day {
 }
 .booking-when strong {
   display: block;
-  font-size: 13px;
+  font-size: var(--fs-lg);
   font-weight: 600;
 }
 .booking-when .cd {
   display: block;
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--ink-soft);
   margin-top: var(--space-1);
 }
@@ -2805,7 +2838,7 @@ body.is-dragging-day {
   background: var(--line-strong);
 }
 .booking-note {
-  font-size: 13px;
+  font-size: var(--fs-lg);
   color: var(--ink-soft);
   margin: var(--space-8) var(--space-12) var(--space-12) var(--space-44);
   line-height: 1.45;
@@ -2838,7 +2871,7 @@ body.is-dragging-day {
   display: flex;
   align-items: center;
   gap: var(--space-6);
-  font-size: 12px;
+  font-size: var(--fs-md);
   color: var(--ink);
 }
 .booking-confirmed-detail + .booking-confirmed-detail {
@@ -2855,10 +2888,9 @@ body.is-dragging-day {
   padding-top: var(--space-5);
   border-top: 1px dashed color-mix(in srgb, var(--jade) 45%, transparent);
   font-family: var(--f-mono);
-  font-size: 10px;
+  font-size: var(--fs-xs);
   color: var(--ink-soft);
 }
-
 .booking.urg-now {
   border-left-color: var(--seal);
 }
@@ -2909,7 +2941,6 @@ body.is-dragging-day {
     box-shadow: 0 0 0 0 rgba(178, 58, 52, 0);
   }
 }
-
 .tabbar {
   position: fixed;
   left: 0;
@@ -2996,7 +3027,6 @@ body.is-dragging-day {
     animation: none;
   }
 }
-
 [data-theme="dark"] .tabbar .inner {
   background: rgba(16, 23, 16, 0.9);
 }
@@ -3013,12 +3043,11 @@ body.is-dragging-day {
 [data-theme="dark"] .tab.active::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='6' viewBox='0 0 28 6'%3E%3Cpath d='M1 3.5 Q 4.25 0.5 7.5 3.5 T 14 3.5 T 20.5 3.5 T 27 3.5' fill='none' stroke='%23ff3572' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
 }
-
 .footer-note {
   text-align: center;
   padding: var(--space-8) 0 var(--space-4);
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--ink-faint);
 }
 .data-tools {
@@ -3031,25 +3060,23 @@ body.is-dragging-day {
   min-height: 38px;
   color: var(--ink-soft);
   font-family: var(--f-mono);
-  font-size: 10px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 0.03em;
 }
 .reset-btn {
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--seal);
   text-decoration: underline;
   letter-spacing: 0.05em;
 }
-
 .empty {
-  font-size: 13px;
+  font-size: var(--fs-lg);
   color: var(--ink-faint);
   padding: var(--space-6) var(--space-2);
   font-style: italic;
 }
-
 @media (min-width: 620px) {
   .app {
     padding: 0 var(--space-24);
@@ -3119,7 +3146,6 @@ body.is-dragging-day {
   width: 19px;
   height: 19px;
 }
-
 .pack-progress {
   margin-bottom: var(--space-16);
 }
@@ -3138,7 +3164,7 @@ body.is-dragging-day {
 .pack-count {
   margin-top: var(--space-6);
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--ink-faint);
   text-align: right;
 }
@@ -3171,7 +3197,7 @@ body.is-dragging-day {
 .pack-item.done .check {
   background: var(--jade);
   border-color: var(--jade);
-  color: #fff;
+  color: var(--on-accent);
 }
 .pack-label {
   flex: 1;
@@ -3201,7 +3227,7 @@ body.is-dragging-day {
   border-radius: var(--radius-sm);
   background: var(--paper-2);
   font-family: var(--f-body);
-  font-size: 14px;
+  font-size: var(--fs-xl);
   color: var(--ink);
 }
 .pack-add button {
@@ -3209,7 +3235,7 @@ body.is-dragging-day {
   width: 40px;
   border-radius: var(--radius-sm);
   background: var(--seal);
-  color: #fff;
+  color: var(--on-accent);
   display: grid;
   place-items: center;
 }
@@ -3217,12 +3243,11 @@ body.is-dragging-day {
   display: block;
   margin: var(--space-4) auto 0;
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   letter-spacing: 0.04em;
   color: var(--seal);
   text-decoration: underline;
 }
-
 .budget-total {
   text-align: center;
   padding: var(--space-18) var(--space-16);
@@ -3241,7 +3266,7 @@ body.is-dragging-day {
 }
 .budget-total-sub {
   font-family: var(--f-mono);
-  font-size: 12px;
+  font-size: var(--fs-md);
   color: var(--ink-soft);
 }
 .exp-add {
@@ -3264,7 +3289,7 @@ body.is-dragging-day {
 .exp-add select {
   padding: var(--space-10) var(--space-12);
   font-family: var(--f-body);
-  font-size: 15px;
+  font-size: var(--fs-2xl);
   color: var(--ink);
 }
 .exp-ccy {
@@ -3282,7 +3307,7 @@ body.is-dragging-day {
   padding: var(--space-11);
   border-radius: var(--radius-sm);
   background: var(--seal);
-  color: #fff;
+  color: var(--on-accent);
 }
 .exp-list,
 .phrase-list,
@@ -3318,12 +3343,12 @@ body.is-dragging-day {
 }
 .exp-native {
   font-family: var(--f-mono);
-  font-size: 14px;
+  font-size: var(--fs-xl);
   color: var(--ink);
 }
 .exp-gbp {
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: var(--fs-sm);
   color: var(--ink-faint);
 }
 .emg-card {
@@ -3331,7 +3356,7 @@ body.is-dragging-day {
   margin-bottom: var(--space-12);
 }
 .emg-card h3 {
-  font-size: 15px;
+  font-size: var(--fs-2xl);
   margin-bottom: var(--space-10);
   color: var(--ink);
 }
@@ -3339,7 +3364,7 @@ body.is-dragging-day {
   flex: 1;
   text-align: center;
   background: var(--seal);
-  color: #fff;
+  color: var(--on-accent);
   border-radius: var(--radius-md);
   padding: var(--space-10) var(--space-6);
   display: flex;
@@ -3414,7 +3439,7 @@ body.is-dragging-day {
 .phrase-tab.active {
   background: var(--seal);
   border-color: var(--seal);
-  color: #fff;
+  color: var(--on-accent);
 }
 .phrase-hint {
   font-family: var(--f-mono);
@@ -3446,7 +3471,7 @@ body.is-dragging-day {
 }
 .phrase-speak.speaking {
   background: var(--seal);
-  color: #fff;
+  color: var(--on-accent);
   animation: speak-pulse 0.8s ease-in-out infinite;
 }
 @keyframes speak-pulse {
@@ -3475,7 +3500,6 @@ body.is-dragging-day {
   font-size: 12.5px;
   color: var(--jade);
 }
-
 .doc-add-btn {
   display: flex;
   align-items: center;
@@ -3514,7 +3538,7 @@ body.is-dragging-day {
   flex-direction: column;
 }
 .doc-name {
-  font-size: 14px;
+  font-size: var(--fs-xl);
   color: var(--ink);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3543,7 +3567,6 @@ body.is-dragging-day {
 .stamp-add-btn:active {
   transform: scale(0.98);
 }
-
 .stamp-empty {
   display: flex;
   flex-direction: column;
@@ -3575,7 +3598,6 @@ body.is-dragging-day {
   max-width: 30ch;
   line-height: 1.5;
 }
-
 .stamp-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -3592,7 +3614,6 @@ body.is-dragging-day {
   border-radius: var(--radius-ml);
   box-shadow: var(--shadow-soft);
 }
-
 .stamp-del {
   position: absolute;
   top: 7px;
@@ -3620,7 +3641,6 @@ body.is-dragging-day {
 .stamp-del:active {
   transform: scale(0.9);
 }
-
 .stamp-frame {
   position: relative;
   display: block;
@@ -3677,7 +3697,6 @@ body.is-dragging-day {
   object-fit: cover;
   display: block;
 }
-
 .stamp-caption {
   display: flex;
   flex-direction: column;
@@ -3686,7 +3705,7 @@ body.is-dragging-day {
 .stamp-title {
   width: 100%;
   font-family: var(--f-display);
-  font-size: 15px;
+  font-size: var(--fs-2xl);
   font-weight: 600;
   color: var(--ink);
   background: transparent;
@@ -3713,7 +3732,7 @@ body.is-dragging-day {
   flex: 1;
   min-width: 0;
   font-family: var(--f-mono);
-  font-size: 12px;
+  font-size: var(--fs-md);
   color: var(--ink-soft);
   background: transparent;
   border: 0;
@@ -3735,10 +3754,6 @@ body.is-dragging-day {
     transition: none;
   }
 }
-
-/* =====================================================================
-   CAMERA — Fujifilm X100VI scene settings & film recipes
-   ===================================================================== */
 .cam-seg {
   display: flex;
   gap: var(--space-4);
@@ -3757,11 +3772,9 @@ body.is-dragging-day {
 }
 .cam-seg-btn.on {
   background: var(--seal);
-  color: #fff;
+  color: var(--on-accent);
   box-shadow: var(--shadow-soft);
 }
-
-/* Scene chips */
 .cam-chip-row {
   display: flex;
   flex-wrap: wrap;
@@ -3791,11 +3804,9 @@ body.is-dragging-day {
   color: var(--ink);
 }
 .cam-chip-emoji {
-  font-size: 15px;
+  font-size: var(--fs-2xl);
   line-height: 1;
 }
-
-/* Scene detail card */
 .cam-detail {
   background: var(--card);
   border: 1px solid var(--line);
@@ -3832,8 +3843,6 @@ body.is-dragging-day {
   color: var(--ink-faint);
   line-height: 1.4;
 }
-
-/* Spec sheet (shared by scenes + seed recipes) */
 .cam-specs {
   display: flex;
   flex-direction: column;
@@ -3851,18 +3860,17 @@ body.is-dragging-day {
 }
 .cam-spec-k,
 .crx-field-label {
-  font-size: 13px;
+  font-size: var(--fs-lg);
   color: var(--ink-faint);
   flex: 0 0 auto;
 }
 .cam-spec-v {
   font-family: var(--f-mono);
-  font-size: 13px;
+  font-size: var(--fs-lg);
   font-weight: 500;
   color: var(--ink);
   text-align: right;
 }
-
 .cam-tip {
   display: flex;
   align-items: flex-start;
@@ -3881,12 +3889,10 @@ body.is-dragging-day {
   color: var(--jade);
 }
 .cam-tip span {
-  font-size: 13px;
+  font-size: var(--fs-lg);
   line-height: 1.45;
   color: var(--ink-soft);
 }
-
-/* Recipe add form */
 .cam-recipe-add {
   display: flex;
   flex-direction: column;
@@ -3901,7 +3907,7 @@ body.is-dragging-day {
 .cam-recipe-add textarea {
   padding: var(--space-10) var(--space-12);
   font-family: var(--f-body);
-  font-size: 15px;
+  font-size: var(--fs-2xl);
   color: var(--ink);
   width: 100%;
   resize: vertical;
@@ -3912,9 +3918,6 @@ body.is-dragging-day {
   outline: none;
   border-color: var(--seal);
 }
-
-/* Structured settings: one labelled dropdown per in-camera setting, laid
-   out like the seeded spec sheets. */
 .crx-settings {
   display: flex;
   flex-direction: column;
@@ -3939,11 +3942,11 @@ body.is-dragging-day {
   border-radius: var(--radius-sm);
   background: var(--paper-2);
   font-family: var(--f-mono);
-  font-size: 13px;
+  font-size: var(--fs-lg);
   color: var(--ink);
   text-align: right;
   text-align-last: right;
-} /* Example-photo slot in the add form */
+}
 .crx-photo {
   display: block;
 }
@@ -3987,11 +3990,9 @@ body.is-dragging-day {
   font-weight: 500;
 }
 .crx-photo-btn.danger {
-  color: #c1524f;
-  border-color: color-mix(in srgb, #c1524f 30%, var(--line));
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 30%, var(--line));
 }
-
-/* Example photo on a saved recipe card */
 .cam-recipe-photo {
   display: block;
   width: 100%;
@@ -4042,11 +4043,11 @@ body.is-dragging-day {
   color: var(--ink-faint);
 }
 .cam-recipe-del:active {
-  color: #c1524f;
+  color: var(--danger);
 }
 .cam-recipe-line {
   font-family: var(--f-mono);
-  font-size: 12px;
+  font-size: var(--fs-md);
   color: var(--ink-soft);
   padding: var(--space-5) var(--space-9);
   border-radius: var(--radius-xs);
@@ -4057,7 +4058,7 @@ body.is-dragging-day {
   margin-top: var(--space-11);
   padding-top: var(--space-11);
   border-top: 1px dashed var(--line);
-  font-size: 13px;
+  font-size: var(--fs-lg);
   line-height: 1.45;
   color: var(--ink-faint);
 }
