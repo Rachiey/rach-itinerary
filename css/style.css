@@ -447,7 +447,7 @@ select {
   margin: 12px 0 8px;
   font-family: var(--f-title);
   font-weight: normal;
-  font-size: clamp(36px, 5.6vw, 32px);
+  font-size: clamp(30px, 5.6vw, 32px);
   line-height: 1.5;
   letter-spacing: -0.025em;
   color: var(--title-ink);
