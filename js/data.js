@@ -535,6 +535,7 @@ const DAYS = [
       place("d14-a3", "Gentle Monster"),
       place("d14-a4", "PAMM"),
       place("d14-a5", "Moosh Squishy"),
+      place ("d14-a6", "MELLOJOY Popup")
     ],
     evening: [
       place("d14-e1", "Lost Bar", { note: "Optional." }),
@@ -558,7 +559,7 @@ const DAYS = [
   {
     id: "day-15", date: "2026-10-12", city: "tokyo",
     focus: "Gotokuji, Shimokitazawa & Kichijoji",
-    photo: "assets/photos/tokyo.webp",
+    photo: "assets/photos/gotokujitemple.webp",
     holiday: { name: "Japan Sports Day", note: "Japanese national holiday. Expect busier trains, family attractions, shops, and restaurants; check any venue's holiday hours." },
     areas: {
       morning: "Gotokuji",
@@ -583,36 +584,37 @@ const DAYS = [
   },
   {
     id: "day-16", date: "2026-10-13", city: "tokyo",
-    focus: "Gotoku-ji · Shimokitazawa · Shinjuku",
-    photo: "assets/photos/gotokujitemple.webp",
+    focus: "Ikebukuro + Hachioji",
+    photo: "assets/photos/tokyo.webp",
     morning: [
-      place("d16-m1", "Gotoku-ji (lucky cat temple)", { open: "06:00", close: "17:00", note: "The maneki-neko temple — rows of little waving cats." }),
+      place("d16-m1", "Ikebukuo - Sunshine City"),
     ],
     afternoon: [
-      place("d16-a1", "Shimokitazawa — vintage shops & cafés"),
+      place("d16-a1", "Hachioji"),
+      place("d16-a2", "Eco Town Hachioji (Book Off Hub)")
     ],
     evening: [
-      place("d16-e1", "Shinjuku (optional) — Omoide Yokocho & Golden Gai", { note: "Tack on if you've still got energy." }),
+      place("d16-e1", "Back to Ikebukuro"),
     ],
     restaurants: [
-      place("d16-r1", "Shimokita izakaya or curry"),
+      place("d16-r1", "Japanese Beef Bowl & Beef Curry - Ikebukuro Branch"),
     ],
     cafes: [
-      place("d16-c1", "Bear Pond Espresso, Shimokita", { open: "11:00", close: "19:00" }),
+      place("d16-c1", "Cotti Coffee"),
     ],
   },
   {
     id: "day-17", date: "2026-10-14", city: "tokyo",
-    focus: "Kichijōji & Ghibli Museum",
-    photo: "assets/photos/kichijoji.webp",
+    focus: "Akihabara + Ueno",
+    photo: "assets/photos/tokyo.webp",
     morning: [
-      place("d17-m1", "Kichijōji & Inokashira Park stroll"),
+      place("d17-m1", "Slowly stroll towards Ueno"),
     ],
     afternoon: [
-      place("d17-a1", "Ghibli Museum, Mitaka", { open: "10:00", close: "18:00", note: "Timed tickets only — released the 10th of the month before and sell out fast." }),
+      place("d17-a1", "Spend time in Ueno before moving to Akihabara"),
     ],
     evening: [
-      place("d17-e1", "Harmonica Yokochō izakaya, Kichijōji"),
+      place("d17-e1", "Evening in Ikebukuro"),
     ],
     restaurants: [
       place("d17-r1", "Harmonica Yokochō bar snacks"),
