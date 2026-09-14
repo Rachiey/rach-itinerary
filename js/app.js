@@ -360,7 +360,7 @@
     travel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
     camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
     tips: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg>',
-    stamps: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M19.27 13.73A2.5 2.5 0 0 0 17.5 13h-11A2.5 2.5 0 0 0 4 15.5V17a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1.5c0-.66-.26-1.3-.73-1.77Z"/><path d="M14 13V8.5C14 7 15 7 15 5a3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 2 1 2 1 3.5V13"/></svg>',
+    packing: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M9 21v-14"/><path d="M15 21v-14"/></svg>',
     more: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>',
   };
 
@@ -1714,7 +1714,7 @@
   function renderStamps() {
     // Newest first, so a freshly-pressed stamp lands at the top.
     const stamps = state.stamps.slice().sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });
-    let html = '<h2 class="section-title">Stamp book</h2>' +
+    let html = moreHeader("Stamp book") +
       '<button class="stamp-add-btn" data-act="stamp-add">' + ICON.stamp + ' Add a stamp</button>';
 
     if (!stamps.length) {
@@ -1743,7 +1743,7 @@
       });
       html += '</div>';
     }
-    document.getElementById("panel-stamps").innerHTML = html;
+    document.getElementById("panel-more").innerHTML = html;
     hydrateStampPhotos();
   }
 
@@ -2358,7 +2358,7 @@
     const rect = originEl && originEl.getBoundingClientRect ? originEl.getBoundingClientRect() : null;
     const cx = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
     const cy = rect ? rect.top + rect.height / 2 : window.innerHeight / 3;
-    const colors = ["#ec6f3a", "#e9b52b", "#2ba268", "#16a58f", "#e56f9c", "#b06fc0", "#8fbf3f"];
+    const colors = ["#ff5c8a", "#ffb3c9", "#74ab54", "#b6d98f", "#f4b740", "#ffe08a", "#4a2e39"];
     const layer = document.createElement("div");
     layer.className = "confetti-layer";
     document.body.appendChild(layer);
@@ -2777,7 +2777,7 @@
   let phraseLang = 0;  // index into DATA.phrasebook
 
   const MORE_TOOLS = [
-    { key: "packing", icon: ICON.suitcase, title: "Packing list", sub: "Tick things off as you pack" },
+    { key: "stamps", icon: ICON.stamp, title: "Stamp book", sub: "Collect memories from each stop" },
     { key: "budget", icon: ICON.wallet, title: "Budget tracker", sub: "Log spend in ¥ / £, auto-converted" },
     { key: "emergency", icon: ICON.phone, title: "Emergency & essentials", sub: "Numbers, embassies, hotel addresses" },
     { key: "phrasebook", icon: ICON.chat, title: "Phrasebook", sub: "Key phrases in Chinese & Japanese" },
@@ -2786,7 +2786,7 @@
 
   function renderMore() {
     if (moreView === "tips") return renderTips();
-    if (moreView === "packing") return renderPacking();
+    if (moreView === "stamps") return renderStamps();
     if (moreView === "budget") return renderBudget();
     if (moreView === "emergency") return renderEmergency();
     if (moreView === "phrasebook") return renderPhrasebook();
@@ -2884,7 +2884,7 @@
   function renderPacking() {
     const st = packingStats();
     const pct = st.total ? Math.round((st.done / st.total) * 100) : 0;
-    let html = moreHeader("Packing list");
+    let html = '<h2 class="section-title">Packing list</h2>';
     html += '<div class="pack-progress"><div class="pack-track"><div class="pack-fill" style="width:' + pct + '%"></div></div>' +
       '<div class="pack-count">' + st.done + " / " + st.total + " packed</div></div>";
     DATA.packing.forEach(function (g) {
@@ -2908,7 +2908,7 @@
       html += '<button class="pack-restore" data-act="pack-restore">Restore ' + hiddenCount +
         ' removed default item' + (hiddenCount === 1 ? "" : "s") + '</button>';
     }
-    document.getElementById("panel-more").innerHTML = html;
+    document.getElementById("panel-packing").innerHTML = html;
   }
 
   /* ---------- Budget / expense tracker ---------- */
@@ -3423,7 +3423,7 @@
     renderShopping();
     renderTravel();
     renderCamera();
-    renderStamps();
+    renderPacking();
     renderMore();
     updateProgress();
   }
@@ -3435,7 +3435,7 @@
     document.querySelector('[data-target="buy"] .ic').innerHTML = NAV_ICON.buy;
     document.querySelector('[data-target="travel"] .ic').innerHTML = NAV_ICON.travel;
     document.querySelector('[data-target="camera"] .ic').innerHTML = NAV_ICON.camera;
-    document.querySelector('[data-target="stamps"] .ic').innerHTML = NAV_ICON.stamps;
+    document.querySelector('[data-target="packing"] .ic').innerHTML = NAV_ICON.packing;
     document.querySelector('[data-target="more"] .ic').innerHTML = NAV_ICON.more;
     applyTheme();
     document.getElementById("themeToggle").addEventListener("click", toggleTheme);
