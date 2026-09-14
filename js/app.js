@@ -316,52 +316,52 @@
     host.innerHTML = todayBannerHTML();
   }
 
-  const ICON = {
-    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
-    chevron: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
-    chevronRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
-    plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
-    flip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.5 15a9 9 0 1 0 2.1-9.4L1 10"/></svg>',
-    plane: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0 0 11.5 2 1.5 1.5 0 0 0 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>',
-    train: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="13" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m18 22-2-3"/><circle cx="8.5" cy="13.5" r=".5" fill="currentColor"/><circle cx="15.5" cy="13.5" r=".5" fill="currentColor"/></svg>',
-    camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
-    pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
-    directions: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>',
-    bed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v-.5a2.5 2.5 0 0 1 2.5-2.5h3A2.5 2.5 0 0 1 14 7.5V8"/></svg>',
-    walk: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="1"/><path d="m9 20 2-5 2 2v3"/><path d="m6 12 3-3 2 2 2-1 3 3"/><path d="M11 9v3"/></svg>',
-    clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>',
-    edit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>',
-    list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>',
-    calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
-    sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.9" y1="4.9" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.1" y2="19.1"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.9" y1="19.1" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.1" y2="4.9"/></svg>',
-    moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
-    grip: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>',
-    up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="6"/><polyline points="6 12 12 6 18 12"/></svg>',
-    down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="18"/><polyline points="6 12 12 18 18 12"/></svg>',
-    back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>',
-    suitcase: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M9 21v-14"/><path d="M15 21v-14"/></svg>',
-    wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>',
-    phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z"/></svg>',
-    chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-4-.9L3 21l1.9-5A8.4 8.4 0 0 1 4 11.5 8.4 8.4 0 0 1 12.5 3 8.4 8.4 0 0 1 21 11.5z"/></svg>',
-    file: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
-    trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
-    ellipsis: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
-    star: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>',
-    speaker: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M18.36 5.64a9 9 0 0 1 0 12.72"/></svg>',
-    stamp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M19.27 13.73A2.5 2.5 0 0 0 17.5 13h-11A2.5 2.5 0 0 0 4 15.5V17a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1.5c0-.66-.26-1.3-.73-1.77Z"/><path d="M14 13V8.5C14 7 15 7 15 5a3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 2 1 2 1 3.5V13"/></svg>',
-    lightbulb: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg>',
-  };
+  // Shared integer-grid silhouettes for navigation and all action controls.
+  function pixelIcon(outline, accent) {
+    return '<svg viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><path d="' + outline + '"/>' + (accent ? '<path class="nav-accent" d="' + accent + '"/>' : '') + '</svg>';
+  }
   const NAV_ICON = {
-    days: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
-    book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9V7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 0 0 6v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-6z"/><line x1="12" y1="5" x2="12" y2="19" stroke-dasharray="2 3"/></svg>',
-    buy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>',
-    flights: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5a2.1 2.1 0 0 0-3-3L13 8 4.8 6.2a.5.5 0 0 0-.5.8L8 11l-3 3H2l2 3 3 2 1-3 3-3 3.5 3.7a.5.5 0 0 0 .8-.5z"/></svg>',
-    hotels: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v16"/><path d="M16 8h3a2 2 0 0 1 2 2v11"/><path d="M1 21h22"/><path d="M7 7h.01M11 7h.01M7 11h.01M11 11h.01M7 15h.01M11 15h.01"/></svg>',
-    travel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
-    camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
-    tips: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg>',
-    packing: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M9 21v-14"/><path d="M15 21v-14"/></svg>',
-    more: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>',
+    days: pixelIcon('M2 4H6V2H8V4H16V2H18V4H22V22H2Z M4 10V20H20V10Z', 'M6 12H10V16H6Z M12 12H16V14H12Z M12 16H18V18H12Z'),
+    book: pixelIcon('M2 4H22V10H20V14H22V20H2V14H4V10H2Z M4 6V8H6V16H4V18H20V16H18V8H20V6Z', 'M14 6H16V8H14Z M14 10H16V12H14Z M14 14H16V16H14Z M8 10H12V14H8Z'),
+    buy: pixelIcon('M4 8H8V2H16V8H20V22H4Z M10 4V8H14V4Z M6 10V20H18V10Z', 'M8 12H10V16H14V12H16V18H8Z'),
+    travel: pixelIcon('M8 2H16V6H22V20H20V22H18V20H6V22H4V20H2V6H8Z M10 4V6H14V4Z M4 8V18H20V8Z', 'M6 8H8V18H6Z M16 8H18V18H16Z M10 10H14V14H10Z'),
+    camera: pixelIcon('M8 2H16V6H22V20H2V6H8Z M10 4V8H4V18H20V8H14V4Z M10 8H14V10H16V14H14V16H10V14H8V10H10Z M10 10V14H14V10Z', 'M4 8H6V10H4Z M10 10H14V14H10Z'),
+    packing: pixelIcon('M8 2H16V4H18V6H20V22H4V6H6V4H8Z M10 4V6H14V4Z M6 8V20H18V8Z M8 12H16V18H8Z M10 14V16H14V14Z', 'M8 8H16V10H8Z M10 14H14V16H10Z'),
+    more: pixelIcon('M2 10H6V14H2Z M10 10H14V14H10Z M18 10H22V14H18Z', 'M10 10H14V14H10Z')
+  };
+
+  const ICON = {
+    check: pixelIcon('M4 10H6V12H8V14H10V12H12V10H14V8H16V6H18V4H22V8H20V10H18V12H16V14H14V16H12V18H8V16H6V14H4Z'),
+    chevron: pixelIcon('M4 8H8V10H10V12H14V10H16V8H20V12H18V14H16V16H8V14H6V12H4Z'),
+    chevronRight: pixelIcon('M8 4H12V6H14V8H16V10H18V14H16V16H14V18H12V20H8V16H10V14H12V10H10V8H8Z'),
+    plus: pixelIcon('M10 2H14V10H22V14H14V22H10V14H2V10H10Z'),
+    flip: pixelIcon('M6 2H18V4H20V8H18V6H6V10H2V4H6Z M18 22H6V20H4V16H6V18H18V14H22V20H18Z'),
+    plane: pixelIcon('M10 2H14V8H16V10H20V12H22V16H14V20H16V22H8V20H10V16H2V12H4V10H8V8H10Z'),
+    train: pixelIcon('M6 2H18V4H20V18H18V20H20V22H16V20H8V22H4V20H6V18H4V4H6Z M6 6V12H18V6Z M6 14V16H8V14Z M16 14V16H18V14Z'),
+    pin: pixelIcon('M8 2H16V4H20V8H22V14H20V16H18V18H16V20H14V22H10V20H8V18H6V16H4V14H2V8H4V4H8Z M8 6V14H16V6Z'),
+    directions: pixelIcon('M18 2H22V6H20V10H18V14H16V18H14V22H10V14H2V10H6V8H10V6H14V4H18Z M12 10V14H14V10Z'),
+    bed: pixelIcon('M2 4H4V14H20V10H12V8H20V10H22V22H20V18H4V22H2Z M6 8H10V12H6Z'),
+    walk: pixelIcon('M10 2H14V6H10Z M8 8H14V10H16V12H20V14H14V12H12V16H16V22H12V18H10V20H8V22H4V18H6V14H8V10H6V12H2V10H4V8Z'),
+    clock: pixelIcon('M6 2H18V4H20V6H22V18H20V20H18V22H6V20H4V18H2V6H4V4H6Z M6 4V6H4V18H6V20H18V18H20V6H18V4Z M10 6H12V12H16V14H10Z'),
+    edit: pixelIcon('M16 2H20V4H22V8H20V10H18V12H16V14H14V16H12V18H4V10H6V8H8V6H10V4H14V2Z M6 12V16H10V14H8V12Z M2 20H22V22H2Z'),
+    list: pixelIcon('M2 4H6V8H2Z M10 4H22V8H10Z M2 10H6V14H2Z M10 10H22V14H10Z M2 16H6V20H2Z M10 16H22V20H10Z'),
+    sun: pixelIcon('M10 0H14V4H10Z M10 20H14V24H10Z M0 10H4V14H0Z M20 10H24V14H20Z M2 2H6V6H2Z M18 2H22V6H18Z M2 18H6V22H2Z M18 18H22V22H18Z M8 6H16V8H18V16H16V18H8V16H6V8H8Z M8 8V16H16V8Z'),
+    moon: pixelIcon('M8 2H14V4H10V8H12V12H16V14H20V10H22V16H20V20H16V22H8V20H4V16H2V8H4V4H8Z'),
+    grip: pixelIcon('M6 2H10V6H6Z M14 2H18V6H14Z M6 10H10V14H6Z M14 10H18V14H14Z M6 18H10V22H6Z M14 18H18V22H14Z'),
+    up: pixelIcon('M10 2H14V4H16V6H18V8H20V12H16V10H14V22H10V10H8V12H4V8H6V6H8V4H10Z'),
+    down: pixelIcon('M10 2H14V14H16V12H20V16H18V18H16V20H14V22H10V20H8V18H6V16H4V12H8V14H10Z'),
+    back: pixelIcon('M10 2H14V6H12V8H10V10H22V14H10V16H12V18H14V22H10V20H8V18H6V16H4V14H2V10H4V8H6V6H8V4H10Z'),
+    wallet: pixelIcon('M4 2H20V6H22V22H2V4H4Z M4 6H18V4H4Z M4 8V20H20V16H12V10H20V8Z M14 12V14H20V12Z'),
+    phone: pixelIcon('M2 2H8V8H6V12H8V14H10V16H14V14H20V20H18V22H12V20H8V18H6V16H4V12H2Z'),
+    chat: pixelIcon('M4 2H20V4H22V16H20V18H10V20H6V22H2V4H4Z M4 4V18H8V16H20V4Z M6 8H18V10H6Z M6 12H14V14H6Z'),
+    file: pixelIcon('M4 2H14V4H16V6H18V8H20V22H4Z M6 4V20H18V10H12V4Z M14 6V8H16V6Z M8 12H16V14H8Z M8 16H16V18H8Z'),
+    trash: pixelIcon('M8 2H16V4H22V6H20V22H4V6H2V4H8Z M6 6V20H18V6Z M8 8H10V18H8Z M14 8H16V18H14Z'),
+    star: pixelIcon('M10 2H14V6H16V8H22V12H20V14H18V16H20V22H16V20H14V18H10V20H8V22H4V16H6V14H4V12H2V8H8V6H10Z'),
+    speaker: pixelIcon('M10 2H14V22H10V20H8V18H6V16H2V8H6V6H8V4H10Z M16 8H18V16H16Z M18 4H20V6H22V18H20V20H18V16H20V8H18Z'),
+    stamp: pixelIcon('M8 2H16V4H18V8H16V10H14V14H20V16H22V20H2V16H4V14H10V10H8V8H6V4H8Z M4 16V18H20V16Z M4 22H20V24H4Z'),
+    lightbulb: pixelIcon('M8 2H16V4H20V8H22V12H20V14H18V18H6V14H4V12H2V8H4V4H8Z M8 4V6H6V12H8V16H16V12H18V6H16V4Z M8 20H16V22H8Z'),
+    calendar: NAV_ICON.days,
+    camera: NAV_ICON.camera
   };
 
   function esc(s) {
@@ -515,9 +515,9 @@
     );
   }
 
-  const SLOT_EMOJI = {
-    morning: "☀️", afternoon: "🌆", evening: "🌙",
-    restaurants: "🍜", cafes: "☕",
+  const SLOT_ICON = {
+    morning: ICON.sun, afternoon: ICON.sun, evening: ICON.moon,
+    restaurants: ICON.pin, cafes: ICON.pin,
   };
 
   function renderSlot(day, slotKey, label, dotClass, seq) {
@@ -541,7 +541,7 @@
     const mustDo = mustDoCount ? '<span class="slot-must">' + ICON.star + ' ' + mustDoCount + '</span>' : '';
     return (
       '<section class="slot' + (isOpen ? " is-open" : "") + '" data-slot="' + dotClass + '" data-container="' + esc(containerKey) + '">' +
-        '<div class="slot-head"><button class="slot-toggle" data-act="slot-toggle" aria-expanded="' + isOpen + '"><span class="slot-emoji ' + dotClass + '">' + (SLOT_EMOJI[slotKey] || "") + '</span><span class="slot-label"><h4>' + label + '</h4><span class="slot-count">' + list.length + (list.length === 1 ? " stop" : " stops") + '</span></span><span class="slot-chevron">' + ICON.chevron + '</span></button><label class="slot-area"><span>Area</span><input data-slotarea="' + esc(containerKey) + '" value="' + esc(area) + '" placeholder="Add area" aria-label="' + esc(label) + ' area"></label>' + mustDo + tally + '</div>' +
+        '<div class="slot-head"><button class="slot-toggle" data-act="slot-toggle" aria-expanded="' + isOpen + '"><span class="slot-emoji ' + dotClass + '">' + (SLOT_ICON[slotKey] || "") + '</span><span class="slot-label"><h4>' + label + '</h4><span class="slot-count">' + list.length + (list.length === 1 ? " stop" : " stops") + '</span></span><span class="slot-chevron">' + ICON.chevron + '</span></button><label class="slot-area"><span>Area</span><input data-slotarea="' + esc(containerKey) + '" value="' + esc(area) + '" placeholder="Add area" aria-label="' + esc(label) + ' area"></label>' + mustDo + tally + '</div>' +
         '<div class="slot-content">' + rows + '<button class="add-place" data-act="add" data-container="' + containerKey + '">' + ICON.plus + ' Add a place</button></div>' +
       '</section>'
     );
@@ -562,7 +562,7 @@
     const slotClass = slotKey === "restaurants" ? "afternoon" : "evening";
     return (
       '<div class="slot" data-slot="' + slotClass + '">' +
-        '<div class="slot-head"><span class="slot-emoji ' + slotClass + '">' + (SLOT_EMOJI[slotKey] || "") + '</span><h4>' + label + '</h4></div>' +
+        '<div class="slot-head"><span class="slot-emoji ' + slotClass + '">' + (SLOT_ICON[slotKey] || "") + '</span><h4>' + label + '</h4></div>' +
         rows +
         '<button class="add-place" data-act="add" data-container="' + containerKey + '">' + ICON.plus + ' Add a place</button>' +
       '</div>'
@@ -638,63 +638,27 @@
     return { total: total, done: done, pct: total ? Math.round((done / total) * 100) : 0 };
   }
 
-  function ringInner(pct) {
-    const r = 9;
-    const c = 2 * Math.PI * r;
-    const off = c * (1 - Math.max(0, Math.min(100, pct)) / 100);
-    return (
-      '<svg viewBox="0 0 24 24" aria-hidden="true">' +
-        '<defs>' +
-          '<linearGradient id="ringGrad" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">' +
-            '<stop offset="0" stop-color="var(--seal)"/>' +
-            '<stop offset="0.55" stop-color="var(--gold)"/>' +
-            '<stop offset="1" stop-color="var(--jade)"/>' +
-          '</linearGradient>' +
-        '</defs>' +
-        '<circle class="ring-bg" cx="12" cy="12" r="' + r + '"/>' +
-        '<circle class="ring-fg" cx="12" cy="12" r="' + r + '" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '"/>' +
-      '</svg>' +
-      (pct >= 100
-        ? '<span class="ring-num ring-done">' + ICON.check + '</span>'
-        : '<span class="ring-num">' + pct + '</span>')
-    );
+  function dayMeterInner(p) {
+    return '<span class="day-meter-track" aria-hidden="true">' +
+      Array.from({ length: 10 }, function (_, i) {
+        return '<i class="' + (p.pct >= (i + 1) * 10 ? 'filled' : '') + '"></i>';
+      }).join('') + '</span><span class="day-meter-count">' + p.done + '/' + p.total + ' done</span>';
   }
-  function ringHTML(day) {
+  function dayMeterHTML(day) {
     const p = dayProgress(day);
     if (!p.total) return '';
-    return '<span class="day-ring' + (p.pct >= 100 ? ' is-complete' : '') + '" data-act="daytoggle"' +
-      ' title="' + p.done + ' of ' + p.total + ' done" aria-label="' + p.pct + '% of this day done">' +
-      ringInner(p.pct) + '</span>';
+    return '<span class="day-meter" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + p.pct +
+      '" aria-label="Day activities" aria-valuetext="' + p.done + ' of ' + p.total + ' done">' + dayMeterInner(p) + '</span>';
   }
-  function updateDayRing(dayEl) {
+  function updateDayMeter(dayEl) {
     if (!dayEl) return;
-    const id = dayEl.getAttribute("data-day");
-    const day = DATA.days.find(function (d) { return d.id === id; });
-    if (!day) return;
-    const ring = dayEl.querySelector(".day-ring");
-    if (!ring) return;
+    const day = DATA.days.find(function (d) { return d.id === dayEl.getAttribute("data-day"); });
+    const meter = dayEl.querySelector(".day-meter");
+    if (!day || !meter) return;
     const p = dayProgress(day);
-    ring.classList.toggle("is-complete", p.pct >= 100);
-    ring.setAttribute("title", p.done + " of " + p.total + " done");
-    ring.setAttribute("aria-label", p.pct + "% of this day done");
-
-    const fg = ring.querySelector(".ring-fg");
-    const num = ring.querySelector(".ring-num");
-    if (fg && num) {
-      const r = 9;
-      const c = 2 * Math.PI * r;
-      const off = c * (1 - Math.max(0, Math.min(100, p.pct)) / 100);
-      fg.setAttribute("stroke-dashoffset", off.toFixed(1));
-      if (p.pct >= 100) {
-        num.classList.add("ring-done");
-        num.innerHTML = ICON.check;
-      } else {
-        num.classList.remove("ring-done");
-        num.textContent = p.pct;
-      }
-    } else {
-      ring.innerHTML = ringInner(p.pct);
-    }
+    meter.setAttribute("aria-valuenow", p.pct);
+    meter.setAttribute("aria-valuetext", p.done + " of " + p.total + " done");
+    meter.innerHTML = dayMeterInner(p);
   }
 
   function bookingsForDay(day) {
@@ -794,21 +758,20 @@
             '<div class="date">' + dt.big + '</div>' +
           '</div>' +
         '</div>' +
-        '<div class="perf"></div>' +
         '<div class="day-body">' +
           '<div class="day-head">' +
             reorderHandle +
-            ringHTML(day) +
             '<button class="day-focus" data-act="daytoggle">' +
+              '<span class="day-date-tile"><strong>' + dt.big.split(' ')[0] + '</strong><small>' + dt.big.split(' ')[1] + '</small></span>' +
               '<span class="day-meta">' +
-                '<span class="day-date-mini">' + weatherChip(day.city, day.date) + ' ' + dt.dow + ' · ' + dt.big + '</span>' +
-                '<h3>' + esc(day.focus) + holidayBadge + '</h3>' +
+                '<span class="day-date-mini">' + dt.dow + ' · ' + esc(city.name) + '</span>' +
+                '<span class="day-title">' + esc(day.focus) + holidayBadge + '</span>' +
               '</span>' +
-              '<span class="city-tag">' + theme.emoji + ' ' + esc(city.code) + '</span>' +
               '<span class="day-chevron">' + ICON.chevron + '</span>' +
             '</button>' +
             reorderMoves +
           '</div>' +
+          '<div class="day-status">' + dayMeterHTML(day) + weatherChip(day.city, day.date) + '</div>' +
           '<div class="day-collapse">' +
             sunTimes(day.city, day.date) +
             holidayAlert +
@@ -1187,7 +1150,7 @@
       const cityKey = group.city || "";
       const theme = CITY_THEME[cityKey] || {};
       const city = (DATA.cities && DATA.cities[cityKey]) || {};
-      const colour = theme.c || "var(--gold)";
+      const colour = theme.c || "var(--highlight)";
       const flag = city.flag || "";
       const list = placesFor(group.items, containerKey);
 
@@ -2234,7 +2197,7 @@
     const id = todo.getAttribute("data-place");
     const containerKey = todo.getAttribute("data-container");
     const dayEl = todo.closest(".day");
-    const wasComplete = dayEl ? dayEl.querySelector(".day-ring.is-complete") != null : false;
+    const wasComplete = dayEl ? dayEl.querySelector(".day-meter[aria-valuenow='100']") != null : false;
     const nowDone = !todo.classList.contains("done");
     todo.classList.toggle("done", nowDone);
     if (nowDone) {
@@ -2256,10 +2219,10 @@
       return;
     }
     updateProgress();
-    updateDayRing(dayEl);
+    updateDayMeter(dayEl);
     updateSlotTally(todo.closest(".slot"));
     // Celebrate when a whole day just tipped over to 100%.
-    if (nowDone && dayEl && !wasComplete && dayEl.querySelector(".day-ring.is-complete")) {
+    if (nowDone && dayEl && !wasComplete && dayEl.querySelector(".day-meter[aria-valuenow='100']")) {
       celebrateDay(dayEl);
     }
   }
@@ -3356,16 +3319,22 @@
   function initTabs() {
     const tabs = document.querySelectorAll(".tab");
     tabs.forEach(function (tab) {
+      tab.querySelector(".ic").innerHTML = NAV_ICON[tab.getAttribute("data-target")];
+      tab.setAttribute("aria-controls", "panel-" + tab.getAttribute("data-target"));
+      tab.setAttribute("aria-pressed", String(tab.classList.contains("active")));
       tab.addEventListener("click", function () {
         const target = tab.getAttribute("data-target");
         // Tiny haptic tap on devices that support it.
         if (navigator.vibrate) navigator.vibrate(12);
         if (target === "more") { moreView = null; renderMore(); }
-        tabs.forEach(function (t) { t.classList.toggle("active", t === tab); });
+        tabs.forEach(function (t) {
+          t.classList.toggle("active", t === tab);
+          t.setAttribute("aria-pressed", String(t === tab));
+        });
         document.querySelectorAll(".panel").forEach(function (p) {
           p.classList.toggle("active", p.id === "panel-" + target);
         });
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
       });
     });
   }
@@ -3383,7 +3352,13 @@
 
   /* ---------- Masthead ---------- */
   function renderMasthead() {
-    document.getElementById("tripTitle").textContent = DATA.meta.title;
+    const title = document.getElementById("tripTitle");
+    const heart = '<span class="title-heart" aria-hidden="true">' + pixelIcon('M4 4H10V6H14V4H20V6H22V12H20V14H18V16H16V18H14V20H10V18H8V16H6V14H4V12H2V6H4Z') + '</span>';
+    title.setAttribute("aria-label", DATA.meta.title);
+    title.innerHTML = DATA.meta.title.split("·").map(function (country) {
+      return '<span class="title-country">' + esc(country.trim()) + '</span>';
+    }).join(heart);
+    document.getElementById("tripSubtitle").textContent = [DATA.meta.subtitle, "travel itinerary"].filter(Boolean).join(" · ");
     const s = fmtDate(DATA.meta.start), en = fmtDate(DATA.meta.end);
     document.getElementById("tripRange").textContent = s.big + " → " + en.big + " · " + DATA.days.length + " days";
   }
@@ -3429,14 +3404,6 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    // inject nav icons
-    document.querySelector('[data-target="days"] .ic').innerHTML = NAV_ICON.days;
-    document.querySelector('[data-target="book"] .ic').innerHTML = NAV_ICON.book;
-    document.querySelector('[data-target="buy"] .ic').innerHTML = NAV_ICON.buy;
-    document.querySelector('[data-target="travel"] .ic').innerHTML = NAV_ICON.travel;
-    document.querySelector('[data-target="camera"] .ic').innerHTML = NAV_ICON.camera;
-    document.querySelector('[data-target="packing"] .ic').innerHTML = NAV_ICON.packing;
-    document.querySelector('[data-target="more"] .ic').innerHTML = NAV_ICON.more;
     applyTheme();
     document.getElementById("themeToggle").addEventListener("click", toggleTheme);
     initTabs();

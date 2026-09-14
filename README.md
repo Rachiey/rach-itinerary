@@ -30,17 +30,22 @@ opens instantly and works fully offline.
 
 ## What's inside
 
-Navigation lives in the bottom tab bar (with a hand-drawn squiggle under the
-active tab and a subtle haptic tap on supported devices).
+Navigation lives in a pixel travel menu with a strawberry bookmark for the
+active page, travel icons, a brief sparkle, and a subtle haptic tap on supported
+devices. Animations respect the device’s reduced-motion preference.
 
-- **Days** — a scrollable feed of "boarding pass" day cards. Each has a photo
+The interface shares pixel action icons, stepped panel frames, and consistent
+heading/body type. Strawberry identifies actions, matcha marks progress, and
+lavender highlights reminders; the title keeps its strawberry–matcha gradient.
+
+- **Days** — a scrollable feed of pixel-framed day cards. Each has a photo
   header, the day's focus area, a live **weather** chip, a **hotel bar** (tap to
   add the hotel name, area & address for that stay — it fills in across every day
   of the leg), and Morning / Afternoon / Evening to-do lists. Tap the photo (or
   the *Eat & drink* button) to **flip** the card and reveal restaurant & café
   suggestions.
-  - Each day card shows a **circular progress donut** (orange→green gradient)
-    that fills smoothly as you tick items off.
+  - Each day card shows a **segmented progress bar** with a completed-activity count
+    that fills as you tick items off.
   - **Filter** the feed by **All / To-do / Done** (centred under the header).
     A day counts as *Done* once every item is ticked **or** its date has passed,
     so past days drop out of the way to keep the itinerary focused.
@@ -73,7 +78,7 @@ active tab and a subtle haptic tap on supported devices).
   cached, powering the budget tracker's conversions.
 
 ### Interactions
-- ✅ Tick any place off — the day donut and the top progress bar animate up
+- ✅ Tick any place off — the day progress bar and the top progress bar animate up
   smoothly, counting to the new percentage.
 - ⭐ **Rate restaurants & cafés** out of 5 stars and jot a **memory note** so you
   remember whether a place was worth it.
@@ -108,10 +113,10 @@ the browser stays until you hit **Reset**.
 ## Files
 
 ```
-index.html            layout + Google Fonts
+index.html            layout + font fallbacks
 manifest.webmanifest  PWA manifest (installable)
 sw.js                 service worker (offline app shell + runtime caching)
-css/style.css         boarding-pass design system
+css/style.css         shared pixel-journal design system
 js/data.js            the itinerary (edit me!)
 js/app.js             rendering, interactions, saving & live data
 assets/icons/         app icons (+ generate_icons.py)
