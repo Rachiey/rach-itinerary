@@ -408,8 +408,6 @@ select {
     calc(var(--space-16) + env(safe-area-inset-left, 0px));
 }
 .masthead {
-  padding: calc(var(--space-16) + var(--safe-top)) var(--space-4)
-    var(--space-12);
   text-align: center;
   position: relative;
 }
