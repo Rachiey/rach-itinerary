@@ -2092,7 +2092,6 @@ body.is-dragging-day {
   text-transform: uppercase;
 }
 .slot-area input {
-  width: min(132px, 30vw);
   min-width: 72px;
   border: 0;
   border-bottom: var(--border-thin) dashed var(--line-strong);
