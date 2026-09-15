@@ -465,7 +465,7 @@ select {
   margin: var(--space-2) 0 0;
   font-family: var(--f-title);
   font-weight: normal;
-  font-size: var(--fs-title);
+  font-size: var(--fs-title-large);
   line-height: 1.1;
   letter-spacing: 0;
   color: var(--title-ink);
@@ -489,7 +489,7 @@ select {
 }
 
 .trip-subtitle {
-  margin-top: calc(var(--space-14) * -1);
+  margin-top: calc(var(--space-10) * -1);
   font-family: var(--f-display);
   font-size: var(--fs-5xl);
   color: var(--ink-soft);
