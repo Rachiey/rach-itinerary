@@ -2026,7 +2026,7 @@ body.is-dragging-day {
   display: flex;
   min-width: 0;
   flex: 1;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--space-8);
   text-align: left;
 }
@@ -2041,6 +2041,7 @@ body.is-dragging-day {
   color: var(--ink-soft);
 }
 .slot-chevron {
+  flex: none;
   margin-left: auto;
   display: grid;
   width: 22px;
@@ -2073,8 +2074,10 @@ body.is-dragging-day {
 .slot-head h4 {
   color: var(--ink-soft);
   font-family: var(--f-display);
-  font-size: var(--fs-xl);
+  font-size: var(--fs-sm);
   letter-spacing: 0.04em;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 .slot-area {
   display: flex;
