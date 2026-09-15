@@ -5,7 +5,7 @@
   const DATA = window.TRIP_DATA;
   const STORAGE_KEY = "rach-itinerary-v1";
 
-     const CITY_THEME = {
+  const CITY_THEME = {
       shanghai: { g: "linear-gradient(135deg,#c9506f,#ef6f92 55%,#f8c9b5)", emoji: "🏮", c: "#ef6f92" },
       suzhou:   { g: "linear-gradient(135deg,#4f7a4a,#7fa563 55%,#dbe8c4)", emoji: "🏞️", c: "#7fa563" },
       beijing:  { g: "linear-gradient(135deg,#b87a3a,#e0a659 55%,#f8ddaa)", emoji: "🏯", c: "#e0a659" },
@@ -232,37 +232,37 @@
   }
 
   const FX_CACHE_KEY = "rach-fx-v1";
-  let FX = null;
-  try { const raw = localStorage.getItem(FX_CACHE_KEY); if (raw) FX = JSON.parse(raw); } catch (e) { /* ignore */ }
+  let currencyRates = null;
+  try { const raw = localStorage.getItem(FX_CACHE_KEY); if (raw) currencyRates = JSON.parse(raw); } catch (e) { /* ignore */ }
 
   function renderFxChip() {
-    const el = document.getElementById("fxChip");
+    const el = document.getElementById("fx-chip");
     if (!el) return;
-    if (!FX || !FX.rates) { el.hidden = true; return; }
-    const cny = FX.rates.CNY, jpy = FX.rates.JPY;
+    if (!currencyRates || !currencyRates.rates) { el.hidden = true; return; }
+    const cny = currencyRates.rates.CNY, jpy = currencyRates.rates.JPY;
     if (cny == null && jpy == null) { el.hidden = true; return; }
     const parts = [];
     if (cny != null) parts.push('<span class="fx-item fx-cny"><span class="fx-label">CNY</span><span>¥' + cny.toFixed(1) + '</span></span>');
     if (jpy != null) parts.push('<span class="fx-item fx-jpy"><span class="fx-label">JPY</span><span>¥' + Math.round(jpy) + '</span></span>');
     el.hidden = false;
-    el.title = "£1 = " + (cny != null ? cny.toFixed(2) + " CNY" : "") + (cny != null && jpy != null ? " · " : "") + (jpy != null ? Math.round(jpy) + " JPY" : "") + (FX.date ? " (rates " + FX.date + ")" : "");
+    el.title = "£1 = " + (cny != null ? cny.toFixed(2) + " CNY" : "") + (cny != null && jpy != null ? " · " : "") + (jpy != null ? Math.round(jpy) + " JPY" : "") + (currencyRates.date ? " (rates " + currencyRates.date + ")" : "");
     el.setAttribute("aria-label", el.title);
     el.innerHTML = '<span class="fx-lead"><span class="fx-label">GBP</span><span>£1 =</span></span>' + parts.join("");
   }
 
   function fetchCurrency() {
-    const today = localISO(new Date());
-    if (FX && FX.fetchedOn === today && FX.rates) { renderFxChip(); return; }
+    const today = localIso(new Date());
+    if (currencyRates && currencyRates.fetchedOn === today && currencyRates.rates) { renderFxChip(); return; }
     fetch("https://open.er-api.com/v6/latest/GBP")
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) {
         if (!j || !j.rates) return;
-        FX = {
+        currencyRates = {
           fetchedOn: today,
           date: (j.time_last_update_utc || "").slice(5, 16),
           rates: { CNY: j.rates.CNY, JPY: j.rates.JPY },
         };
-        try { localStorage.setItem(FX_CACHE_KEY, JSON.stringify(FX)); } catch (e) { /* ignore */ }
+        try { localStorage.setItem(FX_CACHE_KEY, JSON.stringify(currencyRates)); } catch (e) { /* ignore */ }
         renderFxChip();
       })
       .catch(function () { /* keep any cached value */ });
@@ -273,12 +273,12 @@
     return Math.round((b - a) / 86400000);
   }
 
-  function todayBannerHTML() {
+  function todayBannerHtml() {
     const days = effectiveDays();
     if (!days.length) return "";
-    const todayISO = localISO(new Date());
+    const todayIso = localIso(new Date());
     const first = days[0].date, last = days[days.length - 1].date;
-    const todayDay = days.find(function (d) { return d.date === todayISO; });
+    const todayDay = days.find(function (d) { return d.date === todayIso; });
 
     if (todayDay) {
       const city = DATA.cities[todayDay.city] || {};
@@ -291,8 +291,8 @@
         '<span class="today-go">' + ICON.chevronRight + '</span>' +
       '</button>';
     }
-    if (todayISO < first) {
-      const n = daysBetween(todayISO, first);
+    if (todayIso < first) {
+      const n = daysBetween(todayIso, first);
       const when = n === 0 ? "<strong>today</strong>" : n === 1 ? "<strong>tomorrow</strong>" : "in&nbsp;<strong>" + n + " days</strong>";
       return '<div class="today-banner is-before">' +
         '<span class="today-tag">. ݁₊ ⊹ . ݁  ✈︎</span>' +
@@ -301,7 +301,7 @@
         '</span>' +
       '</div>';
     }
-    if (todayISO > last) {
+    if (todayIso > last) {
       return '<div class="today-banner is-after">' +
         '<span class="today-tag">🏠</span>' +
         '<span class="today-main"><span class="today-line">Welcome home</span>' +
@@ -312,9 +312,9 @@
   }
 
   function updateTodayBanner() {
-    const host = document.getElementById("todayBanner");
+    const host = document.getElementById("today-banner");
     if (!host) return;
-    host.innerHTML = todayBannerHTML();
+    host.innerHTML = todayBannerHtml();
   }
 
   // Shared integer-grid silhouettes for navigation and all action controls.
@@ -586,7 +586,7 @@
       checkOut: o.checkOut != null ? o.checkOut : (h.checkOut || ""),
     };
   }
-  function hotelInfoHTML(h) {
+  function hotelInfoHtml(h) {
     const hasName = h.name && h.name.trim();
     const loc = [h.area, h.address].filter(function (x) { return x && x.trim(); }).join(" · ");
     const times = (h.checkIn || h.checkOut)
@@ -611,7 +611,7 @@
       '<div class="hotel" data-hotel="' + esc(seed.id) + '">' +
         '<button class="hotel-bar' + (hasName ? "" : " is-empty") + '" data-act="hotel">' +
           '<span class="hotel-icon">' + ICON.bed + '</span>' +
-          '<span class="hotel-info">' + hotelInfoHTML(h) + '</span>' +
+          '<span class="hotel-info">' + hotelInfoHtml(h) + '</span>' +
           '<span class="hotel-edit">' + ICON.edit + '</span>' +
         '</button>' +
         '<div class="hotel-editor">' +
@@ -645,7 +645,7 @@
         return '<i class="' + (p.pct >= (i + 1) * 10 ? 'filled' : '') + '"></i>';
       }).join('') + '</span><span class="day-meter-count">' + p.done + '/' + p.total + ' done</span>';
   }
-  function dayMeterHTML(day) {
+  function dayMeterHtml(day) {
     const p = dayProgress(day);
     if (!p.total) return '';
     return '<span class="day-meter" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + p.pct +
@@ -772,7 +772,7 @@
             '</button>' +
             reorderMoves +
           '</div>' +
-          '<div class="day-status">' + dayMeterHTML(day) + weatherChip(day.city, day.date) + '</div>' +
+          '<div class="day-status">' + dayMeterHtml(day) + weatherChip(day.city, day.date) + '</div>' +
           '<div class="day-collapse">' +
             sunTimes(day.city, day.date) +
             holidayAlert +
@@ -957,8 +957,8 @@
         '</div>' +
       '</div>';
     const html =
-      '<div id="todayBanner">' + todayBannerHTML() + '</div>' +
-      nextUpHTML() +
+      '<div id="today-banner">' + todayBannerHtml() + '</div>' +
+      nextUpHtml() +
       toolbar +
       '<div class="days-list"' + (view === "calendar" ? " hidden" : "") + '>' +
         filterChips +
@@ -969,8 +969,8 @@
     applyDayFilter();
   }
 
-  function nextUpHTML() {
-    const today = localISO(new Date());
+  function nextUpHtml() {
+    const today = localIso(new Date());
     const days = effectiveDays();
     // When today itself is a trip day, the Today banner already covers it,
     // so Next up should point to whatever comes after — not repeat it.
@@ -993,7 +993,7 @@
   function applyDayFilter() {
     const panel = document.getElementById("panel-days");
     if (!panel) return;
-    const todayISO = localISO(new Date());
+    const todayIso = localIso(new Date());
     const days = panel.querySelectorAll(".day");
     days.forEach(function (el) {
       const id = el.getAttribute("data-day");
@@ -1001,7 +1001,7 @@
       const p = day ? dayProgress(day) : { total: 0, pct: 0 };
       // A day is "done" once everything is ticked off OR the date has passed —
       // past days drop out of To-do automatically to reduce ongoing noise.
-      const past = day ? day.date < todayISO : false;
+      const past = day ? day.date < todayIso : false;
       const complete = p.total > 0 && p.pct >= 100;
       const isDone = complete || past;
       let show = true;
@@ -1043,13 +1043,13 @@
   /* On load, if today falls within the trip, jump to today's card. */
   function focusToday() {
     const days = effectiveDays();
-    const todayISO = localISO(new Date());
-    const todayDay = days.find(function (d) { return d.date === todayISO; });
+    const todayIso = localIso(new Date());
+    const todayDay = days.find(function (d) { return d.date === todayIso; });
     if (todayDay) openDayCard(todayDay.id, false);
   }
 
   /* Local-time ISO (yyyy-mm-dd) so "today" matches the trip dates correctly. */
-  function localISO(d) {
+  function localIso(d) {
     const y = d.getFullYear();
     const m = String(d.getMonth() + 1).padStart(2, "0");
     const day = String(d.getDate()).padStart(2, "0");
@@ -1074,7 +1074,7 @@
     const end = new Date(last);
     end.setDate(end.getDate() + (6 - ((end.getDay() + 6) % 7)));
 
-    const todayISO = localISO(new Date());
+    const todayIso = localIso(new Date());
 
     const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     let head = '<div class="cal-weekdays">' + weekdays.map(function (w) { return "<span>" + w + "</span>"; }).join("") + "</div>";
@@ -1082,9 +1082,9 @@
     let cells = "";
     const cur = new Date(start);
     while (cur <= end) {
-      const iso = localISO(cur);
+      const iso = localIso(cur);
       const d = byDate[iso];
-      const isToday = iso === todayISO;
+      const isToday = iso === todayIso;
       const monthTag = cur.getDate() === 1
         ? '<span class="cal-month">' + cur.toLocaleDateString("en-GB", { month: "short" }) + "</span>"
         : "";
@@ -1119,7 +1119,7 @@
         }).join("") +
       "</div>";
 
-    const hint = todayISO >= dates[0] && todayISO <= dates[dates.length - 1]
+    const hint = todayIso >= dates[0] && todayIso <= dates[dates.length - 1]
       ? '<p class="cal-hint">The glowing square is today. Tap any day to open it.</p>'
       : '<p class="cal-hint">Tap any day to open it. Your current day will glow once the trip begins.</p>';
 
@@ -1501,7 +1501,7 @@
         }).join("") +
       '</div>' +
       '<textarea class="crx-notes" rows="2" placeholder="Notes (optional)" aria-label="Notes"></textarea>' +
-      '<div class="crx-photo">' + recipePhotoPreviewHTML() + '</div>' +
+      '<div class="crx-photo">' + recipePhotoPreviewHtml() + '</div>' +
       '<button type="submit" class="cam-recipe-submit">' + ICON.plus + ' Add recipe</button>' +
     '</form>';
     const seeds = DATA.cameraRecipes || [];
@@ -1526,7 +1526,7 @@
 
   // Inner markup for the add-form's example-photo slot. Shows either an
   // "add" button or the chosen photo with replace / remove controls.
-  function recipePhotoPreviewHTML() {
+  function recipePhotoPreviewHtml() {
     if (pendingRecipePhoto) {
       return '<div class="crx-photo-preview">' +
         '<img class="crx-photo-img" data-photo="' + esc(pendingRecipePhoto) + '" alt="Example photo preview">' +
@@ -1542,7 +1542,7 @@
   // Re-draw just the photo slot (keeps any text the user has already typed).
   function updateRecipePhotoPreview() {
     const box = document.querySelector(".cam-recipe-add .crx-photo");
-    if (box) { box.innerHTML = recipePhotoPreviewHTML(); hydrateRecipePhotos(); }
+    if (box) { box.innerHTML = recipePhotoPreviewHtml(); hydrateRecipePhotos(); }
   }
 
   function recipeCard(r, custom) {
@@ -1738,7 +1738,7 @@
       compressToWebp(file, 1000, 0.82).then(function (blob) {
         const pid = genId();
         return docPut(pid, blob).then(function () {
-          state.stamps.push({ id: genId(), photo: pid, title: "", place: "", date: localISO(new Date()), ts: Date.now() });
+          state.stamps.push({ id: genId(), photo: pid, title: "", place: "", date: localIso(new Date()), ts: Date.now() });
           saveState();
           renderStamps();
           // Focus the new stamp's title so it can be named straight away.
@@ -1787,70 +1787,6 @@
       stampPhotoUrls[s.photo] = u;
       open(u);
     });
-  }
-
-  /* ---------- Progress bar ---------- */
-  let progressAnim = null;      // current rAF handle
-  let progressShown = 0;        // exact (fractional) pct currently displayed
-
-  function updateProgress() {
-    let total = 0, done = 0;
-    DATA.days.forEach(function (day) {
-      ["morning", "afternoon", "evening", "restaurants", "cafes"].forEach(function (slot) {
-        const key = day.id + ":" + slot;
-        placesFor(day[slot], key).forEach(function (p) { total++; if (p.done) done++; });
-      });
-    });
-    const exact = total ? (done / total) * 100 : 0;   // fractional target %
-    animateProgress(exact, done, total);
-  }
-
-  /* Tween the bar from its current fractional fill to the new one so it glides
-     upward smoothly. A single tick only moves ~0.5%, so we animate the exact
-     fraction (not a rounded integer) — otherwise small changes would snap or
-     be swallowed entirely. The label shows the rounded whole percentage. */
-  function animateProgress(targetPct, done, total) {
-    const fill = document.getElementById("progressFill");
-    const label = document.getElementById("progressLabel");
-    if (!fill || !label) return;
-
-    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const from = progressShown;
-    const diff = targetPct - from;
-
-    if (progressAnim) { cancelAnimationFrame(progressAnim); progressAnim = null; }
-
-    const setFrame = function (value) {
-      const clamped = Math.max(0, Math.min(100, value));
-      fill.style.width = clamped + "%";
-      label.textContent = done + " / " + total + " ticked off · " + Math.round(clamped) + "%";
-    };
-
-    if (reduce || Math.abs(diff) < 0.01) {
-      progressShown = targetPct;
-      setFrame(targetPct);
-      return;
-    }
-
-    // Constant glide speed (~55ms per percent), clamped so even a single tick
-    // gets a visible, unhurried slide and large jumps don't drag on forever.
-    const duration = Math.min(1400, Math.max(420, Math.abs(diff) * 55));
-    const start = performance.now();
-    const easeOut = function (t) { return 1 - Math.pow(1 - t, 3); };
-
-    function frame(now) {
-      const t = Math.min(1, (now - start) / duration);
-      const cur = from + diff * easeOut(t);
-      setFrame(cur);
-      if (t < 1) {
-        progressAnim = requestAnimationFrame(frame);
-      } else {
-        progressShown = targetPct;
-        setFrame(targetPct);
-        progressAnim = null;
-      }
-    }
-    progressAnim = requestAnimationFrame(frame);
   }
 
   /* =====================================================================
@@ -2217,7 +2153,6 @@
       renderBookings();
       return;
     }
-    updateProgress();
     updateDayMeter(dayEl);
     updateSlotTally(todo.closest(".slot"));
     // Celebrate when a whole day just tipped over to 100%.
@@ -2506,7 +2441,6 @@
           restoredDay.scrollIntoView({ block: "nearest" });
         });
       }
-      updateProgress();
       // Re-open a fresh editor so it's easy to add several in a row.
       addPlace(containerKey);
     }
@@ -2540,7 +2474,6 @@
     }
     saveState();
     rerenderForContainer(containerKey);
-    updateProgress();
   }
 
   function updateFlight(flightId, field, value) {
@@ -2709,13 +2642,13 @@
     const seed = DATA.hotels.find(function (h) { return h.id === id; });
     const h = resolveHotel(seed);
     const hasName = h.name && h.name.trim();
-    const infoHTML = hotelInfoHTML(h);
+    const infoHtml = hotelInfoHtml(h);
 
     // Same hotel can appear on several day cards (one per stay) — sync them all.
     const bars = document.querySelectorAll('.hotel[data-hotel="' + id + '"]');
     bars.forEach(function (el) {
       el.querySelector(".hotel-bar").classList.toggle("is-empty", !hasName);
-      el.querySelector(".hotel-info").innerHTML = infoHTML;
+      el.querySelector(".hotel-info").innerHTML = infoHtml;
       // keep other cards' editor inputs in sync (skip the one being typed in)
       if (el !== hotelEl) {
         const input = el.querySelector('[data-hotelfield="' + field + '"]');
@@ -2735,7 +2668,7 @@
      MORE — hub of extra trip tools (packing, budget, emergency,
      phrasebook, documents). One panel with a lightweight in-panel router.
      ===================================================================== */
-  let moreView = null; // null = hub; else "tips"|"packing"|"budget"|"emergency"|"phrasebook"|"docs"
+  let moreView = null; // null = hub; otherwise a MORE_TOOLS key
   let phraseLang = 0;  // index into DATA.phrasebook
 
   const MORE_TOOLS = [
@@ -2747,7 +2680,6 @@
   ];
 
   function renderMore() {
-    if (moreView === "tips") return renderTips();
     if (moreView === "stamps") return renderStamps();
     if (moreView === "budget") return renderBudget();
     if (moreView === "emergency") return renderEmergency();
@@ -2778,7 +2710,7 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "china-japan-trip-backup-" + localISO(new Date()) + ".json";
+    link.download = "china-japan-trip-backup-" + localIso(new Date()) + ".json";
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -2875,13 +2807,13 @@
 
   /* ---------- Budget / expense tracker ---------- */
   const CCY = { GBP: { sym: "£", flag: "🇬🇧" }, CNY: { sym: "¥", flag: "🇨🇳" }, JPY: { sym: "¥", flag: "🇯🇵" } };
-  function toGBP(amount, ccy) {
+  function toGbp(amount, ccy) {
     if (ccy === "GBP") return amount;
-    if (!FX || !FX.rates) return null;
-    const rate = FX.rates[ccy];
+    if (!currencyRates || !currencyRates.rates) return null;
+    const rate = currencyRates.rates[ccy];
     return rate ? amount / rate : null;
   }
-  function fmtGBP(n) {
+  function fmtGbp(n) {
     return "£" + n.toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
   function budgetSubtotals(byCcy) {
@@ -2894,19 +2826,19 @@
     let html = moreHeader("Budget tracker");
     const exps = state.expenses.slice();
     // Totals
-    let totalGBP = 0, anyUnconverted = false;
+    let totalGbp = 0, anyUnconverted = false;
     const byCcy = { GBP: 0, CNY: 0, JPY: 0 };
     exps.forEach(function (e) {
       byCcy[e.ccy] = (byCcy[e.ccy] || 0) + e.amount;
-      const g = toGBP(e.amount, e.ccy);
-      if (g == null) anyUnconverted = true; else totalGBP += g;
+      const g = toGbp(e.amount, e.ccy);
+      if (g == null) anyUnconverted = true; else totalGbp += g;
     });
     html += '<div class="budget-total">' +
       '<div class="budget-total-lead">Total spent</div>' +
-      '<div class="budget-total-num">' + (anyUnconverted ? "≈ " : "") + fmtGBP(totalGBP) + '</div>' +
+      '<div class="budget-total-num">' + (anyUnconverted ? "≈ " : "") + fmtGbp(totalGbp) + '</div>' +
       '<div class="budget-total-sub">' + budgetSubtotals(byCcy) + '</div>' +
     '</div>';
-    if (!FX || !FX.rates) {
+    if (!currencyRates || !currencyRates.rates) {
       html += '<p class="empty">Live exchange rates unavailable offline — totals show once you\'ve been online. Native amounts are always saved.</p>';
     }
     // Add form
@@ -2922,7 +2854,7 @@
     if (exps.length) {
       html += '<div class="exp-list">';
       exps.slice().reverse().forEach(function (e) {
-        const g = toGBP(e.amount, e.ccy);
+        const g = toGbp(e.amount, e.ccy);
         html += '<div class="exp-item" data-exp="' + esc(e.id) + '">' +
           '<div class="exp-main">' +
             '<div class="exp-desc">' + esc(e.label || "Expense") + '</div>' +
@@ -2930,7 +2862,7 @@
           '</div>' +
           '<div class="exp-amts">' +
             '<div class="exp-native">' + CCY[e.ccy].flag + " " + CCY[e.ccy].sym + e.amount.toLocaleString("en-GB", { maximumFractionDigits: e.ccy === "JPY" ? 0 : 2 }) + '</div>' +
-            (e.ccy !== "GBP" && g != null ? '<div class="exp-gbp">' + fmtGBP(g) + '</div>' : "") +
+            (e.ccy !== "GBP" && g != null ? '<div class="exp-gbp">' + fmtGbp(g) + '</div>' : "") +
           '</div>' +
           '<button class="exp-del" data-act="exp-del" aria-label="Delete">' + ICON.trash + '</button>' +
         '</div>';
@@ -2981,11 +2913,11 @@
   }
 
   /* ---------- Phrasebook ---------- */
-  const speechOK = typeof window !== "undefined" && "speechSynthesis" in window;
+  const speechSupported = typeof window !== "undefined" && "speechSynthesis" in window;
 
   /* Speak a phrase in its native language using the device's voices. */
   function speakPhrase(text, langCode, btn) {
-    if (!speechOK || !text) return;
+    if (!speechSupported || !text) return;
     try {
       window.speechSynthesis.cancel();               // stop anything already playing
       const u = new SpeechSynthesisUtterance(text);
@@ -3010,12 +2942,12 @@
     });
     html += '</div>';
     const group = DATA.phrasebook[phraseLang] || DATA.phrasebook[0];
-    if (speechOK) {
+    if (speechSupported) {
       html += '<p class="phrase-hint">Tap the speaker to hear how it sounds.</p>';
     }
     html += '<div class="phrase-list">';
     group.phrases.forEach(function (p) {
-      const speak = speechOK
+      const speak = speechSupported
         ? '<button class="phrase-speak" data-act="phrase-speak" data-text="' + esc(p.local) + '" aria-label="Hear &quot;' + esc(p.en) + '&quot;">' + ICON.speaker + '</button>'
         : '';
       html += '<div class="phrase-item">' +
@@ -3033,7 +2965,7 @@
 
   /* ---------- Document vault (blobs in IndexedDB, meta in localStorage) ---------- */
   const DOC_DB = "rach-docs", DOC_STORE = "files";
-  function docDB() {
+  function docDb() {
     return new Promise(function (res, rej) {
       const r = indexedDB.open(DOC_DB, 1);
       r.onupgradeneeded = function () { r.result.createObjectStore(DOC_STORE); };
@@ -3042,7 +2974,7 @@
     });
   }
   function docTx(mode, fn) {
-    return docDB().then(function (db) {
+    return docDb().then(function (db) {
       return new Promise(function (res, rej) {
         const tx = db.transaction(DOC_STORE, mode);
         const store = tx.objectStore(DOC_STORE);
@@ -3149,7 +3081,7 @@
   function addExpense(amount, ccy, label) {
     amount = parseFloat(amount);
     if (!isFinite(amount) || amount <= 0) return false;
-    state.expenses.push({ id: genId(), amount: amount, ccy: ccy, label: (label || "").trim(), date: localISO(new Date()), ts: Date.now() });
+    state.expenses.push({ id: genId(), amount: amount, ccy: ccy, label: (label || "").trim(), date: localIso(new Date()), ts: Date.now() });
     saveState();
     renderBudget();
     return true;
@@ -3351,14 +3283,15 @@
 
   /* ---------- Masthead ---------- */
   function renderMasthead() {
-    const title = document.getElementById("tripTitle");
+    const title = document.getElementById("trip-title");
     const separator = '<span class="title-ampersand" aria-hidden="true">&amp;</span>';
-    title.setAttribute("aria-label", DATA.meta.title.split("·").map(function (country) { return country.trim(); }).join(" & "));
-    title.innerHTML = DATA.meta.title.split("·").map(function (country) {
-      return '<span class="title-country">' + esc(country.trim()) + '</span>';
+    const countries = DATA.meta.title.split("·").map(function (country) { return country.trim(); });
+    title.setAttribute("aria-label", countries.join(" & "));
+    title.innerHTML = countries.map(function (country) {
+      return '<span class="title-country">' + esc(country) + '</span>';
     }).join(separator);
     const s = fmtDate(DATA.meta.start), en = fmtDate(DATA.meta.end);
-    document.getElementById("tripRange").textContent = s.big + " → " + en.big + " · " + DATA.days.length + " days";
+    document.getElementById("trip-range").textContent = s.big + " → " + en.big + " · " + DATA.days.length + " days";
   }
 
   /* ---------- Theme (light / dark) ---------- */
@@ -3367,7 +3300,7 @@
     document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute("content", getComputedStyle(document.documentElement).getPropertyValue("--paper").trim());
-    const btn = document.getElementById("themeToggle");
+    const btn = document.getElementById("theme-toggle");
     if (btn) {
       btn.innerHTML = dark ? ICON.sun : ICON.moon;
       btn.setAttribute("aria-pressed", dark ? "true" : "false");
@@ -3398,12 +3331,11 @@
     renderCamera();
     renderPacking();
     renderMore();
-    updateProgress();
   }
 
   document.addEventListener("DOMContentLoaded", function () {
     applyTheme();
-    document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+    document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
     initTabs();
     renderAll();
     renderFxChip();

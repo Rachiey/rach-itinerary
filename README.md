@@ -53,6 +53,21 @@ are centralised in `CITY_THEME` in `js/app.js`.
 After changing shell assets, update their query versions in both `index.html`
 and `sw.js`, and bump `CACHE_VERSION` so installed copies receive the changes.
 
+### Code conventions
+
+- JavaScript variables, functions and internal fields use camelCase, including
+  acronym suffixes such as `Html`, `Iso` and `Gbp`.
+- Shared constants and configuration tables use UPPER_SNAKE_CASE.
+- HTML IDs, CSS classes, custom properties and data attributes use kebab-case.
+- Browser APIs, third-party payloads and web manifest fields retain their
+  required names. The Python icon generator uses Python's snake_case convention.
+- Persisted keys and item IDs are compatibility contracts; renaming them needs
+  a migration for existing saved trips.
+
+Run `node --test tests/system.test.cjs` for startup, navigation, saved-data,
+currency rendering and offline-cache checks. These use Node's built-in test
+runner without app dependencies; browser layout still needs visual checking.
+
 - **Days** — a scrollable feed of pixel-framed day cards. Each has a photo
   header, the day's focus area, a live **weather** chip, a **hotel bar** (tap to
   add the hotel name, area & address for that stay — it fills in across every day
@@ -71,13 +86,12 @@ and `sw.js`, and bump `CACHE_VERSION` so installed copies receive the changes.
   card shows where you're going, the visit date, and a **when-to-book** strip
   with a live countdown, colour-coded by urgency. Tick one once it's booked.
 - **To Buy** — shopping checklist grouped by China / Japan / Gifts.
-- **Flights** — a boarding-pass card per leg; fill in flight numbers, times,
-  seats & confirmation codes.
-- **Hotels** — one card per stay; fill in and review hotel details across legs.
-- **Tips** — payments, connectivity, etiquette and packing notes, plus the
-  **Reset** control.
+- **Travel** — boarding-pass cards for flights and trains, followed by hotel
+  cards; edit transport and accommodation details in one place.
+- **Camera** — scene settings, film recipes and example photos.
+- **Packing** — tick things off as you pack; add or hide items.
 - **More** — a hub of extra trip tools:
-  - **Packing list** — tick things off as you pack; add or hide items.
+  - **Stamp book** — collect photos and notes from each stop.
   - **Budget tracker** — log spend in ¥ / £, auto-converted using live rates.
   - **Emergency & essentials** — key numbers, embassies and hotel addresses,
     with one-tap map links.
@@ -93,8 +107,8 @@ and `sw.js`, and bump `CACHE_VERSION` so installed copies receive the changes.
   cached, powering the budget tracker's conversions.
 
 ### Interactions
-- ✅ Tick any place off — the day progress bar and the top progress bar animate up
-  smoothly, counting to the new percentage.
+- ✅ Tick any place off — the day's segmented progress bar updates its
+  completed-activity count.
 - ⭐ **Rate restaurants & cafés** out of 5 stars and jot a **memory note** so you
   remember whether a place was worth it.
 - ➕ **Add a place** to any section (with optional opening/closing times,

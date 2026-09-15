@@ -8,7 +8,7 @@
      get fresh numbers when online but still see the last values offline.
    Bump CACHE_VERSION whenever the shell files change to force an update.
    ===================================================================== */
-const CACHE_VERSION = "rach-itin-v84";
+const CACHE_VERSION = "rach-itin-v85";
 const SHELL_CACHE = CACHE_VERSION + "-shell";
 const RUNTIME_CACHE = CACHE_VERSION + "-runtime";
 
@@ -16,11 +16,14 @@ const SHELL_ASSETS = [
   "./",
   "./index.html",
   "./css/style.css?v=65",
-  "./js/data.js?v=20",
-  "./js/app.js?v=50",
+  "./js/data.js?v=21",
+  "./js/app.js?v=51",
   "./manifest.webmanifest",
   "./css/fonts/upheavtt.ttf",
   "./assets/photos/food.png",
+  "./assets/photos/mobile.png",
+  "./assets/photos/tablet.png",
+  "./assets/photos/desktop.png",
   "./css/fonts/ari-w9500-display.ttf",
   "./css/fonts/Perfect DOS VGA 437 Win.ttf",
   "./assets/icons/icon-192.png",
@@ -65,7 +68,7 @@ self.addEventListener("activate", function (event) {
   event.waitUntil(
     caches.keys().then(function (keys) {
       return Promise.all(
-        keys.filter(function (k) { return k.indexOf(CACHE_VERSION) !== 0; })
+        keys.filter(function (k) { return k.startsWith("rach-itin-") && k !== SHELL_CACHE && k !== RUNTIME_CACHE; })
             .map(function (k) { return caches.delete(k); })
       );
     }).then(function () { return self.clients.claim(); })

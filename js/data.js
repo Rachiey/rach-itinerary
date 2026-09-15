@@ -41,18 +41,6 @@ function place(id, name, details = {}) {
   };
 }
 
-/* Helper for "Things to buy" items. cat = a SHOP_CATS key (see app.js):
- * food · beauty · clothes · accessories · gifts · tech · utensils ·
- * stationery · other. note = what to look for (brand, tips). */
-function buy(id, name, cat, note, address = "") {
-  return {
-    id,
-    name,
-    done: false,
-    details: { cat: cat || "other", note: note || "", address: address, photo: "" },
-  };
-}
-
 /*
  * Each day:
  *   id, date (ISO), city (key of CITIES), focus (the area/theme),
