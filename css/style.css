@@ -72,11 +72,11 @@
   --fs-3xl: 16px;
   --fs-4xl: 17px;
   --fs-5xl: 18px;
-  --fs-title: 56px;
-  --fs-title-small: 38px;
+  --fs-title: 46px;
+  --fs-title-small: 34px;
   --fs-title-large: 66px;
-  --banner-width: 58%;
-  --banner-max-width: 210px;
+  --banner-width: 64%;
+  --banner-max-width: 230px;
   --banner-offset-y: var(--space-12);
   --title-ink: #b34869;
   --title-matcha: #2f5b0b;
@@ -474,7 +474,7 @@ select {
   display: inline-block;
   justify-self: end;
   white-space: nowrap;
-  color: var(--title-ink);
+  color: var(--seal);
   text-shadow: 1px 2px 0 var(--card);
 }
 .title-country + .title-ampersand + .title-country {
