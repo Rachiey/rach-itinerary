@@ -74,6 +74,7 @@
   --fs-5xl: 18px;
   --fs-title: 46px;
   --fs-title-small: 34px;
+  --fs-title-medium: 58px;
   --fs-title-large: 66px;
   --banner-width: 64%;
   --banner-max-width: 230px;
@@ -465,7 +466,7 @@ select {
   margin: var(--space-2) 0 0;
   font-family: var(--f-title);
   font-weight: normal;
-  font-size: var(--fs-title-large);
+  font-size: var(--fs-title-medium);
   line-height: 1.1;
   letter-spacing: 0;
   color: var(--title-ink);
