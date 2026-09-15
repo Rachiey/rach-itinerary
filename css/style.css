@@ -2074,7 +2074,7 @@ body.is-dragging-day {
 .slot-head h4 {
   color: var(--ink-soft);
   font-family: var(--f-display);
-  font-size: var(--fs-sm);
+  font-size: var(--fs-xl);
   letter-spacing: 0.04em;
   overflow-wrap: break-word;
   white-space: normal;
@@ -2094,6 +2094,16 @@ body.is-dragging-day {
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
+.slot-area-ic {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: var(--ink-soft);
+}
+.slot-area-ic svg {
+  width: 13px;
+  height: 13px;
+}
 .slot-area input {
   min-width: 72px;
   border: 0;
@@ -2112,6 +2122,12 @@ body.is-dragging-day {
 .slot-area input:focus {
   outline: none;
   border-bottom-color: var(--ink-jade);
+}
+@media (max-width: 480px) {
+  .slot-area input {
+    min-width: 0;
+    width: 60px;
+  }
 }
 .todo {
   border: var(--border-thin) solid var(--line);

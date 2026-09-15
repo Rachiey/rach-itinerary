@@ -542,7 +542,7 @@
     const mustDo = mustDoCount ? '<span class="slot-must">' + ICON.star + ' ' + mustDoCount + '</span>' : '';
     return (
       '<section class="slot' + (isOpen ? " is-open" : "") + '" data-slot="' + dotClass + '" data-container="' + esc(containerKey) + '">' +
-        '<div class="slot-head"><button class="slot-toggle" data-act="slot-toggle" aria-expanded="' + isOpen + '"><span class="slot-emoji ' + dotClass + '">' + (SLOT_ICON[slotKey] || "") + '</span><span class="slot-label"><h4>' + label + '</h4><span class="slot-count">' + list.length + (list.length === 1 ? " stop" : " stops") + '</span></span><span class="slot-chevron">' + ICON.chevron + '</span></button><label class="slot-area"><span>Area</span><input data-slotarea="' + esc(containerKey) + '" value="' + esc(area) + '" placeholder="Add area" aria-label="' + esc(label) + ' area"></label>' + mustDo + tally + '</div>' +
+        '<div class="slot-head"><button class="slot-toggle" data-act="slot-toggle" aria-expanded="' + isOpen + '"><span class="slot-emoji ' + dotClass + '">' + (SLOT_ICON[slotKey] || "") + '</span><span class="slot-label"><h4>' + label + '</h4><span class="slot-count">' + list.length + (list.length === 1 ? " stop" : " stops") + '</span></span><span class="slot-chevron">' + ICON.chevron + '</span></button><label class="slot-area"><span class="slot-area-ic" aria-hidden="true">' + ICON.pin + '</span><input data-slotarea="' + esc(containerKey) + '" value="' + esc(area) + '" placeholder="Add area" aria-label="' + esc(label) + ' area"></label>' + mustDo + tally + '</div>' +
         '<div class="slot-content">' + rows + '<button class="add-place" data-act="add" data-container="' + containerKey + '">' + ICON.plus + ' Add a place</button></div>' +
       '</section>'
     );
