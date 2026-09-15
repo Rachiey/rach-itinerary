@@ -203,7 +203,9 @@ body {
   overscroll-behavior: none;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + var(--space-12));
+  padding-bottom: calc(
+    var(--nav-h) + env(safe-area-inset-bottom, 0px) + var(--space-12)
+  );
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
@@ -405,7 +407,8 @@ select {
     calc(var(--space-16) + env(safe-area-inset-left, 0px));
 }
 .masthead {
-  padding: calc(var(--space-16) + var(--safe-top)) var(--space-4) var(--space-12);
+  padding: calc(var(--space-16) + var(--safe-top)) var(--space-4)
+    var(--space-12);
   text-align: center;
   position: relative;
 }
@@ -486,9 +489,9 @@ select {
 }
 
 .trip-subtitle {
-  margin-top: calc(var(--space-4) * -1);
+  margin-top: calc(var(--space-14) * -1);
   font-family: var(--f-display);
-  font-size: var(--fs-xl);
+  font-size: var(--fs-5xl);
   color: var(--ink-soft);
   letter-spacing: 0;
 }
@@ -1042,7 +1045,8 @@ select {
 .holiday-alert {
   margin: var(--space-12) 0 var(--space-14);
   padding: var(--space-9) var(--space-10);
-  border: var(--border-thin) solid color-mix(in srgb, var(--ink-highlight) 72%, var(--line));
+  border: var(--border-thin) solid
+    color-mix(in srgb, var(--ink-highlight) 72%, var(--line));
   background: var(--highlight-soft);
   color: var(--ink-soft);
   font-size: var(--fs-md);
@@ -1073,7 +1077,8 @@ select {
   gap: var(--space-10);
   margin: var(--space-14) 0;
   padding: var(--space-9) var(--space-10);
-  border: var(--border-thin) solid color-mix(in srgb, var(--highlight) 72%, var(--line));
+  border: var(--border-thin) solid
+    color-mix(in srgb, var(--highlight) 72%, var(--line));
   background: var(--highlight-soft);
   color: var(--ink-soft);
   font-size: var(--fs-md);
@@ -2989,7 +2994,8 @@ body.is-dragging-day {
 .booking-confirmed-ref {
   margin-top: var(--space-6);
   padding-top: var(--space-5);
-  border-top: var(--border-thin) dashed color-mix(in srgb, var(--jade) 45%, transparent);
+  border-top: var(--border-thin) dashed
+    color-mix(in srgb, var(--jade) 45%, transparent);
   font-family: var(--f-mono);
   font-size: var(--fs-xs);
   color: var(--ink-soft);
@@ -3050,7 +3056,8 @@ body.is-dragging-day {
   inset: auto 0 0;
   height: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
   padding: 0 calc(var(--space-16) + env(safe-area-inset-right, 0px))
-    env(safe-area-inset-bottom, 0px) calc(var(--space-16) + env(safe-area-inset-left, 0px));
+    env(safe-area-inset-bottom, 0px)
+    calc(var(--space-16) + env(safe-area-inset-left, 0px));
   display: flex;
   align-items: center;
   z-index: 50;
@@ -3064,7 +3071,8 @@ body.is-dragging-day {
   gap: var(--space-2);
   padding: var(--space-4) var(--space-2) var(--space-6);
   background: var(--paper-2);
-  border-bottom: var(--border-w) dashed color-mix(in srgb, var(--jade) 45%, var(--line));
+  border-bottom: var(--border-w) dashed
+    color-mix(in srgb, var(--jade) 45%, var(--line));
   box-shadow:
     0 -2px 0 var(--outline),
     0 2px 0 var(--outline),
@@ -3664,7 +3672,8 @@ body.is-dragging-day {
   width: 40px;
   height: 40px;
   border-radius: var(--radius-xs);
-  border: var(--border-thin) solid color-mix(in srgb, var(--seal) 40%, var(--line));
+  border: var(--border-thin) solid
+    color-mix(in srgb, var(--seal) 40%, var(--line));
   background: color-mix(in srgb, var(--seal) 10%, transparent);
   color: var(--seal);
   display: grid;
@@ -4101,7 +4110,8 @@ body.is-dragging-day {
   padding: var(--space-11) var(--space-13);
   border-radius: var(--radius-xs);
   background: color-mix(in srgb, var(--jade) 12%, var(--card));
-  border: var(--border-thin) solid color-mix(in srgb, var(--jade) 28%, var(--line));
+  border: var(--border-thin) solid
+    color-mix(in srgb, var(--jade) 28%, var(--line));
 }
 .cam-tip svg {
   flex: 0 0 auto;
