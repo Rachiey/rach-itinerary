@@ -242,11 +242,12 @@
     const cny = FX.rates.CNY, jpy = FX.rates.JPY;
     if (cny == null && jpy == null) { el.hidden = true; return; }
     const parts = [];
-    if (cny != null) parts.push('<span class="fx-item">🇨🇳 ¥' + cny.toFixed(1) + '</span>');
-    if (jpy != null) parts.push('<span class="fx-item">🇯🇵 ¥' + Math.round(jpy) + '</span>');
+    if (cny != null) parts.push('<span class="fx-item fx-cny"><span class="fx-label">CNY</span><span>¥' + cny.toFixed(1) + '</span></span>');
+    if (jpy != null) parts.push('<span class="fx-item fx-jpy"><span class="fx-label">JPY</span><span>¥' + Math.round(jpy) + '</span></span>');
     el.hidden = false;
     el.title = "£1 = " + (cny != null ? cny.toFixed(2) + " CNY" : "") + (cny != null && jpy != null ? " · " : "") + (jpy != null ? Math.round(jpy) + " JPY" : "") + (FX.date ? " (rates " + FX.date + ")" : "");
-    el.innerHTML = '<span class="fx-lead">£1</span>' + parts.join("");
+    el.setAttribute("aria-label", el.title);
+    el.innerHTML = '<span class="fx-lead"><span class="fx-label">GBP</span><span>£1 =</span></span>' + parts.join("");
   }
 
   function fetchCurrency() {
@@ -984,8 +985,6 @@
     }, 0);
     const when = Math.round((new Date(day.date + "T00:00:00") - new Date(today + "T00:00:00")) / 86400000);
     const label = when === 0 ? "Today" : when === 1 ? "Tomorrow" : "In " + when + " days";
-    const code = city.code || (city.name || "").slice(0, 3).toUpperCase();
-    const flag = (CITY_THEME[day.city] || {}).emoji || city.flag || "";
     return '<section class="next-up"><div class="next-up-label">Next up <span>' + esc(label) + '</span></div><button class="next-up-main" data-act="open-day" data-day="' + esc(day.id) + '"><span>' + esc((CITY_THEME[day.city] || {}).emoji || city.flag || "") + '</span><span><strong>' + esc(day.focus) + '</strong><small>' + esc(fmtDate(day.date).dow + " · " + fmtDate(day.date).big + " · " + city.name + " · " + stops + " stops") + '</small></span><span class="next-up-chevron">' + ICON.chevron + '</span></button></section>';
   }
 
@@ -1384,8 +1383,8 @@
   }
 
   function hotelsMarkup() {
-    let html = '<h2 class="section-title" style="margin-top:22px">Where you\'re staying</h2>' +
-      '<p class="empty" style="margin-bottom:14px">Every stay on the trip. Tap a card to edit the name, address or check-in / check-out — it saves automatically and syncs to the day cards.</p>';
+    let html = '<h2 class="section-title" style="margin-top:var(--space-22)">Where you\'re staying</h2>' +
+      '<p class="empty" style="margin-bottom:var(--space-14)">Every stay on the trip. Tap a card to edit the name, address or check-in / check-out — it saves automatically and syncs to the day cards.</p>';
     DATA.hotels.forEach(function (seed) {
       const city = DATA.cities[seed.city];
       const range = fmtDate(seed.from).big + " → " + fmtDate(seed.to).big;
@@ -2944,7 +2943,7 @@
   /* ---------- Emergency & essentials ---------- */
   function renderEmergency() {
     let html = moreHeader("Emergency & essentials");
-    html += '<p class="empty" style="margin-bottom:12px">Tap a number to call. Show a hotel address to a taxi driver.</p>';
+    html += '<p class="empty" style="margin-bottom:var(--space-12)">Tap a number to call. Show a hotel address to a taxi driver.</p>';
     // Emergency numbers
     DATA.emergency.numbers.forEach(function (block) {
       html += '<div class="emg-card"><h3>' + esc(block.country) + '</h3><div class="emg-nums">';
@@ -3064,7 +3063,7 @@
   }
   function renderDocs() {
     let html = moreHeader("Documents");
-    html += '<p class="empty" style="margin-bottom:12px">Save flight & hotel PDFs, tickets and passport photos here — they stay on this device and open offline.</p>';
+    html += '<p class="empty" style="margin-bottom:var(--space-12)">Save flight & hotel PDFs, tickets and passport photos here — they stay on this device and open offline.</p>';
     html += '<button class="doc-add-btn" data-act="doc-add">' + ICON.plus + ' Add a document</button>';
     if (state.docs.length) {
       html += '<div class="doc-list">';
@@ -3353,12 +3352,11 @@
   /* ---------- Masthead ---------- */
   function renderMasthead() {
     const title = document.getElementById("tripTitle");
-    const heart = '<span class="title-heart" aria-hidden="true">' + pixelIcon('M4 4H10V6H14V4H20V6H22V12H20V14H18V16H16V18H14V20H10V18H8V16H6V14H4V12H2V6H4Z') + '</span>';
-    title.setAttribute("aria-label", DATA.meta.title);
+    const separator = '<span class="title-ampersand" aria-hidden="true">&amp;</span>';
+    title.setAttribute("aria-label", DATA.meta.title.split("·").map(function (country) { return country.trim(); }).join(" & "));
     title.innerHTML = DATA.meta.title.split("·").map(function (country) {
       return '<span class="title-country">' + esc(country.trim()) + '</span>';
-    }).join(heart);
-    document.getElementById("tripSubtitle").textContent = [DATA.meta.subtitle, "travel itinerary"].filter(Boolean).join(" · ");
+    }).join(separator);
     const s = fmtDate(DATA.meta.start), en = fmtDate(DATA.meta.end);
     document.getElementById("tripRange").textContent = s.big + " → " + en.big + " · " + DATA.days.length + " days";
   }
@@ -3368,7 +3366,7 @@
     const dark = state.theme === "dark";
     document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", dark ? "#17140f" : "#f4ede1");
+    if (meta) meta.setAttribute("content", getComputedStyle(document.documentElement).getPropertyValue("--paper").trim());
     const btn = document.getElementById("themeToggle");
     if (btn) {
       btn.innerHTML = dark ? ICON.sun : ICON.moon;

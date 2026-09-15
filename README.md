@@ -36,7 +36,22 @@ devices. Animations respect the device’s reduced-motion preference.
 
 The interface shares pixel action icons, stepped panel frames, and consistent
 heading/body type. Strawberry identifies actions, matcha marks progress, and
-lavender highlights reminders; the title keeps its strawberry–matcha gradient.
+lavender highlights reminders; the title uses solid rose and matcha colours.
+
+### Styling
+
+Design tokens live in `:root` at the top of `css/style.css`, with colour
+overrides in `[data-theme="dark"]`. Reuse the `--space-*`, `--fs-*`, radius,
+border and colour tokens when styling components. Literal values are still
+appropriate for unique artwork geometry, animation keyframes and responsive
+breakpoints.
+
+Adjust the header using `--fs-title`, `--fs-title-small`, `--fs-title-large`,
+`--banner-width`, `--banner-max-width` and `--banner-offset-y`. City palettes
+are centralised in `CITY_THEME` in `js/app.js`.
+
+After changing shell assets, update their query versions in both `index.html`
+and `sw.js`, and bump `CACHE_VERSION` so installed copies receive the changes.
 
 - **Days** — a scrollable feed of pixel-framed day cards. Each has a photo
   header, the day's focus area, a live **weather** chip, a **hotel bar** (tap to
