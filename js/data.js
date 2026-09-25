@@ -958,12 +958,26 @@ const FLIGHTS = [
  */
 const BOOKINGS = [
   {
-    id: "bk-hikiniku", name: "Hikiniku to Come (挽肉と米)",
-    where: "Shibuya, Tokyo · also Kyoto", visit: "2026-10-11",
-    bookBy: "Reservations open 1 September", bookByDate: "2026-09-01",
-    flexible: true,
-    note: "Prefer the Shibuya location. Extremely popular — book right when the window opens. Kyoto branch is a backup if Shibuya is full.",
+  id: "bk-hikiniku",
+  name: "Hikiniku to Come (挽肉と米)",
+  where: "Shibuya, Tokyo · also Kyoto",
+  visit: "2026-10-12",
+
+  booked: true,
+
+  bookBy: "Reservations open 1 September",
+  bookByDate: "2026-09-01",
+  flexible: true,
+
+  details: {
+    bookingDate: "2026-10-12",
+    bookingTime: "17:30",
+    bookingLocation: "Kichijoji, Tokyo",
+    ref: "5XV7AH"
   },
+
+  note: "Prefer the Kichijoji location. Extremely popular — book right when the window opens. Kyoto branch is a backup if Shibuya is full.",
+},
   {
     id: "bk-wildpark", name: "Shanghai Wild Animal Park",
     where: "Nanhui, Shanghai", visit: "2026-10-20",
@@ -980,10 +994,11 @@ const BOOKINGS = [
   },
   {
     id: "bk-disney", name: "Shanghai Disneyland",
-    where: "Pudong, Shanghai", visit: "2026-10-21",
+    where: "Pudong, Shanghai", visit: "2026-10-20",
+    booked: true,
     bookBy: "Book in September", bookByDate: "2026-09-01",
     flexible: false,
-    note: "Buy park tickets early and consider Premier Access / Early Park Entry. Link tickets in the Shanghai Disney app.",
+    note: "Ticket comes with zootopia premier access and Winnie the Pooh standby.",
   },
   {
     id: "bk-transfer-disney", name: "Transfer → Disneyland",

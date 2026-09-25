@@ -1227,13 +1227,27 @@
   }
 
   /* Booked state for a booking (seed → state.over, added → its own flag). */
-  function isBooked(id, containerKey) {
-    if (isAdded(containerKey, id)) {
-      const p = state.added[containerKey].find(function (x) { return x.id === id; });
-      return p ? !!p.done : false;
-    }
-    return !!(state.over[id] && state.over[id].done);
+function isBooked(id, containerKey) {
+  if (isAdded(containerKey, id)) {
+    const p = state.added[containerKey].find(function (x) {
+      return x.id === id;
+    });
+
+    return p ? !!p.done : false;
   }
+
+  // User has explicitly changed it in their browser
+  if (state.over[id] && typeof state.over[id].done === "boolean") {
+    return state.over[id].done;
+  }
+
+  // Otherwise use the hardcoded default from data.js
+  const seed = DATA.bookings.find(function (b) {
+    return b.id === id;
+  });
+
+  return seed ? !!seed.booked : false;
+}
 
   /* Turn a book-by date into a friendly countdown + urgency level. */
   function bookingCountdown(iso) {
