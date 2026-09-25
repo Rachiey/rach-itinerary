@@ -88,7 +88,9 @@ const DAYS = [
         place("d2-m3", "Jing'an Temple", { open: "07:30", close: "17:00", note: "5 min from the Airbnb - good easy start." }),
         place("d2-m4", "Yuyuan Road", { note: "Cute shops around Jing'an Temple." }),
         place("d2-m5", "REEL Mall", { note: "Near Huashan Road, Jing'an District. Has Day by Day restaurant on 4th floor" }),
-        place("d2-m6", "Melt Season store"),
+        place("d2-m6", "Crystal Plus Mall 晶品", { note: "Shopping mall with TWOI Design Lab inside. Mangoway is also here." }),
+        place("d2-m7", "TWOI Design Lab (Inside crystal plus mall)"),
+        place("d2-m8", "Melt Season store"),
       ],
       afternoon: [
         place("d2-a1", "Wukang Road stroll", { note: "Iconic tree-lined French Concession street, historic villas." }),
@@ -211,8 +213,9 @@ const DAYS = [
       evening: [
         place("d4-e1", "Yu Garden"),
         place("d4-e2", "Yuyuan Old Street"),
-        place("d4-e3", "Shanghai Old Street"),
-        place("d4-e4", "Shanghai City God Temple"),
+        place("d4-e3", "Yuyuan Bazaar"),
+        place("d4-e4", "Shanghai Old Street"),
+        place("d4-e5", "Shanghai City God Temple"),
       ],
       restaurants: [
         place("d4-r1", "Su XiaoLiu", { note: "B2, Super Brand Mall." }),
@@ -329,6 +332,8 @@ const DAYS = [
       afternoon: [
         place("d7-a1", "W Management"),
         place("d7-a2", "Shanghai Jing'an Joy City", { note: "Matcha Island cafe/store inside." }),
+        place("d7-a3", "a blueberry store"),
+        place("d7-a4", "Masoomake"),
       ],
       evening: [
         place("d7-e1", "Free evening — explore Jing'an or Nanjing Road West"),
@@ -395,6 +400,7 @@ const DAYS = [
       place("d9-c5", "Sakimoto Bakery"),
       place("d9-c6", "Sakimoto Coffee"),
       place("d9-c7", "Chaya Sizuku"),
+      place("d9-c8", "MATCHA BAR WABICHA"),
     ],
   },
   {
@@ -482,16 +488,19 @@ const DAYS = [
   },
   {
     id: "day-13", date: "2026-10-10", city: "osaka",
-    focus: "Shinkansen to Tokyo",
+    focus: "Shinkansen to Tokyo + Fireworks festival at Atsugi",
     photo: "assets/photos/osaka.webp",
     morning: [
       place("d13-m1", "Stay around Namba / Nipponbashi for a slow morning"),
     ],
     afternoon: [
-      place("d13-a2", "Shinkansen → Tokyo", { note: "~2h50 on the Nozomi; check in around Ikebukuro." }),
+      place("d13-a2", "Shinkansen → Shin-yokohama station", { note: "~2h50 on the Nozomi" }),
+      place("d13-a3", "Transfer to Atsugi station for the Fireworks festival"),
     ],
     evening: [
-      place("d13-e1", "Settle into Ikebukuro — Sunshine St & dinner"),
+      place("d13-e1", "Go to the Fireworks festival at Atsugi"),
+      place("d13-e2", "Return to Tokyo via Shinkansen - Tokyo station Hobonichi store"),
+      place("d13-e3", "Settle into Ikebukuro — Sunshine St & dinner"),
     ],
     restaurants: [
       place("d13-r1", "Ikebukuro ramen or izakaya"),
@@ -516,6 +525,7 @@ const DAYS = [
       place("d14-m2", "Miyashita Park"),
       place("d14-m3", "soniandsmi"),
       place("d14-m4", "Nanaya Aoyama", { note: "Choc matcha sticks." }),
+      place("d14-m5", "Coyseio store"),
     ],
     afternoon: [
       place("d14-a1", "Tokyu Plaza", { note: "Standoil, One Piece store, Tamagotchi factory." }),
@@ -606,6 +616,7 @@ const DAYS = [
     ],
     restaurants: [
       place("d17-r1", "Harmonica Yokochō bar snacks"),
+      place("d17-r2", "Himuka Shokudo (Ueno) Fried Chicken Bowl"),
     ],
     cafes: [
       place("d17-c1", "Blue Sky Coffee, Inokashira Park"),
@@ -656,88 +667,168 @@ const DAYS = [
   },
 
    /* ───────────────────────── BEIJING ───────────────────────── */
-   {
-    id: "day-20", date: "2026-10-17", city: "beijing",
-    focus: "Arrive Beijing · Tiananmen & Forbidden City",
-    photo: "assets/photos/beijing.webp",
-    areas: {
-      morning: "Beijing Capital Airport → Chaoyang",
-      afternoon: "Tiananmen Square & Forbidden City",
-      evening: "Qianmen Street",
-    },
-    morning: [
-      place("d20-m1", "Land at Beijing Capital (PEK), transfer to hotel", { note: "Chaoyang." }),
-    ],
-    afternoon: [
-      place("d20-a1", "Tiananmen Square", { note: "Open until 10pm so timing is flexible. Book timed entry 1–2 days ahead via WeChat/official site; passport needed for security check." }),
-      place("d20-a2", "Forbidden City", { note: "Enter via the Meridian (Wumen) Gate." }),
-    ],
-    evening: [
-      place("d20-e1", "Qianmen Street", { note: "Food & shopping." }),
-    ],
-    restaurants: [
-      place("d20-r1", "Qianmen Street food stalls"),
-    ],
-    cafes: [
-      place("d20-c1", "Café near Wangfujing"),
-    ],
+{
+  id: "day-20", date: "2026-10-17", city: "beijing",
+  focus: "Arrive Beijing · Tiananmen, Forbidden City & Shopping",
+  photo: "assets/photos/beijing.webp",
+  areas: {
+    morning: "Beijing Capital Airport → Chaoyang",
+    afternoon: "Tiananmen Square & Forbidden City",
+    evening: "Wangfujing & Shopping",
   },
+
+  morning: [
+    place("d20-m1", "Land at Beijing Capital (PEK), transfer to hotel", {
+      note: "Transfer to hotel in Chaoyang, leave bags and get settled."
+    }),
+  ],
+
+  afternoon: [
+    place("d20-a1", "Tiananmen Square", {
+      note: "Passport needed for security. Allow extra time for checks."
+    }),
+    place("d20-a2", "Forbidden City", {
+      note: "Enter via the Meridian (Wumen) Gate."
+    }),
+    place("d20-a3", "Hall of Supreme Harmony", {
+      note: "Inside the Forbidden City."
+    }),
+  ],
+
+  evening: [
+    place("d20-e1", "Wangfujing Street"),
+    place("d20-e2", "Beijing APM"),
+    place("d20-e3", "Pokémon Center Mall"),
+    place("d20-e4", "Joy City"),
+    place("d20-e5", "Hopson One"),
+    place("d20-e6", "Shin Kong Place"),
+  ],
+
+  restaurants: [
+    place("d20-r1", "Siji Minfu Peking Duck"),
+    place("d20-r2", "Da Dong Roast Duck"),
+    place("d20-r3", "Quanjude Roast Duck"),
+  ],
+
+  cafes: [
+    place("d20-c1", "Cafe around Wangfujing / APM"),
+  ],
+},
   {
-    id: "day-21", date: "2026-10-18", city: "beijing",
-    focus: "Mutianyu Great Wall",
-    photo: "assets/photos/greatwall.webp",
-    areas: {
-      morning: "Mutianyu Great Wall",
-      afternoon: "Return to Beijing",
-      evening: "Near hotel",
-    },
-    morning: [
-      place("d21-m1", "Depart for Mutianyu Great Wall", { note: "~1.5–2hr drive." }),
-      place("d21-m2", "Explore the wall", { note: "Cable car up, toboggan down — it's fun." }),
-    ],
-    afternoon: [
-      place("d21-a1", "Head back to Beijing"),
-    ],
-    evening: [
-      place("d21-e1", "Rest, dinner near hotel", { note: "Try Peking duck!" }),
-    ],
-    restaurants: [
-      place("d21-r1", "Siji Minfu (Peking duck)", { open: "11:00", close: "22:00" }),
-    ],
-    cafes: [
-      place("d21-c1", "Café near hotel"),
-    ],
+  id: "day-21", date: "2026-10-18", city: "beijing",
+  focus: "Chaoyang & Sanlitun · Mutianyu Great Wall",
+  photo: "assets/photos/greatwall.webp",
+  areas: {
+    morning: "Chaoyang & Sanlitun",
+    afternoon: "Mutianyu Great Wall",
+    evening: "Return to Beijing",
   },
+
+  morning: [
+    place("d21-m1", "Parkview Green"),
+    place("d21-m2", "THE BOX",{
+      note: "Chic fruit store is here"
+    }),
+    place("d21-m3", "The Place"),
+    place("d21-m4", "Sanlitun Taikoo Li", {
+      note: "Shopping and lunch before heading out to Mutianyu."
+    }),
+  ],
+
+  afternoon: [
+    place("d21-a1", "Depart Beijing for Mutianyu Great Wall", {
+      note: "Aim to leave central Beijing around 1:30–2:00pm."
+    }),
+    place("d21-a2", "Arrive at Mutianyu Great Wall", {
+      open: "15:00",
+      note: "Aim to arrive around 3–4pm."
+    }),
+    place("d21-a3", "Cable car up"),
+    place("d21-a4", "Explore Mutianyu Great Wall", {
+      note: "Late-afternoon visit for softer light and hopefully fewer crowds."
+    }),
+    place("d21-a5", "Toboggan down"),
+  ],
+
+  evening: [
+    place("d21-e1", "Drive back to Beijing"),
+    place("d21-e2", "Dinner near hotel / Sanlitun"),
+  ],
+
+  restaurants: [
+    place("d21-r1", "NanMen Hotpot"),
+  ],
+
+  cafes: [
+    place("d21-c1", "Cafe around Sanlitun"),
+  ],
+},
   {
-    id: "day-22", date: "2026-10-19", city: "beijing",
-    focus: "Temple of Heaven → train to Shanghai",
-    photo: "assets/photos/beijing.webp",
-    areas: {
-      morning: "Temple of Heaven",
-      afternoon: "Pack up & check out",
-      evening: "Beijing South Railway Station",
-    },
-    morning: [
-      place("d22-m1", "Temple of Heaven", { note: "Close to hotel — go early to catch the tai chi crowds." }),
-    ],
-    afternoon: [
-      place("d22-a1", "Pack up, check out"),
-      place("d22-a2", "Head to Beijing South Railway Station"),
-    ],
-    evening: [
-      place("d22-e1", "High-speed train Beijing → Shanghai", { note: "~4.5h on the G-series train; arrive Shanghai late evening." }),
-    ],
-    restaurants: [
-      place("d22-r1", "Quick bite at Beijing South station"),
-    ],
-    cafes: [
-      place("d22-c1", "Station coffee before boarding"),
-    ],
+  id: "day-22", date: "2026-10-19", city: "beijing",
+  focus: "Temple of Heaven · Pokémon Center · Fly to Shanghai",
+  photo: "assets/photos/beijing.webp",
+  areas: {
+    morning: "Temple of Heaven",
+    afternoon: "Beijing shopping & final stops",
+    evening: "Beijing Daxing Airport (PKX)",
   },
+
+  morning: [
+    place("d22-m1", "Temple of Heaven", {
+      note: "Go early in the morning before it gets busier."
+    }),
+  ],
+
+  afternoon: [
+    place("d22-a1", "Pokémon Center Store"),
+    place("d22-a2", "Final Beijing shopping / food"),
+    place("d22-a3", "Return to hotel, collect bags & head to airport", {
+      note: "Allow plenty of time to travel to Beijing Daxing International Airport (PKX)."
+    }),
+  ],
+
+  evening: [
+    place("d22-e1", "Arrive at Beijing Daxing International Airport (PKX)", {
+      note: "Check in, security and get something to eat before the flight."
+    }),
+    place("d22-e2", "Fly Beijing Daxing (PKX) → Shanghai Pudong (PVG)", {
+      open: "22:00",
+      note: "Flight MU5231 · Departs 10:00pm · Arrives PVG 00:05 next day."
+    }),
+  ],
+
+  restaurants: [
+    place("d22-r1", "Dinner / quick bite before flight at PKX"),
+  ],
+
+  cafes: [
+    place("d22-c1", "Airport coffee before boarding"),
+  ],
+},
 
   /* ───────────────────────── SHANGHAI (leg 2 · home) ───────────────────────── */
   {
     id: "day-23", date: "2026-10-20", city: "shanghai",
+    focus: "Shanghai Disneyland",
+    photo: "assets/photos/disneyland.webp",
+    morning: [
+      place("d24-m1", "Early Park Entry / rope drop", { open: "08:30", close: "20:30", note: "Buy tickets ahead & link them in the Shanghai Disney app; consider Premier Access." }),
+    ],
+    afternoon: [
+      place("d24-a1", "Rides, parades & character meets"),
+    ],
+    evening: [
+      place("d24-e1", "Fireworks over the castle, then back to pack"),
+    ],
+    restaurants: [
+      place("d24-r1", "In-park dining (Wandering Moon Teahouse)"),
+    ],
+    cafes: [
+      place("d24-c1", "Mickey latte in the park"),
+    ],
+  },
+  {
+    id: "day-24", date: "2026-10-21", city: "shanghai",
     focus: "Shanghai Wild Animal Park",
     photo: "assets/photos/wildanimalpark.webp",
     morning: [
@@ -755,26 +846,6 @@ const DAYS = [
     ],
     cafes: [
       place("d23-c1", "Seesaw / Manner coffee"),
-    ],
-  },
-  {
-    id: "day-24", date: "2026-10-21", city: "shanghai",
-    focus: "Shanghai Disneyland",
-    photo: "assets/photos/disneyland.webp",
-    morning: [
-      place("d24-m1", "Early Park Entry / rope drop", { open: "08:30", close: "20:30", note: "Buy tickets ahead & link them in the Shanghai Disney app; consider Premier Access." }),
-    ],
-    afternoon: [
-      place("d24-a1", "Rides, parades & character meets"),
-    ],
-    evening: [
-      place("d24-e1", "Fireworks over the castle, then back to pack"),
-    ],
-    restaurants: [
-      place("d24-r1", "In-park dining (Wandering Moon Teahouse)"),
-    ],
-    cafes: [
-      place("d24-c1", "Mickey latte in the park"),
     ],
   },
   {
@@ -854,8 +925,22 @@ const FLIGHTS = [
     date: "2026-10-10", dep: "", arr: "", flightNo: "Shinkansen (Nozomi)", seat: "", depTerm: "", arrTerm: "", conf: "" },
   { id: "f4", label: "Tokyo → Beijing", from: "Tokyo", fromCode: "HND", to: "Beijing", toCode: "PEK",
     date: "2026-10-17", dep: "08:50", arr: "12:00", flightNo: "JL021", seat: "", depTerm: "T3", arrTerm: "T3", conf: "" },
-  { id: "f5", label: "Beijing → Shanghai", from: "Beijing", fromCode: "PKS", to: "Shanghai", toCode: "PVG",
-    date: "2026-10-19", dep: "22:00", arr: "00:05", flightNo: "MU5231", seat: "", depTerm: "", arrTerm: "", conf: "" },
+ {
+  id: "f5",
+  label: "Beijing → Shanghai",
+  from: "Beijing",
+  fromCode: "PKX",
+  to: "Shanghai",
+  toCode: "PVG",
+  date: "2026-10-19",
+  dep: "22:00",
+  arr: "00:05 (+1)",
+  flightNo: "MU5231",
+  seat: "",
+  depTerm: "",
+  arrTerm: "",
+  conf: ""
+},
   { id: "f6", label: "Return home", from: "Shanghai", fromCode: "PVG", to: "London", toCode: "LHR",
     date: "2026-10-22", dep: "11:00", arr: "18:45", flightNo: "BA0168", seat: "", depTerm: "", arrTerm: "", conf: "" },
 ];
@@ -878,13 +963,6 @@ const BOOKINGS = [
     bookBy: "Reservations open 1 September", bookByDate: "2026-09-01",
     flexible: true,
     note: "Prefer the Shibuya location. Extremely popular — book right when the window opens. Kyoto branch is a backup if Shibuya is full.",
-  },
-  {
-    id: "bk-pokemon", name: "Pokémon Café",
-    where: "Osaka or Tokyo (flexible)", visit: "",
-    bookBy: "Opens exactly 31 days before your chosen date", bookByDate: "",
-    flexible: true,
-    note: "Branches in both Osaka & Tokyo. Pick a date first, then set a reminder to book 31 days prior (e.g. going 12 Oct → book 11 Sept when the slot releases).",
   },
   {
     id: "bk-wildpark", name: "Shanghai Wild Animal Park",
